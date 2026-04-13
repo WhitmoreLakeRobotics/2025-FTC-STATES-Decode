@@ -1,5 +1,5 @@
 
-package org.firstinspires.ftc.teamcode.pedroPathing;
+package org.firstinspires.ftc.teamcode.pedroPathing.DisabledPPAutons;
 
 import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.pathConstraints;
 
@@ -10,6 +10,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -19,12 +20,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
+import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
+
 @Disabled
 @Configurable
-@Autonomous(name = "dppBlueFarCorner3Cycle", group = "ppBlue")
+@Autonomous(name = "dppRedFarCorner3Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
 
-public class dppBlueFarCorner3Cycle extends OpMode {
+public class dppRedFarCorner3Cycle extends OpMode {
+
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
     private stage currentStage = stage._unknown;
@@ -49,22 +54,22 @@ public class dppBlueFarCorner3Cycle extends OpMode {
     public static double powerFast = 0.8;
     //
     // poses for pedropath
-    private final Pose startPose = new Pose(57, 9, Math.toRadians(90)); // Start Pose of our robot.
-    public static Pose scorePose = new Pose(57, 18, Math.toRadians(114)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    public static Pose scorePoseAP = new Pose(55, 20, Math.toRadians(115)); //(24 was 20) Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    private final Pose startPose = new Pose(57, 9, Math.toRadians(90)).mirror(); // Start Pose of our robot.
+    public static Pose scorePose = new Pose(57, 18, Math.toRadians(114)).mirror(); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    public static Pose scorePoseAP = new Pose(52, 20, Math.toRadians(115)).mirror(); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    public static Pose pickup1aPose = new Pose(50, 36, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    public static Pose pickup1bPose = new Pose(0, 38, Math.toRadians(180)); // (0 was 3) (First Set) of Artifacts picked up.
+    public static Pose pickup1aPose = new Pose(50, 36, Math.toRadians(180)).mirror(); // Highest (First Set) of Artifacts from the Spike Mark.
+    public static Pose pickup1bPose = new Pose(3, 38, Math.toRadians(180)).mirror(); // (First Set) of Artifacts picked up.
 
-    public static Pose pickup2Pose = new Pose(47, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    public static Pose pickup3Pose = new Pose(24, 35, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    public static Pose pickup2Pose = new Pose(47, 60, Math.toRadians(180)).mirror(); // Middle (Second Set) of Artifacts from the Spike Mark.
+    public static Pose pickup3Pose = new Pose(24, 35, Math.toRadians(180)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
 
-    public static Pose pickupCornera = new Pose(30,38,Math.toRadians(185));
-    public static Pose pickupCornerb = new Pose(0,42,Math.toRadians(200));
-    public static Pose pickupCornerc = new Pose(-1,4,Math.toRadians(270));
-    public static Pose parkInterPosea = new Pose(15,20,Math.toRadians(175));
+    public static Pose pickupCornera = new Pose(30,38,Math.toRadians(185)).mirror();
+    public static Pose pickupCornerb = new Pose(0,42,Math.toRadians(200)).mirror();
+    public static Pose pickupCornerc = new Pose(-1,4,Math.toRadians(270)).mirror();
+    public static Pose parkInterPosea = new Pose(15,20,Math.toRadians(175)).mirror();
 
-    public static Pose parkInLoadZonePose = new Pose(5,8,Math.toRadians(190));
+    public static Pose parkInLoadZonePose = new Pose(5,8,Math.toRadians(190)).mirror();
     private Pose currentTargetPose = startPose;
     private Pose lastPose = startPose;
     private PathChain scorePreload;
@@ -112,7 +117,7 @@ public class dppBlueFarCorner3Cycle extends OpMode {
         scorePickupCorner = follower.pathBuilder()
                 .addPath(new BezierCurve(pickupCornerc, parkInterPosea, scorePoseAP))
                 .setLinearHeadingInterpolation(pickupCornerc.getHeading(), scorePose.getHeading())
-                //.setHeadingInterpolation(HeadingInterpolator.facingPoint(0,144))
+                .setHeadingInterpolation(HeadingInterpolator.facingPoint(0,144))
                 .build();
         parkInZonePath = follower.pathBuilder()
                 .addPath(new BezierCurve(scorePoseAP, parkInterPosea, parkInLoadZonePose))
@@ -324,7 +329,7 @@ public class dppBlueFarCorner3Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 1000) { // let path settle
+                    if (runtime.milliseconds() >= 750) { // let path settle
                         robot.intake.cmdFoward();
                         robot.transitionRoller.cmdSpin();
                         robot.launcherBlocker.cmdUnBlock();
@@ -347,7 +352,6 @@ public class dppBlueFarCorner3Cycle extends OpMode {
                     follower.followPath(pickupCornerPath1, powerSlow, true);
                     lastPose = currentTargetPose;
                     currentTargetPose = pickupCornerb;
-                    robot.launcherBlocker.cmdBlock();
                     runtime.reset();
                     currentStage = stage._105_PickupCorner1_pickup;
                 }
@@ -368,9 +372,9 @@ public class dppBlueFarCorner3Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     follower.followPath(scorePickupCorner,powerNormal, true);
                     lastPose = currentTargetPose;
-                    currentTargetPose = scorePoseAP;  //was pickup1bPose
+                    currentTargetPose = pickup1bPose;
                     robot.launcher.cmdOutfar();
-                    //runtime.reset();
+                    runtime.reset();
                     currentStage = stage._120_Score_corner1;
                 }
                 break;
@@ -390,7 +394,7 @@ public class dppBlueFarCorner3Cycle extends OpMode {
                 }
                 break;
             case _130_LauncherStop:
-                if (runtime.milliseconds() >= 2000) {
+                if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     robot.launcherBlocker.cmdBlock();
                     runtime.reset();
