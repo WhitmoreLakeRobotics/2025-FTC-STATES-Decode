@@ -498,18 +498,9 @@ break;
                     currentTargetPose = scorePose;
                     robot.launcher.cmdOutfar();
                     runtime.reset();
-                    currentStage = stage._220_chkDrive_to_score_P1;
+                    currentStage = stage._230_ScorePickup1;
                 }
-                break;
-            case _220_chkDrive_to_score_P1:
-               // if(runtime.milliseconds() >= 250){
-               //     robot.intake.cmdStop();
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._230_ScorePickup1; // we don't need to do the turn since heading is adjusted in path
-                    runtime.reset();
-                }
-              //  }
+
                 break;
 
             case _230_ScorePickup1:
@@ -517,7 +508,7 @@ break;
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
                     if (runtime.milliseconds() >= 1000) {
-                        telemetryMU.addLine("wqiting to shoot 2");
+                        telemetryMU.addLine("waiting to shoot 2");
                         robot.intake.cmdFoward();
                         robot.transitionRoller.cmdSpin();
                         robot.launcherBlocker.cmdUnBlock();
@@ -642,7 +633,6 @@ break;
         _200_PickupWiggle,
         _205_OutTemp1,
         _210_ToScorePoseAP,
-        _220_chkDrive_to_score_P1,
         _230_ScorePickup1,
         _240_LauncherStop,
 
