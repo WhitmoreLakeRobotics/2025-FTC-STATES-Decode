@@ -253,13 +253,7 @@ public class ppBlueNear4Cycle extends OpMode {
 
                     // follower.update();
                     robot.launcher.cmdOuttouch();
-                    currentStage = stage._25_checkDrivetoscore;
-                }
-            case _25_checkDrivetoscore:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._30_Shoot1; // we don't need to do the turn since heading is adjusted in path
-                    runtime.reset();
+                    currentStage = stage._30_Shoot1;
                 }
                 break;
 
@@ -318,15 +312,9 @@ public class ppBlueNear4Cycle extends OpMode {
                     lastPose = currentTargetPose;
                     currentTargetPose = scorePose;
                     robot.launcher.cmdOuttouch();
-                    currentStage = stage._75_chkDrive_to_score_P1;
+                    currentStage = stage._70_ToScorePoseAP;
                 }
-                break;
-            case _75_chkDrive_to_score_P1:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    runtime.reset();
-                    currentStage = stage._80_ScorePickup1; // we don't need to do the turn since heading is adjusted in path
-                }
+
                 break;
 
             case _80_ScorePickup1:
@@ -382,16 +370,9 @@ public class ppBlueNear4Cycle extends OpMode {
                     follower.followPath(scorePickup2,powerFast,true);
                     currentTargetPose = scorePoseAP;
                     robot.launcher.cmdOuttouch();
-                    currentStage = stage._140_chkDrive_to_scorePoseAP;
+                    currentStage = stage._130_ToScorePoseAP;
                 }
-                break;
-            case _140_chkDrive_to_scorePoseAP:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    runtime.reset();
-                    currentStage = stage._150_ScorePickup2; // we don't need to do the turn since heading is adjusted in path
 
-                }
                 break;
 
             case _150_ScorePickup2:
@@ -449,18 +430,9 @@ public class ppBlueNear4Cycle extends OpMode {
                     follower.followPath(scorePickup3,powerNormal,true);
                     currentTargetPose = scorePoseAP;
                     robot.launcher.cmdOuttouch();
-                    currentStage = stage._200_chkDrive_to_scorePoseAP2;
+                    currentStage = stage._210_ScorePickup3;
                 }
              break;
-
-            case _200_chkDrive_to_scorePoseAP2:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    runtime.reset();
-                    currentStage = stage._210_ScorePickup3; // we don't need to do the turn since heading is adjusted in path
-
-                }
-            break;
 
             case _210_ScorePickup3:
                 if (!follower.isBusy()) {
@@ -534,28 +506,24 @@ public class ppBlueNear4Cycle extends OpMode {
         _unknown,
         _00_preStart,
         _20_DriveToScore,
-        _25_checkDrivetoscore,
         _30_Shoot1,
         _40_LauncherStop,
         _50_Pickup1,
         _55_Pickup1_Startintake,
         _60_Pickup1a,
         _70_ToScorePoseAP,
-        _75_chkDrive_to_score_P1,
         _80_ScorePickup1,
         _90_LauncherStop,
         _100_Pickup2,
         _110_Pickup2_Startintake,
         _120_Pickupa2,
         _130_ToScorePoseAP,
-        _140_chkDrive_to_scorePoseAP,
         _150_ScorePickup2,
         _155_LauncherStop,
         _160_pickup3,
         _170_pickup3_startintake,
         _180_pickupa3,
         _190_ToScorePoseAP2,
-        _200_chkDrive_to_scorePoseAP2,
         _210_ScorePickup3,
         _450_Park,
         _500_End
