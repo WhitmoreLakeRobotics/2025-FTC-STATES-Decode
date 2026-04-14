@@ -135,7 +135,6 @@ public class Tele_Op extends OpMode {
 
         // robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.GOLD);
         //robot.signalSign.doUP();
-        //robot.swing_arm_and_lift.SetPOS(Swing_Arm_And_Lift.Mode.PICKUP);
     }
 
     //*********************************************************************************************
@@ -287,14 +286,12 @@ public class Tele_Op extends OpMode {
         //***********   Pushers
         //if (CommonLogic.oneShot(gamepad1.a, gp1_prev_a)) {
         if (gamepad1.a) {
-            //robot.subPushers.cmdMoveAllDown();
-            //      robot.cmdStrafeIntake();
-            //    robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.CONFETTI);
+
+            //   robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.CONFETTI);
         }
 
         if (gamepad1.b) {
-            //robot.subPushers.cmdMoveAllUp();
-            //  robot.cmdStrafeDelivery();
+
             //robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.TWINKLES_PARTY_PALETTE);
         }
         if (CommonLogic.oneShot(gamepad1.back, gp1_prev_back)) {
@@ -313,7 +310,6 @@ public class Tele_Op extends OpMode {
         if ((gamepad1.right_trigger <= 0.79) && (gamepad1.right_trigger > 0.10)) {
 
         }
-//            robot.sweeper.setCurrentMode(Sweeper.Mode.STOP);
 
         // Bumpers high and lower Powers for the wheels,
         //if (CommonLogic.oneShot(gamepad1.left_bumper, gp1_prev_left_bumper)) {
@@ -347,31 +343,9 @@ public class Tele_Op extends OpMode {
             //}
             //       robot.driveTrain.cmdTurnByGyroMec(90);
             /*
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin1) {
-                robot.spindexer.NTK_POSITION_TWO();
-            }
 
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin2) {
-                robot.spindexer.NTK_POSITION_THREE();
-            }
 
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin3) {      <-----------------------------------------------------
-                robot.spindexer.NTK_POSITION_ONE();
-            }
 
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout1) {
-                robot.spindexer.NTK_POSITION_THREE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout2) {
-                robot.spindexer.NTK_POSITION_ONE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout3) {
-                robot.spindexer.NTK_POSITION_TWO();
-            }
-
-             */
 
         }
 
@@ -387,30 +361,6 @@ public class Tele_Op extends OpMode {
             //}
             //  robot.driveTrain.cmdTurnByGyroMec(0);
             /*
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout1) {
-                robot.spindexer.OTK_POSITION_TWO();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout2) {
-                robot.spindexer.OTK_POSITION_THREE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout3) {
-                robot.spindexer.OTK_POSITION_ONE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin1) {
-                robot.spindexer.OTK_POSITION_TWO();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin2) {
-                robot.spindexer.OTK_POSITION_THREE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin3) {
-                robot.spindexer.OTK_POSITION_ONE();
-            }
 
              */
 
@@ -428,29 +378,6 @@ public class Tele_Op extends OpMode {
             // robot.driveTrain.cmdTurnByGyroMec(-90);
             /*
 
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin1) {
-                robot.spindexer.NTK_POSITION_THREE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin2) {
-                robot.spindexer.NTK_POSITION_ONE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin3) {
-                robot.spindexer.NTK_POSITION_TWO();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout1) {
-                robot.spindexer.NTK_POSITION_TWO();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout2) {
-                robot.spindexer.NTK_POSITION_THREE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout3) {
-                robot.spindexer.NTK_POSITION_ONE();
-            }
 
              */
 
@@ -468,29 +395,6 @@ public class Tele_Op extends OpMode {
             // robot.driveTrain.cmdTurnByGyroMec(180);
             /*
 
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout1) {
-                robot.spindexer.OTK_POSITION_THREE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout2) {
-                robot.spindexer.OTK_POSITION_ONE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout3) {
-                robot.spindexer.OTK_POSITION_TWO();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin1) {
-                robot.spindexer.OTK_POSITION_THREE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin2) {
-                robot.spindexer.OTK_POSITION_ONE();
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDin3) {
-                robot.spindexer.OTK_POSITION_TWO();
-            }
 
              */
 
@@ -521,44 +425,11 @@ public class Tele_Op extends OpMode {
 
           /*
             if (gamepad2.left_bumper)
-                RobotLog.aa(TAGTeleop, " gp2_prev_left_bumper : " + gp2_prev_left_bumper);
-
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout1) {
-
-                if (robot.flickiteer.CurrentMode == Flickiteer.Mode.Ready) {
-                    robot.flickiteer.cmdFire();
-                }
-                if (robot.flickiteer.CurrentMode == Flickiteer.Mode.Fire) {
-                    robot.flickiteer.cmdReady();
-                }
+                RobotLog.aa(TAGTeleop, " gp2_prev_left_bumper : " + gp2_prev_left_bumper)
 
 
 
-            }
 
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout2) {
-
-                if (robot.flickiteer.CurrentMode == Flickiteer.Mode.Ready) {
-                    robot.flickiteer.cmdFire();
-                }
-                if (robot.flickiteer.CurrentMode == Flickiteer.Mode.Fire) {   <--------------------------
-                    robot.flickiteer.cmdReady();
-                }
-
-            }
-
-            if (robot.spindexer.CurrentMode == Spindexer.Mode.SDout3) {
-
-                if (robot.flickiteer.CurrentMode == Flickiteer.Mode.Ready) {
-                    robot.flickiteer.cmdFire();
-                }
-                if (robot.flickiteer.CurrentMode == Flickiteer.Mode.Fire) {
-                    robot.flickiteer.cmdReady();
-                }
-
-            }
 
              */
 
@@ -588,11 +459,9 @@ public class Tele_Op extends OpMode {
 
 
         if (CommonLogic.oneShot(gamepad2.start, gp2_prev_start)) {
-            //robot.arm.setWristUp();
 
         }
         if (gamepad2.start) {
-//            robot.cmdExcecuteBumpStack();   // this was SetPOS() not setting the mode
             //          robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.AQUA);
 
         }
@@ -613,7 +482,6 @@ public class Tele_Op extends OpMode {
 //            robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
             //robot.subExtender.incPositionIndex();
             NoLaunch();
-            //robot.spindexer.
         }
 
 
@@ -632,7 +500,6 @@ public class Tele_Op extends OpMode {
         //robot.transitionRoller.cmdBack();
     }
 
-        //robot.swing_arm_and_lift.SwingPos(robot.swing_arm_and_lift.LASTSWINGPOSITION + (int)(gamepad2.left_stick_x) * 5);
 
         if (Math.abs(gamepad2.left_stick_x) > 0.8) {
             //robot.subLifter.stickControl(-gamepad2.left_stick_y);
@@ -647,7 +514,6 @@ public class Tele_Op extends OpMode {
         else{
         }
 
-        //robot.swing_arm_and_lift.LiftPos(robot.swing_arm_and_lift.LASTLIFTPOSITION + (int)(gamepad2.right_stick_y) * 5);
 
         if (Math.abs(gamepad2.right_stick_y) > Settings.JOYSTICK_DEADBAND_STICK) {
             //robot.subLifter.stickControl(-gamepad2.left_stick_y);
@@ -662,12 +528,10 @@ public class Tele_Op extends OpMode {
         if (CommonLogic.oneShot(gamepad2.dpad_down, gp2_prev_dpad_down)) {
         }
         if (CommonLogic.oneShot(gamepad2.dpad_right, gp2_prev_dpad_right)) {
-            //robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_LOW_CHAMBER);
         //    robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_left, gp2_prev_dpad_left)) {
-           // robot.arm.setCurrentMode(Arm.Mode.DELIVER_TO_HIGH_CHAMBER);
   //          robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.ORANGE);
         }
 
