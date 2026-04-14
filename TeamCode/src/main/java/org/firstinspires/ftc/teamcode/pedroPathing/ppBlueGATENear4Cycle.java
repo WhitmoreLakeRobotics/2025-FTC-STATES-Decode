@@ -388,16 +388,9 @@ public class ppBlueGATENear4Cycle extends OpMode {
                     follower.followPath(scorePickup2,powerFast,true);
                     currentTargetPose = scorePoseAP;
                     robot.launcher.cmdOuttouch();
-                    currentStage = stage._140_chkDrive_to_scorePoseAP;
+                    currentStage = stage._150_ScorePickup2;
                 }
-                break;
-            case _140_chkDrive_to_scorePoseAP:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    runtime.reset();
-                    currentStage = stage._150_ScorePickup2; // we don't need to do the turn since heading is adjusted in path
 
-                }
                 break;
 
             case _150_ScorePickup2:
@@ -554,7 +547,6 @@ public class ppBlueGATENear4Cycle extends OpMode {
         _110_Pickup2_Startintake,
         _120_Pickupa2,
         _130_ToScorePoseAP,
-        _140_chkDrive_to_scorePoseAP,
         _150_ScorePickup2,
         _155_LauncherStop,
         _160_pickup3,

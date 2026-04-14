@@ -310,15 +310,9 @@ public class ppBlueNear3Cycle extends OpMode {
                     lastPose = currentTargetPose;
                     currentTargetPose = scorePose;
                     robot.launcher.cmdOuttouch();
-                    currentStage = stage._75_chkDrive_to_score_P1;
+                    currentStage = stage._80_ScorePickup1;
                 }
-                break;
-            case _75_chkDrive_to_score_P1:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._80_ScorePickup1; // we don't need to do the turn since heading is adjusted in path
-                    runtime.reset();
-                }
+
                 break;
 
             case _80_ScorePickup1:
@@ -373,15 +367,9 @@ public class ppBlueNear3Cycle extends OpMode {
                     follower.followPath(scorePickup2,powerNormal,true);
                     currentTargetPose = scorePoseAP;
                     robot.launcher.cmdOuttouch();
-                    currentStage = stage._140_chkDrive_to_scorePoseAP;
+                    currentStage = stage._150_ScorePickup2;
                 }
-                break;
-            case _140_chkDrive_to_scorePoseAP:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._150_ScorePickup2; // we don't need to do the turn since heading is adjusted in path
-                    runtime.reset();
-                }
+
                 break;
 
             case _150_ScorePickup2:
@@ -464,14 +452,12 @@ public class ppBlueNear3Cycle extends OpMode {
         _55_Pickup1_Startintake,
         _60_Pickup1a,
         _70_ToScorePoseAP,
-        _75_chkDrive_to_score_P1,
         _80_ScorePickup1,
         _90_LauncherStop,
         _100_Pickup2,
         _110_Pickup2_Startintake,
         _120_Pickupa2,
         _130_ToScorePoseAP,
-        _140_chkDrive_to_scorePoseAP,
         _150_ScorePickup2,
         _450_Park,
         _500_End
