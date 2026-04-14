@@ -19,9 +19,6 @@ public class Robot extends BaseHardware {
     public Intake intake = new Intake();
     public Launcher launcher = new Launcher();
     public Uppies uppies = new Uppies();
-    //public HuskyLens huskyLens = new HuskyLens();
-    // public Spindexer spindexer = new Spindexer();
-    //public Flickiteer flickiteer = new Flickiteer();
     public TransitionRoller transitionRoller = new TransitionRoller();
     public LauncherBlocker launcherBlocker = new LauncherBlocker();
     public Limey limey = new Limey();
@@ -78,16 +75,6 @@ public class Robot extends BaseHardware {
         launcher.telemetry = this.telemetry;
         launcher.init();
 
-         /*
-        spindexer.hardwareMap = this.hardwareMap;
-        spindexer.telemetry = this.telemetry;
-        spindexer.init();
-
-          */
-
-        //flickiteer.hardwareMap = this.hardwareMap;
-        //flickiteer.telemetry = this.telemetry;
-        //flickiteer.init();
 
         launcherBlocker.hardwareMap = this.hardwareMap;
         launcherBlocker.telemetry = this.telemetry;
@@ -96,10 +83,6 @@ public class Robot extends BaseHardware {
         transitionRoller.hardwareMap = this.hardwareMap;
         transitionRoller.telemetry = this.telemetry;
         transitionRoller.init();
-
-        // huskyLens.hardwareMap = this.hardwareMap;
-        // huskyLens.telemetry = this.telemetry;
-        // huskyLens.init();
 
         limey.hardwareMap = this.hardwareMap;
         limey.telemetry = this.telemetry;
@@ -119,11 +102,8 @@ public class Robot extends BaseHardware {
         // sensors.init_loop();
         intake.init_loop();
         launcher.init_loop();
-        //  spindexer.init_loop();
-        // flickiteer.init_loop();
         launcherBlocker.init_loop();
         transitionRoller.init_loop();
-        //huskyLens.init_loop();
         // Limelight3A.init_loop();
         limey.init_loop();
         uppies.init_loop();
@@ -136,11 +116,8 @@ public class Robot extends BaseHardware {
         // sensors.start();
         intake.start();
         launcher.start();
-        //  spindexer.start();
-        //flickiteer.start();
         launcherBlocker.start();
         transitionRoller.start();
-        //huskyLens.start();
         //Limelight3A.start();
         limey.start();
         uppies.start();
@@ -156,11 +133,8 @@ public class Robot extends BaseHardware {
         // sensors.loop();
         intake.loop();
         launcher.loop();
-        // spindexer.loop();
-        //flickiteer.loop();
         launcherBlocker.loop();
         transitionRoller.loop();
-        // huskyLens.loop();
         limey.loop();
         uppies.loop();
 
@@ -178,11 +152,8 @@ public class Robot extends BaseHardware {
         // sensors.loop();
         intake.loop();
         launcher.loop();
-        // spindexer.loop();
-        //flickiteer.loop();
         launcherBlocker.loop();
         transitionRoller.loop();
-        // huskyLens.loop();
         limey.loop();
         uppies.loop();
 
@@ -197,28 +168,14 @@ public class Robot extends BaseHardware {
         // sensors.stop();
         intake.stop();
         launcher.stop();
-        //  spindexer.stop();
-        // flickiteer.stop();
         launcherBlocker.stop();
         transitionRoller.stop();
-        //huskyLens.stop();
         limey.stop();
         uppies.stop();
         // lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.WHITE);
     }
 
-    public void safteyCheck() {
-        //when called comfirm flicker is in safe position before spindexing.
-    }
-/*
-    public void Cksem (){
-        if(bCkSenors){
-            sensors. SpindexerSlot1 = sensors.getSlotArtifact(sensors.SDC01);
-            sensors.SpindexerSlot2 = sensors.getSlotArtifact(sensors.SDC02);
-            sensors.SpindexerSlot3 = sensors.getSlotArtifact(sensors.SDC03);
-            sensors.IntakeSlot = sensors.getSlotArtifact(sensors.NTKC01);
-        }
-    }  */
+
 /*
 public void LaunchNear(){         //wait for launcher to spin up to speed.
         launcher.cmdOutnear();
