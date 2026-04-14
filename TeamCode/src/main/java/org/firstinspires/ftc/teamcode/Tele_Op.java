@@ -2,20 +2,15 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.RobotLog;
 
 
-import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 import org.firstinspires.ftc.teamcode.Common.CommonLogic;
 import org.firstinspires.ftc.teamcode.Common.Settings;
 
-import org.firstinspires.ftc.teamcode.Hardware.Flickiteer;
 import org.firstinspires.ftc.teamcode.Hardware.Intake;
 
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
-import org.firstinspires.ftc.teamcode.Hardware.Spindexer;
 
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name = "Tele_Op", group = "TeleOp")
