@@ -134,6 +134,7 @@ public class Tele_Op extends OpMode {
         Runtime.getRuntime();
         Gameruntime.reset();
         Gameruntime2.reset();
+        robot.start();
 
 
 

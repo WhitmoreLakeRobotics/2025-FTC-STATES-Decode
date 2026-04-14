@@ -1227,7 +1227,7 @@ class Circle extends OpMode {
  * @author Lazar - 19234
  * @version 1.1, 5/19/2025
  */
-public class Drawing {
+/*public class Drawing {
     public static final double ROBOT_RADIUS = 9; // woah
     private static final FieldManager panelsField = PanelsField.INSTANCE.getField();
 
@@ -1238,19 +1238,19 @@ public class Drawing {
             "", "#4CAF50", 0.75
     );
 
-    /**
+    *//**
      * This prepares Panels Field for using Pedro Offsets
-     */
+     *//*
     public static void init() {
         panelsField.setOffsets(PanelsField.INSTANCE.getPresets().getPEDRO_PATHING());
     }
 
-    /**
+    *//**
      * This draws everything that will be used in the Follower's telemetryDebug() method. This takes
      * a Follower as an input, so an instance of the DashbaordDrawingHandler class is not needed.
      *
      * @param follower Pedro Follower instance.
-     */
+     *//*
     public static void drawDebug(Follower follower) {
         if (follower.getCurrentPathChain() != null && follower.getCurrentPath() != null) {
             drawPath(follower.getCurrentPathChain(), robotLook);
@@ -1268,13 +1268,13 @@ public class Drawing {
         sendPacket();
     }
 
-    /**
+    *//**
      * This draws a robot at a specified Pose with a specified
      * look. The heading is represented as a line.
      *
      * @param pose  the Pose to draw the robot at
      * @param style the parameters used to draw the robot with
-     */
+     *//*
     public static void drawRobot(Pose pose, Style style) {
         if (pose == null || Double.isNaN(pose.getX()) || Double.isNaN(pose.getY()) || Double.isNaN(pose.getHeading())) {
             return;
@@ -1294,21 +1294,21 @@ public class Drawing {
         panelsField.line(x2, y2);
     }
 
-    /**
+    *//**
      * This draws a robot at a specified Pose. The heading is represented as a line.
      *
      * @param pose the Pose to draw the robot at
-     */
+     *//*
     public static void drawRobot(Pose pose) {
         drawRobot(pose, robotLook);
     }
 
-    /**
+    *//**
      * This draws a Path with a specified look.
      *
      * @param path  the Path to draw
      * @param style the parameters used to draw the Path with
-     */
+     *//*
     public static void drawPath(Path path, Style style) {
         double[][] points = path.getPanelsDrawingPoints();
 
@@ -1327,25 +1327,25 @@ public class Drawing {
         }
     }
 
-    /**
+    *//**
      * This draws all the Paths in a PathChain with a
      * specified look.
      *
      * @param pathChain the PathChain to draw
      * @param style     the parameters used to draw the PathChain with
-     */
+     *//*
     public static void drawPath(PathChain pathChain, Style style) {
         for (int i = 0; i < pathChain.size(); i++) {
             drawPath(pathChain.getPath(i), style);
         }
     }
 
-    /**
+    *//**
      * This draws the pose history of the robot.
      *
      * @param poseTracker the PoseHistory to get the pose history from
      * @param style       the parameters used to draw the pose history with
-     */
+     *//*
     public static void drawPoseHistory(PoseHistory poseTracker, Style style) {
         panelsField.setStyle(style);
 
@@ -1357,19 +1357,19 @@ public class Drawing {
         }
     }
 
-    /**
+    *//**
      * This draws the pose history of the robot.
      *
      * @param poseTracker the PoseHistory to get the pose history from
-     */
+     *//*
     public static void drawPoseHistory(PoseHistory poseTracker) {
         drawPoseHistory(poseTracker, historyLook);
     }
 
-    /**
+    *//**
      * This tries to send the current packet to FTControl Panels.
-     */
+     *//*
     public static void sendPacket() {
         panelsField.update();
     }
-}
+}*/
