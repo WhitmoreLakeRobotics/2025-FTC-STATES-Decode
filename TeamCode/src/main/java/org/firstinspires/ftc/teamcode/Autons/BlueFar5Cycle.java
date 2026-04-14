@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Robot;
 @Autonomous(name = "AllFarAuton", group = "Auton")
 // @Autonomous(...) is the other common choice
 
-public class BlueFar5Cycle extends OpMode {
+public class    BlueFar5Cycle extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -43,11 +43,7 @@ public class BlueFar5Cycle extends OpMode {
         // the robot controller application is restarted. They SHOULD NOT be modified except as absolutely
         // necessary as poorly chosen values might inadvertently compromise safety.
         //----------------------------------------------------------------------------------------------
-        msStuckDetectInit = Settings.msStuckDetectInit;
-        msStuckDetectInitLoop = Settings.msStuckDetectInitLoop;
-        msStuckDetectStart = Settings.msStuckDetectStart;
-        msStuckDetectLoop = Settings.msStuckDetectLoop;
-        msStuckDetectStop = Settings.msStuckDetectStop;
+
 
         robot.hardwareMap = hardwareMap;
         robot.telemetry = telemetry;
