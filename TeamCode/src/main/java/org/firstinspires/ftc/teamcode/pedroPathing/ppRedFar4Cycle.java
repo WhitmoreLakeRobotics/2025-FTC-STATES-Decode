@@ -265,14 +265,9 @@ public class ppRedFar4Cycle extends OpMode {
                     currentTargetPose = scorePose;
                     // follower.update();
                     robot.launcher.cmdOutfar();
-                    currentStage = stage._25_checkDrivetoscore;
+                    currentStage = stage._30_Shoot1;
                 }
-            case _25_checkDrivetoscore:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._30_Shoot1; // we don't need to do the turn since heading is adjusted in path
-                    runtime.reset();
-                }
+
                 break;
 
             case _30_Shoot1:
@@ -355,16 +350,10 @@ public class ppRedFar4Cycle extends OpMode {
                     lastPose = currentTargetPose;
                     currentTargetPose = scorePose;
                     robot.launcher.cmdOutfar();
-                    currentStage = stage._75_chkDrive_to_score_P1;
+                    currentStage = stage._80_ScorePickup1;
                 }
                 break;
-            case _75_chkDrive_to_score_P1:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._80_ScorePickup1; // we don't need to do the turn since heading is adjusted in path
-                    runtime.reset();
-                }
-                break;
+
 
             case _80_ScorePickup1:
                 if (!follower.isBusy()) {
@@ -413,18 +402,9 @@ break;
                     currentStage = stage._140_chkDrive_to_scorePoseAP;
                 }
                 break;
+
+
             case _140_chkDrive_to_scorePoseAP:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._150_ScorePickup2; // we don't need to do the turn since heading is adjusted in path
-                    runtime.reset();
-                }
-
-
-
-                break;
-
-            case _150_ScorePickup2:
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
@@ -498,19 +478,10 @@ break;
                     currentTargetPose = scorePose;
                     robot.launcher.cmdOutfar();
                     runtime.reset();
-                    currentStage = stage._220_chkDrive_to_score_P1;
+                    currentStage = stage._230_ScorePickup1;
                 }
                 break;
-            case _220_chkDrive_to_score_P1:
-               // if(runtime.milliseconds() >= 250){
-                 //   robot.intake.cmdStop();
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._230_ScorePickup1; // we don't need to do the turn since heading is adjusted in path
-                    runtime.reset();
-                }
-              //  }
-                break;
+
 
             case _230_ScorePickup1:
                 if (!follower.isBusy()) {
@@ -608,7 +579,6 @@ break;
         _unknown,
         _00_preStart,
         _20_DriveToScore,
-        _25_checkDrivetoscore,
         _30_Shoot1,
         _40_LauncherStop,
         _50_Pickup1,
@@ -616,7 +586,6 @@ break;
         _60_Pickup1a,
         _65_PickupWiggle,
         _70_ToScorePoseAP,
-        _75_chkDrive_to_score_P1,
         _80_ScorePickup1,
         _90_LauncherStop,
         _100_Pickup2,
@@ -628,7 +597,6 @@ break;
         _143_Pickup3_Startintake,
         _144_Pickupa2,
         _146_ToScorePoseAP,
-        _148_chkDrive_to_scorePoseAP,
         _150_ScorePickup2,
         _160_LauncherStop,
         _170_Pickup1,
@@ -637,7 +605,6 @@ break;
         _200_PickupWiggle,
         _205_OutTemp1,
         _210_ToScorePoseAP,
-        _220_chkDrive_to_score_P1,
         _230_ScorePickup1,
         _240_LauncherStop,
 
