@@ -19,6 +19,7 @@ public class Tele_Op extends OpMode {
     private static final String TAGTeleop = "8492-Teleop";
     //RobotTest robot = new RobotTest();
     Robot robot = new Robot();
+    private boolean debug = true;  //insert if bebug then show telemetry stmt with values you're interested in
     //    // Declare OpMode members.
     private boolean gp1_prev_a = false;
     private boolean gp1_prev_b = false;
@@ -524,6 +525,12 @@ public class Tele_Op extends OpMode {
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_down, gp2_prev_dpad_down)) {
+            if (debug){
+                telemetry.addData("in teleop autonROPM measure is ", robot.autoRPM.Measure);
+                telemetry.addData("GP2 D-pad is ", gamepad2.dpad_down);
+                telemetry.addData("autoRPM.Measure = ", robot.autoRPM.Measure);
+                telemetry.update();
+            }
             if(!robot.autoRPM.Measure) {
                 robot.autoRPM.Measure = true;
             }else{

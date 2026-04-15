@@ -43,6 +43,7 @@ public class ppBlueFar3Cycle extends OpMode {
     private String thisUpdate = "11";
     private TelemetryManager telemetryMU;
     //Private Follower follower;
+
     public static Follower follower;
     private Timer pathTimer, actionTimer, opmodeTimer;
     private ElapsedTime pTimer;// this is for pausing at the end of a path

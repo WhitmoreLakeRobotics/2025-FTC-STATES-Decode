@@ -5,7 +5,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 // Auto calculates RPM for launcher
 public class AutoRPM {
-
+private boolean debug = true;
     // -----------------------------
     // ORIGINAL FIELDS (unchanged)
     // -----------------------------
@@ -23,7 +23,7 @@ public class AutoRPM {
     }
 
     public void init() {
-
+telemetry.addData("AutoRPM init",true);
     }
     public void init_loop() {
 
@@ -52,6 +52,11 @@ public class AutoRPM {
         double[] rpms = calculateRPMs(distance);
 
         launcher.setTargetRPMs(rpms[0], rpms[1]);
+        if (debug){
+            telemetry.addData("In AutonRPM Measure is", Measure);
+            telemetry.addData("rpms 0 = ", rpms[0]);
+            telemetry.addData("rpms 1 = ", rpms[1]);
+        }
     }
 
     public double[] calculateRPMs(double distance) {
