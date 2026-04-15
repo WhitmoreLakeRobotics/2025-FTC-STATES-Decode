@@ -479,8 +479,6 @@ public class Tele_Op extends OpMode {
         }
 
         if (CommonLogic.oneShot(gamepad2.y, gp2_prev_y)) {
-//            robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.YELLOW);
-            //robot.subExtender.incPositionIndex();
             NoLaunch();
         }
 
@@ -522,10 +520,16 @@ public class Tele_Op extends OpMode {
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_up, gp2_prev_dpad_up)) {
-            LaunchLaser();
+           // LaunchLaser();
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_down, gp2_prev_dpad_down)) {
+            if(!robot.autoRPM.Measure) {
+                robot.autoRPM.Measure = true;
+            }else{
+                robot.autoRPM.Measure = false;
+                robot.launcher.cmdStop();
+            }
         }
         if (CommonLogic.oneShot(gamepad2.dpad_right, gp2_prev_dpad_right)) {
         //    robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
@@ -684,9 +688,9 @@ public class Tele_Op extends OpMode {
 //
 
     }
-
+/*
     public void LaunchLaser() {         //wait for launcher to spin up to speed.
-        robot.launcher.cmdoutlaser();
+      //  robot.launcher.cmdoutlaser();
         if (robot.launcher.bAtSpeed) {
             if(robot.launcherBlocker.AtUnBlocked == true){
                 robot.transitionRoller.cmdSpin();
@@ -697,6 +701,8 @@ public class Tele_Op extends OpMode {
 
         }
     }
+
+ */
 
     public void LaunchTelleTouch() {         //wait for launcher to spin up to speed.
         robot.launcher.cmdOuttelletouch();
@@ -760,11 +766,32 @@ public class Tele_Op extends OpMode {
             }
             }
         }
+/*
+    public void LaunchAutoRPM() {
+        double[] rpms = visionController.calculateRPMs(
+                robot.limey.getTx(),
+                robot.limey.getTy(),
+                robot.limey.getTagAngle()
+        );
+
+        robot.launcher.setTargetRPMs(rpms[0], rpms[1]);
+
+        if (robot.launcher.bAtSpeed) {
+            if (robot.launcherBlocker.AtUnBlocked) {
+                robot.transitionRoller.cmdSpin();
+            } else {
+                robot.transitionRoller.cmdStop();
+            }
+        }
+    }
+
+ */
 
 
     public void NoLaunch(){
         robot.transitionRoller.cmdStop();
         robot.launcherBlocker.cmdBlock();
+        robot.autoRPM.Measure = false;
         robot.launcher.cmdStop();
     }
 

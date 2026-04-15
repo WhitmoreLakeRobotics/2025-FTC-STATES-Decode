@@ -1,35 +1,54 @@
 package org.firstinspires.ftc.teamcode.Hardware;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class AutoRPM {
 
     public boolean Measure = false;
 
-    private final Limey limey;
-    private final Launcher launcher;
+    private  Limey limey;
+    private Launcher launcher;
 
-    public AutoRPM(Limey limey, Launcher launcher) {
-        this.limey = limey;
-        this.launcher = launcher;
+    HardwareMap hardwareMap;
+    Telemetry telemetry;
+
+
+
+    public AutoRPM() {
+
     }
+
+    public void init(){
+    }
+     public void init_loop(){
+     }
+     public void start(){
+     }
 
     public void loop() {
         update();
     }
 
+    public void stop(){
+    }
+
     public void update() {
 
-        if (!Measure) return;
+        if (Measure) {
 
-        if (limey == null || launcher == null) return;
+            if (limey == null || launcher == null) return;
 
-        // If no tag, do nothing
-        if (limey.getTagID() < 0) return;
+            // If no tag, do nothing
+            if (limey.getTagID() < 0) return;
 
-        double distance = limey.getTagDistance();   // meters
+            double distance = limey.getTagDistance();   // meters
 
-        double[] rpms = calculateRPMs(distance);
+            double[] rpms = calculateRPMs(distance);
 
-        launcher.setTargetRPMs(rpms[0], rpms[1]);
+            launcher.setTargetRPMs(rpms[0], rpms[1]);
+        }
     }
 
     public double[] calculateRPMs(double distance) {

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Hardware;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 /**
  * Base class for FTC Team 8492 defined hardware
  */
+@Disabled
 public class Lighting extends BaseHardware {
 
     private ElapsedTime runtime = new ElapsedTime();

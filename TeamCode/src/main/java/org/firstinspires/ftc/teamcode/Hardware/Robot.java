@@ -16,6 +16,7 @@ public class Robot extends BaseHardware {
     public DriveTrain driveTrain = new DriveTrain();
     //public Lighting lighting = new Lighting();
     // public Sensors sensors = new Sensors();
+    public AutoRPM autoRPM = new AutoRPM();
     public Intake intake = new Intake();
     public Launcher launcher = new Launcher();
     public Uppies uppies = new Uppies();
@@ -71,6 +72,10 @@ public class Robot extends BaseHardware {
         intake.telemetry = this.telemetry;
         intake.init();
 
+        autoRPM.hardwareMap = this.hardwareMap;
+        autoRPM.telemetry = this.telemetry;
+        autoRPM.init();
+
         launcher.hardwareMap = this.hardwareMap;
         launcher.telemetry = this.telemetry;
         launcher.init();
@@ -101,6 +106,7 @@ public class Robot extends BaseHardware {
         //lighting.init_loop();
         // sensors.init_loop();
         intake.init_loop();
+        autoRPM.init_loop();
         launcher.init_loop();
         launcherBlocker.init_loop();
         transitionRoller.init_loop();
@@ -115,6 +121,7 @@ public class Robot extends BaseHardware {
         // lighting.start();
         // sensors.start();
         intake.start();
+        autoRPM.start();
         launcher.start();
         launcherBlocker.start();
         transitionRoller.start();
@@ -132,6 +139,7 @@ public class Robot extends BaseHardware {
         //. lighting.loop();
         // sensors.loop();
         intake.loop();
+        autoRPM.loop();
         launcher.loop();
         launcherBlocker.loop();
         transitionRoller.loop();
@@ -151,6 +159,7 @@ public class Robot extends BaseHardware {
         //. lighting.loop();
         // sensors.loop();
         intake.loop();
+        autoRPM.loop();
         launcher.loop();
         launcherBlocker.loop();
         transitionRoller.loop();
@@ -167,41 +176,15 @@ public class Robot extends BaseHardware {
         // lighting.stop();
         // sensors.stop();
         intake.stop();
+        autoRPM.stop();
         launcher.stop();
         launcherBlocker.stop();
         transitionRoller.stop();
         limey.stop();
         uppies.stop();
-        // lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.WHITE);
     }
 
 
-/*
-public void LaunchNear(){         //wait for launcher to spin up to speed.
-        launcher.cmdOutnear();
-     if (launcher.bAtSpeed) {
-         launcherBlocker.cmdUnBlock();
-         if(launcherBlocker.AtUnBlocked == true){
-             transitionRoller.cmdSpin();
-         }
-     }
-}
-
-public void LaunchFar(){          //wait for launcher to spin up to speed.
-        launcher.cmdOutfar();
-      if (launcher.bAtSpeed){
-        launcherBlocker.cmdUnBlock();
-          if (launcherBlocker.AtUnBlocked == true){
-            transitionRoller.cmdSpin();
-        }
-      }
-}
-
-public void NoLaunch(){
-    transitionRoller.cmdStop();
-    launcherBlocker.cmdBlock();
-        launcher.cmdStop();
-        */
 
     public double targetDistanceCalc() {
 
