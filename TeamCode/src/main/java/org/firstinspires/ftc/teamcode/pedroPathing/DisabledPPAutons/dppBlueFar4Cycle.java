@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
+package org.firstinspires.ftc.teamcode.pedroPathing.DisabledPPAutons;
 
 import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.pathConstraints;
 
@@ -20,13 +20,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
-
-//@Disabled
+import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
+@Disabled
 @Configurable
 @Autonomous(name = "ppBlueFar4Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
 
-public class ppBlueFar4Cycle extends OpMode {
+public class dppBlueFar4Cycle extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();

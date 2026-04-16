@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
+package org.firstinspires.ftc.teamcode.pedroPathing.DisabledPPAutons;
 
 import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.pathConstraints;
 
@@ -7,19 +7,21 @@ import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
-
+import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
+@Disabled
 @Configurable
 @Autonomous(name = "ppBlueFarCorner", group = "PP")
 // @Autonomous(...) is the other common choice

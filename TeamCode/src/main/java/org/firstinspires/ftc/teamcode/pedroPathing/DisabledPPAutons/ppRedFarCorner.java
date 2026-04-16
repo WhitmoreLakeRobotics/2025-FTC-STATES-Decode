@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
+package org.firstinspires.ftc.teamcode.pedroPathing.DisabledPPAutons;
 
 import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.pathConstraints;
 
@@ -7,25 +7,27 @@ import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
+import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
-//@Disabled
+@Disabled
 @Configurable
-@Autonomous(name = "ppRedFar4Cycle", group = "PP")
+@Autonomous(name = "ppRedFarCorner", group = "PP")
 // @Autonomous(...) is the other common choice
 
-public class ppRedFar4Cycle extends OpMode {
+public class ppRedFarCorner extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -54,16 +56,16 @@ public class ppRedFar4Cycle extends OpMode {
     // poses for pedropath
     // poses for pedropathlopk
     public static Pose startPose = new Pose(57, 10.5, Math.toRadians(90)).mirror(); // Start Pose of our robot.
-    public static Pose scorePose = new Pose(57, 15, Math.toRadians(112)).mirror(); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    public static Pose scorePose = new Pose(57, 15, Math.toRadians(110)).mirror(); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     public static Pose scorePoseAP =new Pose(53.5,15,Math.toRadians(12.5)).mirror();
     public static Pose pickup1aPose = new Pose(20, 0, Math.toRadians(210)).mirror(); // Highest (First Set) of Artifacts from the Spike Mark.
     public static Pose pickup1bPose = new Pose(12, -8, Math.toRadians(199)).mirror(); // (First Set) of Artifacts picked up.
     public static Pose pickup1bPoseC = new Pose(23, 27, Math.toRadians(200)).mirror();
-    public static Pose pickup1cPose = new Pose(8, 3, Math.toRadians(215)).mirror();
+    public static Pose pickup1cPose = new Pose(9, 3, Math.toRadians(215)).mirror(); //8.5 possible for 9
 
-    public static Pose pickup2aPose = new Pose(10, 36, Math.toRadians(190)).mirror(); // 10 was 8 Middle (Second Set) of Artifacts from the Spike Mark.
-    public static Pose pickup2aPoseC = new Pose(71, 38, Math.toRadians(190)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    //public static Pose pickup2aPose = new Pose(10, 36, Math.toRadians(190)).mirror(); // 10 was 8 Middle (Second Set) of Artifacts from the Spike Mark.
+    //public static Pose pickup2aPoseC = new Pose(71, 38, Math.toRadians(190)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
     //public static Pose pickReturn2 =new Pose(20,75,(180));
     //public static Pose pickup3aPose = new Pose(47, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
     //public static Pose pickup3bPose = new Pose(15, 35, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
@@ -96,23 +98,23 @@ public class ppRedFar4Cycle extends OpMode {
                 .addPath(new BezierLine(scorePose, pickup1cPose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1cPose.getHeading())
                 .build();
-        grabPickup1a = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, pickup1aPose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), Math.toRadians((190)))//pickup1aPose.getHeading())
-                .build();
+       // grabPickup1a = follower.pathBuilder()
+       //         .addPath(new BezierLine(scorePose, pickup1aPose))
+        //        .setLinearHeadingInterpolation(scorePose.getHeading(), Math.toRadians((190)))//pickup1aPose.getHeading())
+       //         .build();
         grabPickup3a = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, pickup1cPose))
-                .setConstantHeadingInterpolation(Math.toRadians((-10)))//pickup1aPose.getHeading())
+                .setConstantHeadingInterpolation(Math.toRadians((-15)))//pickup1aPose.getHeading()) waas -10
                 .build();
-        grabPickup1b = follower.pathBuilder()
-                .addPath(new BezierCurve(pickup1aPose,pickup1bPoseC,pickup1bPose))
-                .setLinearHeadingInterpolation(pickup1aPose.getHeading(), pickup1bPose.getHeading())
-                .build();
+       // grabPickup1b = follower.pathBuilder()
+        //        .addPath(new BezierCurve(pickup1aPose,pickup1bPoseC,pickup1bPose))
+        //        .setLinearHeadingInterpolation(pickup1aPose.getHeading(), pickup1bPose.getHeading())
+        //        .build();
 
-        grabPickup1c = follower.pathBuilder()
-                .addPath(new BezierLine(pickup1bPose,pickup1cPose))
-                .setLinearHeadingInterpolation(pickup1bPose.getHeading(), pickup1cPose.getHeading())
-                .build();
+       // grabPickup1c = follower.pathBuilder()
+        //        .addPath(new BezierLine(pickup1bPose,pickup1cPose))
+          //      .setLinearHeadingInterpolation(pickup1bPose.getHeading(), pickup1cPose.getHeading())
+          //      .build();
 
 
         /* This is our scorePickup1 PathChain. We are using a single path with a BezierLine, which is a straight line. */
@@ -122,10 +124,10 @@ public class ppRedFar4Cycle extends OpMode {
                 .build();
 
         /* This is our grabPickup2 PathChain. We are using a single path with a BezierLine, which is a straight line. */
-        grabPickup2a = follower.pathBuilder()
-                .addPath(new BezierCurve(scorePose,pickup2aPoseC,pickup2aPose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2aPose.getHeading())
-                .build();
+        //grabPickup2a = follower.pathBuilder()
+        //        .addPath(new BezierCurve(scorePose,pickup2aPoseC,pickup2aPose))
+         //       .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2aPose.getHeading())
+         //       .build();
 
         //grabPickup2b = follower.pathBuilder()
         //        .addPath(new BezierLine(pickup2aPose, pickup2aPoseC))
@@ -140,22 +142,22 @@ public class ppRedFar4Cycle extends OpMode {
                 .setLinearHeadingInterpolation(pickup1Pose.getHeading(), scorePoseAP.getHeading())
                 .build();*/
         //tring a curve
-        scorePickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(pickup2aPose,scorePoseAP))
-                .setLinearHeadingInterpolation(pickup2aPose.getHeading(), scorePose.getHeading())
+        //scorePickup2 = follower.pathBuilder()
+        //        .addPath(new BezierLine(pickup2aPose,scorePoseAP))
+        //        .setLinearHeadingInterpolation(pickup2aPose.getHeading(), scorePose.getHeading())
                 // .addPath(new BezierLine(pickup2bPose, scorePoseAP))
                 //.setLinearHeadingInterpolation(pickup1Pose.getHeading(), scorePoseAP.getHeading())
-                .build();
+          //      .build();
 
         // This is our grabPickup3 PathChain. We are using a single path with a BezierLine, which is a straight line. *//*
         goEndPose= follower.pathBuilder()
-                .addPath(new BezierLine(scorePose,endPose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), endPose.getHeading())
+                .addPath(new BezierLine(scorePoseAP,endPose))
+                .setLinearHeadingInterpolation(scorePoseAP.getHeading(), endPose.getHeading())
                 .build();
 
         // This is our scorePickup3 PathChain. We are using a single path with a BezierLine, which is a straight line. *//*
         goEndPose2= follower.pathBuilder()
-                .addPath(new BezierLine(endPose,endPose2))
+                .addPath(new BezierLine(endPose,pickup1cPose))
                 .setLinearHeadingInterpolation(endPose.getHeading(), endPose2.getHeading())
                 .build();
         //endPath = follower.pathBuilder()
@@ -345,15 +347,15 @@ public class ppRedFar4Cycle extends OpMode {
                 break;
 
             case _70_ToScorePoseAP:
-                if(!follower.isBusy() || runtime.milliseconds() > 1500){
+                if(!follower.isBusy() || runtime.milliseconds() > 1250){
                     follower.followPath(scorePickup1,powerMedium,true);
                     lastPose = currentTargetPose;
                     currentTargetPose = scorePose;
                     robot.launcher.cmdOutfar();
                     currentStage = stage._80_ScorePickup1;
                 }
-                break;
 
+                break;
 
             case _80_ScorePickup1:
                 if (!follower.isBusy()) {
@@ -378,9 +380,10 @@ break;
 
             case _100_Pickup2:
                 if (!follower.isBusy()) {
-                    follower.followPath(grabPickup2a, powerMedium, true);
+                    follower.followPath(grabPickup3a, powerMedium, true);
+                    //follower.turnToDegrees(-15); // was 190
                     lastPose = currentTargetPose;
-                    currentTargetPose = pickup2aPose;
+                    currentTargetPose = pickup1cPose;
                     currentStage = stage._110_Pickup2_Startintake;
                 }
                 break;
@@ -388,7 +391,7 @@ break;
             case _110_Pickup2_Startintake:
                 if (!follower.isBusy()) {
                     // follower.followPath(grabPickup1a, true);
-                    currentTargetPose = pickup2aPose;
+                    currentTargetPose = pickup1cPose;
                     robot.intake.cmdFoward();
                     currentStage = stage._130_ToScorePoseAP;
                 }
@@ -396,19 +399,19 @@ break;
                 break;
             case _130_ToScorePoseAP:
                 if(!follower.isBusy()){
-                    follower.followPath(scorePickup2,powerNormal,true);
+                    follower.followPath(scorePickup1,powerNormal,true);
                     currentTargetPose = scorePose;
                     robot.launcher.cmdOutfar();
-                    currentStage = stage._140_chkDrive_to_scorePoseAP;
+                    currentStage = stage._150_ScorePickup2;
                 }
+
                 break;
 
-
-            case _140_chkDrive_to_scorePoseAP:
+            case _150_ScorePickup2:
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 1000) {
+                    if (runtime.milliseconds() >= 1100) {
                         telemetryMU.addLine("wqiting to shoot 1");
                         robot.intake.cmdFoward();
                         robot.transitionRoller.cmdSpin();
@@ -442,7 +445,7 @@ break;
                 break;
 
             case _190_Pickup1a:
-                if (!follower.isBusy() || runtime.milliseconds() > 2000) {
+                if (!follower.isBusy() || runtime.milliseconds() > 1500) {
                     // follower.followPath(grabPickup1c,powerSlow, true);
                     //if we have 3 artifacts stop the path and go to next stage
                     if (robot.intake.CurrentColor == Intake.Color.RED){
@@ -492,10 +495,11 @@ break;
                         robot.intake.cmdFoward();
                         robot.transitionRoller.cmdSpin();
                         robot.launcherBlocker.cmdUnBlock();
-                        currentStage = stage._240_LauncherStop;
+                        currentStage = stage._450_Park;
                         runtime.reset();
                     }}
 break;
+                /*
             case _240_LauncherStop:
                 if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
@@ -504,21 +508,23 @@ break;
                 }
                 break;
 
+                 */
+
             case _450_Park:
                 if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     robot.launcherBlocker.cmdBlock();
                     follower.followPath(goEndPose, powerNormal,true);
-                    //follower.turnToDegrees(-15); // was 190
+                    follower.turnToDegrees(-15); // was 190
                     lastPose = currentTargetPose;
                     currentTargetPose = endPose;
-                    currentStage = stage._500_End; //   75_ParkToBeContinued;
+                    currentStage = stage._475_ParkToBeContinued; //   75_ParkToBeContinued;
                 }
 
                 break;
 
             case _475_ParkToBeContinued:
-                if (runtime.milliseconds() >= 1500) {
+                if (runtime.milliseconds() >= 1000) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     robot.launcherBlocker.cmdBlock();
                     follower.followPath(goEndPose2, powerNormal,true);
@@ -592,7 +598,6 @@ break;
         _110_Pickup2_Startintake,
         _120_Pickupa2,
         _130_ToScorePoseAP,
-        _140_chkDrive_to_scorePoseAP,
         _142_Pickup3,
         _143_Pickup3_Startintake,
         _144_Pickupa2,
