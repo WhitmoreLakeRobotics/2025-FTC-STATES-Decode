@@ -155,6 +155,7 @@ public class Tele_Op extends OpMode {
             bAutoTurn = true;
         }
 
+        /*
         if(Gameruntime.seconds() >= 85){
             //robot.intake.cmdYELLOW();
             Gameruntime.reset();
@@ -239,6 +240,8 @@ public class Tele_Op extends OpMode {
             }
 
         }
+
+         */
 
 
 

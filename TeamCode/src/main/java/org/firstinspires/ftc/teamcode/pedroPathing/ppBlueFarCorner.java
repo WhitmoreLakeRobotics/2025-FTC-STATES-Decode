@@ -19,6 +19,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
+import org.firstinspires.ftc.teamcode.Hardware.Sensors;
 
 @Configurable
 @Autonomous(name = "ppBlueFarCorner", group = "PP")
@@ -315,7 +316,7 @@ public class ppBlueFarCorner extends OpMode {
                 if (!follower.isBusy() || runtime.milliseconds() > 2000) {
                     // follower.followPath(grabPickup1c,powerSlow, true);
                     //if we have 3 artifacts stop the path and go to next stage
-                    if (robot.intake.CurrentColor == Intake.Color.RED){
+                    if (robot.intake.autoStopped){
                         follower.breakFollowing();
                         currentStage = stage._70_ToScorePoseAP;
                         runtime.reset();
@@ -465,7 +466,7 @@ break;
                 if (!follower.isBusy() || runtime.milliseconds() > 1500) {
                     // follower.followPath(grabPickup1c,powerSlow, true);
                     //if we have 3 artifacts stop the path and go to next stage
-                    if (robot.intake.CurrentColor == Intake.Color.RED){
+                    if (robot.intake.autoStopped){
                         follower.breakFollowing();
                         currentStage = stage._200_PickupWiggle;
                         runtime.reset();
