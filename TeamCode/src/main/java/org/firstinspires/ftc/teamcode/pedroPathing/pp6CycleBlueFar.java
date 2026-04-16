@@ -36,27 +36,29 @@ public class pp6CycleBlueFar extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     public boolean End = false;
 
+    private ElapsedTime Gameruntime = new ElapsedTime(); // this is to ensure we end facing the correct position for teleop
 
 
     public static Follower follower;
     public static Pose startPose = new Pose(55, 8, Math.toRadians(90)); // Start Pose of our robot.
     public static Pose scorePose = new Pose(55, 17, Math.toRadians(114)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    public static Pose scorePoseAP = new Pose(52, 15, Math.toRadians(10));
+    public static Pose scorePoseAP = new Pose(52, 15, Math.toRadians(114));
     public static Pose pickup1aPose = new Pose(25, 25, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     public static Pose pickup1bPose = new Pose(20, 20, Math.toRadians(190)); // (First Set) of Artifacts picked up.
     public static Pose pickup1bPoseC = new Pose(1, 27, Math.toRadians(200));
     public static Pose pickup1cPose = new Pose(4, 13.5, Math.toRadians(180));
     public static Pose currentPose  = new Pose(0,0,0);
-    public static Pose spikeB2start = new Pose (35,60,Math.toRadians(90));
-    public static Pose spikeB2end = new Pose (15,60,Math.toRadians(90));
+    public static Pose spikeB3start = new Pose (35,60,Math.toRadians(180));
+    public static Pose spikeB3end = new Pose (15,60,Math.toRadians(180));
     public static Pose CornerPickupPose = new Pose (10,12,Math.toRadians(180));
+    public  static Pose endPose = new Pose(0,8,8);
 
 
 
     private PathChain scorePreload;
     private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, scorePickup1, grabPickup2a, grabPickup2b, scorePickup2, goEndPose, goEndPose2, endPath;
-    private PathChain cyclePickup1,spikeB2, interruptedPickup, CornerPickup, Park;
+    private PathChain cyclePickup1, spikeB3, interruptedPickup, CornerPickup, Park, getGoEndPose2;
 
 
     public void buildPaths() {
@@ -76,18 +78,22 @@ public class pp6CycleBlueFar extends OpMode {
                 .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
                 .build();
 
-        spikeB2 = follower.pathBuilder()
-                .addPath(new BezierLine(currentPose, spikeB2start))
-                .setLinearHeadingInterpolation(currentPose.getHeading(), spikeB2start.getHeading())
-                .addPath (new BezierLine(spikeB2start,spikeB2end))
-                .setLinearHeadingInterpolation(spikeB2start.getHeading(), spikeB2end.getHeading())
+        spikeB3 = follower.pathBuilder()
+                .addPath(new BezierLine(scorePoseAP, spikeB3start))
+                .setLinearHeadingInterpolation(scorePoseAP.getHeading(), spikeB3start.getHeading())
+
+                .addPath (new BezierLine(spikeB3start, spikeB3end))
+                .setLinearHeadingInterpolation(spikeB3start.getHeading(), spikeB3end.getHeading())
+
+                .addPath (new BezierLine(spikeB3end,scorePoseAP))
+                .setLinearHeadingInterpolation(spikeB3end.getHeading(), scorePoseAP.getHeading())
                 .build();
 
         CornerPickup = follower.pathBuilder()
-                .addPath (new BezierLine(scorePose, CornerPickupPose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), CornerPickupPose.getHeading())
-                .addPath (new BezierLine(CornerPickupPose, scorePose))
-                .setLinearHeadingInterpolation(CornerPickupPose.getHeading(), scorePose.getHeading())
+                .addPath (new BezierLine(scorePoseAP, CornerPickupPose))
+                .setLinearHeadingInterpolation(scorePoseAP.getHeading(), CornerPickupPose.getHeading())
+                .addPath (new BezierLine(CornerPickupPose, scorePoseAP))
+                .setLinearHeadingInterpolation(CornerPickupPose.getHeading(), scorePoseAP.getHeading())
                 .build();
 
         Park = follower.pathBuilder()
@@ -134,6 +140,7 @@ public class pp6CycleBlueFar extends OpMode {
     public void start () {
         //super.start();
         robot.start();
+        Gameruntime.reset();
     }
 
     @Override
@@ -167,13 +174,13 @@ public class pp6CycleBlueFar extends OpMode {
             case _30_ScorePreload:
                 if (!follower.isBusy()) {
                     dolaunch_process();
-                    currentStage = stage._40_PickupSpike1;
+                    currentStage = stage._40_PickupCornor;
                 }
                 break;
-            case _40_PickupSpike1:
+            case _40_PickupCornor:
                 if (runtime.milliseconds() > 500 ){//|| robot.sensors.NoArtifacts) { //add sensors here
                     endlaunch_process();
-                    follower.followPath(cyclePickup1);
+                    follower.followPath(CornerPickup);
                     currentStage = stage._45_PreLaunch2;
                 }
                 break;
@@ -186,10 +193,10 @@ public class pp6CycleBlueFar extends OpMode {
                     dolaunch_process();
 
 
-                    currentStage = stage._60_PickupConer1;
+                    currentStage = stage._60_PickupCorner2;
                 }
                 break;
-            case _60_PickupConer1:
+            case _60_PickupCorner2:
                 if (!follower.isBusy()) {
                     if (runtime.milliseconds() > 500 ){ //|| robot.sensors.NoArtifacts) { //add sensors here
                         endlaunch_process();
@@ -206,13 +213,13 @@ public class pp6CycleBlueFar extends OpMode {
             case _75_Launch3:
                 if (!follower.isBusy()) {
                     dolaunch_process();
-                    currentStage = stage._80_PickupSpike2;
+                    currentStage = stage._80_PickupSpike3;
                 }
                 break;
-            case _80_PickupSpike2:
+            case _80_PickupSpike3:
                 if (runtime.milliseconds() > 500 ){//|| robot.sensors.NoArtifacts) { //add sensors here
                     endlaunch_process();
-                    follower.followPath(spikeB2);
+                    follower.followPath(spikeB3);
 
                     currentStage = stage._90_PreLaunch4;
                 }
@@ -282,6 +289,14 @@ public class pp6CycleBlueFar extends OpMode {
 
 
         }
+        if (Gameruntime.seconds() > 118 ){
+            goEndPose = follower.pathBuilder()
+                    .addPath (new BezierLine(follower.getPose(), scorePose))
+                    .setLinearHeadingInterpolation(startPose.getHeading(), endPose.getHeading())
+                    .build();
+            follower.followPath(goEndPose,true);
+            currentStage = stage._200_end;
+        }
 
     }
 
@@ -300,14 +315,14 @@ public class pp6CycleBlueFar extends OpMode {
         _10_preStart,
         _20_PreLaunch,
         _30_ScorePreload,
-        _40_PickupSpike1,
+        _40_PickupCornor,
         _42_,
         _45_PreLaunch2,
         _50_Launch2,
-        _60_PickupConer1,
+        _60_PickupCorner2,
         _70_PreLaunch3,
         _75_Launch3,
-        _80_PickupSpike2,
+        _80_PickupSpike3,
         _90_PreLaunch4,
         _100_Launch4,
         _110_PickupCorner2,
@@ -395,7 +410,7 @@ public class pp6CycleBlueFar extends OpMode {
     private  void newPath(){
         interruptedPickup = follower.pathBuilder()
                 .addPath (new BezierLine(follower.getPose(), scorePose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePoseAP.getHeading())
                 .build();
         follower.followPath(interruptedPickup,true);
 
