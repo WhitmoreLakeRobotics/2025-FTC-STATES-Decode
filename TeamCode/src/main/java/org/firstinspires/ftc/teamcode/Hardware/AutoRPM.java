@@ -75,7 +75,7 @@ telemetry.addData("AutoRPM init",true);
 
         // Bottom motor interpolation
         double r1bottom = 4000;
-        double r2bottom = 5500;
+        double r2bottom = 5600;
 
         double m_bottom = (r2bottom - r1bottom) / (d2 - d1);
         double b_bottom = r1bottom - m_bottom * d1;

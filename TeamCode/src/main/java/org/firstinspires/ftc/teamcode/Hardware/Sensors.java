@@ -32,8 +32,8 @@ public class Sensors extends BaseHardware {
 
 
     private Servo PeaLight;
-    public ColorRangeSensor NTKAP2;
-    public ColorRangeSensor NTKAP3;
+    //public ColorRangeSensor NTKAP2;
+    //public ColorRangeSensor NTKAP3;
 
     public Distance2 CurrentDistance2;
     public Distance3 CurrentDistance3;
@@ -89,8 +89,8 @@ public class Sensors extends BaseHardware {
     public void init(){
         //DeliverySensor = hardwareMap.get(ColorSensor.class, "DeliveryS");
 
-        NTKAP3 = hardwareMap.get(ColorRangeSensor.class, "NTKAP3");
-        NTKAP2 = hardwareMap.get(ColorRangeSensor.class, "NTKAP2");
+       // NTKAP3 = hardwareMap.get(ColorRangeSensor.class, "NTKAP3");
+       // NTKAP2 = hardwareMap.get(ColorRangeSensor.class, "NTKAP2");
         PeaLight = hardwareMap.get(Servo.class,"PeaLight");
 
         initLightTime.reset();
@@ -160,8 +160,8 @@ public class Sensors extends BaseHardware {
             CurrentDistance3 = Distance3.MISSING3;
         }
 
-        getDistNTKAP2();
-        getDistNTKAP3();
+       // getDistNTKAP2();
+       // getDistNTKAP3();
     }
 
 
@@ -283,12 +283,11 @@ public enum Mode{
 
         }
 
-    private void getDistNTKAP2() {
-        NTKAP2distance = NTKAP2.getDistance(DistanceUnit.CM);
-    }
-    private void getDistNTKAP3() {
-        NTKAP3distance = NTKAP3.getDistance(DistanceUnit.CM);
-    }
+    //private void getDistNTKAP2() {
+    //    NTKAP2distance = NTKAP2.getDistance(DistanceUnit.CM);}
+    //private void getDistNTKAP3() {
+     //   NTKAP3distance = NTKAP3.getDistance(DistanceUnit.CM);
+   // }
 
     public enum Distance3 {
         FILLED3,

@@ -44,6 +44,7 @@ public class Launcher extends BaseHardware{
 
     public Mode CurrentMode;
     public Position CurrentPosition;
+    public CalcPos CurrentCalcPos = CalcPos.NotCalc;
     private double LaunchM01Power;
     private double LaunchM02Power;
     private VoltageSensor Pikachu;
@@ -64,6 +65,12 @@ public class Launcher extends BaseHardware{
     public static double LkI = 0.0;       // still unused
     public static double LkD = 0.0000015; // small D for damping
     public static double kF = 1.0 / 6000.0; // feedforward per RPM
+
+    // ---------------- PID CONSTANTS ----------------
+    public static double bLkP = 0.00030;   // increased for faster recovery
+    public static double bLkI = 0.0;       // still unused
+    public static double bLkD = 0.0000015; // small D for damping
+    public static double bkF = 1.0 / 6000.0; // feedforward per RPM
 
     // ---------------- RPM TARGETS ----------------
     public static double topMotorRPMnear = 2900;
@@ -222,6 +229,7 @@ public class Launcher extends BaseHardware{
 
     public void cmdStop(){
         CurrentMode = Mode.LaunchMstop;
+        CurrentPosition = Position.Off;
 
         targetRPM1 = 0;
         targetRPM2 = 0;
@@ -267,17 +275,17 @@ public class Launcher extends BaseHardware{
 
         if (dt <= 0) dt = 0.001;
 
-        double p = LkP * error;
+        double p = bLkP * error;
 
         integral2 += error * dt;
-        double i = LkI * integral2;
+        double i = bLkI * integral2;
 
         double derivative = (error - lastError2) / dt;
         lastError2 = error;
-        double d = LkD * derivative;
+        double d = bLkD * derivative;
 
         double voltage = Pikachu.getVoltage();
-        double ff = (targetRPM2 * kF) * (12.0 / voltage);
+        double ff = (targetRPM2 * bkF) * (12.0 / voltage);
 
         return ff + p + i + d;
     }
@@ -313,7 +321,15 @@ public class Launcher extends BaseHardware{
     public enum Position {
         LaunchFar,
         LaunchNear,
-        LaunchCalc;
+        LaunchCalc,
+        Off
+    }
+
+    public enum CalcPos {
+        NotCalc,
+        Far,
+        Near,
+        Unknown
     }
 
 }

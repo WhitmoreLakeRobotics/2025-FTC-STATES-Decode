@@ -139,29 +139,9 @@ public class Robot extends BaseHardware {
         launcherBlocker.loop();
         transitionRoller.loop();
         uppies.loop();
-/*
-        if (transitionRoller.CurrentMode == TransitionRoller.Mode.Stop
-                && intake.CurrentMode == Intake.Mode.NTKforward) {
-            sensors.cmdBLUE();
-        }
 
-        if(intake.CurrentMode == Intake.Mode.NTKforward || intake.CurrentMode == Intake.Mode.NTKbackward){
-            sensors.cmdGREEN();
-        }else{
-            sensors.cmdRED();
-        }
+       basicSystem();
 
-        if (intake.CurrentMode == Intake.Mode.NTKforward) {
-            if ((sensors.CurrentDistance2 == Sensors.Distance2.FILLED2 &&
-                    sensors.CurrentDistance3 == Sensors.Distance3.FILLED3 ||
-                    intake.InPain) && intake.MentallyStable && !launcherBlocker.AtUnBlocked) {
-                    transitionRoller.cmdStop(); // possibly remove
-                    intake.cmdStop();
-                    intake.autoStopped = true;
-            }
-        }
-
- */
     }
 
     public void autonLoop() {
@@ -173,28 +153,8 @@ public class Robot extends BaseHardware {
         launcherBlocker.loop();
         transitionRoller.loop();
         uppies.loop();
-/*
-        if (transitionRoller.CurrentMode == TransitionRoller.Mode.Stop
-                && intake.CurrentMode == Intake.Mode.NTKforward) {
-            sensors.cmdBLUE();
-        }
 
-        if(intake.CurrentMode == Intake.Mode.NTKforward || intake.CurrentMode == Intake.Mode.NTKbackward){
-            sensors.cmdGREEN();
-        }else{
-            sensors.cmdPURPLE();
-        }
-
-        if (intake.CurrentMode == Intake.Mode.NTKforward) {
-            if ((sensors.CurrentDistance2 == Sensors.Distance2.FILLED2 &&
-                    sensors.CurrentDistance3 == Sensors.Distance3.FILLED3 ||
-                    intake.InPain) && intake.MentallyStable && !launcherBlocker.AtUnBlocked) {
-                transitionRoller.cmdStop(); // possibly remove
-                intake.cmdStop();
-                intake.autoStopped = true;
-            }
-        }
- */
+        basicSystem();
 
     }
 
@@ -227,7 +187,7 @@ public class Robot extends BaseHardware {
 
     public double targetAngleCalc() {
 
-        if (launcher.CurrentPosition == Launcher.Position.LaunchFar) {
+        if (launcher.CurrentPosition == Launcher.Position.LaunchFar || launcher.CurrentCalcPos == Launcher.CalcPos.Far) {
 
             double currentTagId = limey.getTagID();
             if (currentTagId != -1) {
@@ -290,4 +250,45 @@ public class Robot extends BaseHardware {
 
         return driveTrain.getCurrentHeading();
     }
+
+    public void basicSystem(){
+        if(autoRPM.Measure){
+            launcher.CurrentPosition = Launcher.Position.LaunchCalc;
+            if(limey.getTagDistance() < 2){
+                launcher.CurrentCalcPos = Launcher.CalcPos.Near;
+            }else if(limey.getTagDistance() >= 2){
+                launcher.CurrentCalcPos = Launcher.CalcPos.Far;
+            }else{
+                launcher.CurrentCalcPos = Launcher.CalcPos.Unknown;
+            }
+        }else if(launcher.CurrentPosition == Launcher.Position.LaunchCalc){
+            launcher.CurrentPosition = Launcher.Position.Off;
+            launcher.CurrentCalcPos = Launcher.CalcPos.NotCalc;
+        }
+
+/*
+        if (transitionRoller.CurrentMode == TransitionRoller.Mode.Stop
+                && intake.CurrentMode == Intake.Mode.NTKforward) {
+            sensors.cmdBLUE();
+        }
+
+        if(intake.CurrentMode == Intake.Mode.NTKforward || intake.CurrentMode == Intake.Mode.NTKbackward){
+            sensors.cmdGREEN();
+        }else{
+            sensors.cmdRED();
+        }
+
+        if (intake.CurrentMode == Intake.Mode.NTKforward) {
+            if ((sensors.CurrentDistance2 == Sensors.Distance2.FILLED2 &&
+                    sensors.CurrentDistance3 == Sensors.Distance3.FILLED3 ||
+                    intake.InPain) && intake.MentallyStable && !launcherBlocker.AtUnBlocked) {
+                    transitionRoller.cmdStop(); // possibly remove
+                    intake.cmdStop();
+                    intake.autoStopped = true;
+            }
+        }
+
+ */
+    }
+
 }

@@ -17,8 +17,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 
-@Disabled
-@Autonomous(name = "ppAutonbase", group = "PP")
+
+@Autonomous(name = "ppWrapAroundBlueNear6", group = "PP")
 public class ppWrapAroundBlueNear6 extends OpMode {
 
     Robot robot = new Robot();
@@ -41,6 +41,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
     public static Pose gatePose = new Pose(16,62,Math.toRadians(180));
     public static Pose gateNTKPose = new Pose(12,58,Math.toRadians(129));
     public static Pose Spike2Gatecontrol = new Pose(40,50,Math.toRadians(180));
+    public static Pose ParkPose = new Pose(15, 36, Math.toRadians(180));
 
     private PathChain scorePreload;
     private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, scorePickup1, grabPickup2a, grabPickup2b, scorePickup2, goEndPose, goEndPose2, endPath;
@@ -87,6 +88,12 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                 .setLinearHeadingInterpolation(gatePose.getHeading(), scorePose.getHeading())
 
                 .build();
+
+        Park = follower.pathBuilder()
+                .addPath(new BezierLine(scorePose,ParkPose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), ParkPose.getHeading())
+
+                        .build();
     }
 
     @Override
@@ -253,7 +260,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _190_ParkToBeContinued:
                 if (!follower.isBusy()) {
                     endlaunch_process();
-                    follower.followPath(GatePickup);
+                    follower.followPath(Park);
                     currentStage = stage._200_end;
                 }
                 break;
@@ -267,6 +274,8 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
 
         }
+
+
 
     }
 
