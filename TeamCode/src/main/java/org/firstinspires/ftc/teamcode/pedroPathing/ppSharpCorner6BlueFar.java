@@ -51,7 +51,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
     public static Pose spikeB2start = new Pose (35,60,Math.toRadians(90));
     public static Pose spikeB2end = new Pose (15,60,Math.toRadians(90));
     public static Pose CornerPickupPose = new Pose (10,12,Math.toRadians(180));
-    public static Pose TunelPose = new Pose(290, 547,Math.toDegrees(180));
+    public static Pose TunelPose = new Pose(30, 50,Math.toDegrees(180));
 
 
     private PathChain scorePreload;
