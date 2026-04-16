@@ -5,6 +5,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 
+import org.firstinspires.ftc.teamcode.Common.CommonLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,7 @@ public class Robot extends BaseHardware {
 
     public DriveTrain driveTrain = new DriveTrain();
     //public Lighting lighting = new Lighting();
-    //public Sensors sensors = new Sensors();
+    public Sensors sensors = new Sensors();
 
     public AutoRPM autoRPM;
 
@@ -59,6 +60,11 @@ public class Robot extends BaseHardware {
         driveTrain.telemetry = this.telemetry;
         driveTrain.init();
 
+        //sensors
+        sensors.hardwareMap = this.hardwareMap;
+        sensors.telemetry = this.telemetry;
+        sensors.init();
+
         // intake
         intake.hardwareMap = this.hardwareMap;
         intake.telemetry = this.telemetry;
@@ -100,6 +106,7 @@ public class Robot extends BaseHardware {
     @Override
     public void init_loop() {
         driveTrain.init_loop();
+        sensors.init_loop();
         intake.init_loop();
         limey.init_loop();
         autoRPM.init_loop();
@@ -112,6 +119,7 @@ public class Robot extends BaseHardware {
     @Override
     public void start() {
         driveTrain.start();
+        sensors.start();
         intake.start();
         limey.start();
         autoRPM.start();
@@ -124,6 +132,7 @@ public class Robot extends BaseHardware {
     @Override
     public void loop() {
         driveTrain.loop();
+        sensors.loop();
         intake.loop();
         limey.loop();
         autoRPM.loop();
@@ -134,11 +143,28 @@ public class Robot extends BaseHardware {
 
         if (transitionRoller.CurrentMode == TransitionRoller.Mode.Stop
                 && intake.CurrentMode == Intake.Mode.NTKforward) {
-            intake.cmdBLUE();
+            sensors.cmdBLUE();
+        }
+
+        if(intake.CurrentMode == Intake.Mode.NTKforward || intake.CurrentMode == Intake.Mode.NTKbackward){
+            sensors.cmdGREEN();
+        }else{
+            sensors.cmdRED();
+        }
+
+        if (intake.CurrentMode == Intake.Mode.NTKforward) {
+            if ((sensors.CurrentDistance2 == Sensors.Distance2.FILLED2 &&
+                    sensors.CurrentDistance3 == Sensors.Distance3.FILLED3 ||
+                    intake.InPain) && intake.MentallyStable && !launcherBlocker.AtUnBlocked) {
+                    transitionRoller.cmdStop(); // possibly remove
+                    intake.cmdStop();
+                    intake.autoStopped = true;
+            }
         }
     }
 
     public void autonLoop() {
+        sensors.loop();
         intake.loop();
         limey.loop();
         autoRPM.loop();
@@ -146,11 +172,33 @@ public class Robot extends BaseHardware {
         launcherBlocker.loop();
         transitionRoller.loop();
         uppies.loop();
+
+        if (transitionRoller.CurrentMode == TransitionRoller.Mode.Stop
+                && intake.CurrentMode == Intake.Mode.NTKforward) {
+            sensors.cmdBLUE();
+        }
+
+        if(intake.CurrentMode == Intake.Mode.NTKforward || intake.CurrentMode == Intake.Mode.NTKbackward){
+            sensors.cmdGREEN();
+        }else{
+            sensors.cmdPURPLE();
+        }
+
+        if (intake.CurrentMode == Intake.Mode.NTKforward) {
+            if ((sensors.CurrentDistance2 == Sensors.Distance2.FILLED2 &&
+                    sensors.CurrentDistance3 == Sensors.Distance3.FILLED3 ||
+                    intake.InPain) && intake.MentallyStable && !launcherBlocker.AtUnBlocked) {
+                transitionRoller.cmdStop(); // possibly remove
+                intake.cmdStop();
+                intake.autoStopped = true;
+            }
+        }
     }
 
     @Override
     public void stop() {
         driveTrain.stop();
+        sensors.stop();
         intake.stop();
         autoRPM.stop();
         launcher.stop();
