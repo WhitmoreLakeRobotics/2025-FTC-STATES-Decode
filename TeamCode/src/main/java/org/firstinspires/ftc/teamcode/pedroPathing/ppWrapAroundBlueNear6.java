@@ -30,18 +30,21 @@ public class ppWrapAroundBlueNear6 extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     public static Follower follower;
-    public static Pose startPose = new Pose(10, 10, Math.toRadians(90)); // Start Pose of our robot.
-    public static Pose scorePose = new Pose(15, 15, Math.toRadians(114)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    public static Pose startPose = new Pose(34, 133, Math.toRadians(180)); // Start Pose of our robot.
+    public static Pose scorePose = new Pose(58, 77, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     public static Pose scorePoseAP = new Pose(20, 20, Math.toRadians(10));
     public static Pose pickup1aPose = new Pose(25, 25, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     public static Pose pickup1bPose = new Pose(20, 20, Math.toRadians(190)); // (First Set) of Artifacts picked up.
     public static Pose pickup1bPoseC = new Pose(1, 27, Math.toRadians(200));
     public static Pose pickup1cPose = new Pose(4, 13.5, Math.toRadians(180));
+    public static Pose gatePose = new Pose(16,62,Math.toRadians(180));
+    public static Pose gateNTKPose = new Pose(12,58,Math.toRadians(129));
+    public static Pose Spike2Gatecontrol = new Pose(40,50,Math.toRadians(180));
 
     private PathChain scorePreload;
     private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, scorePickup1, grabPickup2a, grabPickup2b, scorePickup2, goEndPose, goEndPose2, endPath;
-    private PathChain cyclePickup1,spikeB2, interruptedPickup, CornerPickup, Park;
+    private PathChain cyclePickup1,spikeB2, interruptedPickup, CornerPickup, Park, GatePickup, ScorePreload, Spike2Gate;
 
 
     public void buildPaths() {
@@ -54,6 +57,34 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
                 .addPath(new BezierCurve(pickup1bPose, scorePoseAP))
                 .setLinearHeadingInterpolation(pickup1bPose.getHeading(), scorePose.getHeading())
+
+                .build();
+
+        GatePickup = follower.pathBuilder()
+                .addPath(new BezierLine(scorePose, gatePose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), gatePose.getHeading())
+
+                .addPath(new BezierLine(gatePose, gateNTKPose))
+                .setLinearHeadingInterpolation(gatePose.getHeading(), gateNTKPose.getHeading())
+                .setTimeoutConstraint(2000)
+
+                .addPath(new BezierCurve(gateNTKPose, scorePose))
+                .setLinearHeadingInterpolation(gateNTKPose.getHeading(), scorePose.getHeading())
+
+                .build();
+
+        ScorePreload = follower.pathBuilder()
+                .addPath(new BezierLine(startPose, scorePose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
+
+                .build();
+
+        Spike2Gate = follower.pathBuilder()
+                .addPath(new BezierCurve(scorePose,Spike2Gatecontrol, gatePose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), gatePose.getHeading())
+
+                .addPath(new BezierLine(gatePose, scorePose))
+                .setLinearHeadingInterpolation(gatePose.getHeading(), scorePose.getHeading())
 
                 .build();
     }
@@ -116,7 +147,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
             case _20_Prelaunch:
                 if (!follower.isBusy()) {
-                    follower.followPath();
+                    follower.followPath(scorePreload);
                     robot.autoRPM.Measure = true;
                     currentStage = stage._30_ScorePreload;
                 }
@@ -132,7 +163,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _40_PickupSpike2Gate:
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
-                    follower.followPath();
+                    follower.followPath(Spike2Gate);
                     currentStage = stage._50_PreLaunch2;
                 }
                 break;
@@ -150,7 +181,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _70_GateWrapIntake:
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
-                    follower.followPath();
+                    follower.followPath(GatePickup);
                     currentStage = stage._80_Prelaunch3;
                 }
                 break;
@@ -168,7 +199,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _100_GateWrapIntake2:
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
-                    follower.followPath();
+                    follower.followPath(GatePickup);
                     currentStage = stage._110_Prelaunch4;
                 }
                 break;
@@ -186,7 +217,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _130_GateWrapIntake3:
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
-                    follower.followPath();
+                    follower.followPath(GatePickup);
                     currentStage = stage._140_Prelaunch5;
                 }
                 break;
@@ -204,7 +235,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _160_GateWrapIntake4:
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
-                    follower.followPath();
+                    follower.followPath(GatePickup);
                     currentStage = stage._170_Prelaunch6;
                 }
                 break;
@@ -222,7 +253,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _190_ParkToBeContinued:
                 if (!follower.isBusy()) {
                     endlaunch_process();
-                    follower.followPath();
+                    follower.followPath(GatePickup);
                     currentStage = stage._200_end;
                 }
                 break;
