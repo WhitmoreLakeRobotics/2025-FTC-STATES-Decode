@@ -51,7 +51,6 @@ public class Robot extends BaseHardware {
     public double tagExtremeRightAngle = 65;
     public double targetPointFromTag = 12;
 
-
     @Override
     public void init() {
 
@@ -140,7 +139,7 @@ public class Robot extends BaseHardware {
         launcherBlocker.loop();
         transitionRoller.loop();
         uppies.loop();
-
+/*
         if (transitionRoller.CurrentMode == TransitionRoller.Mode.Stop
                 && intake.CurrentMode == Intake.Mode.NTKforward) {
             sensors.cmdBLUE();
@@ -161,6 +160,8 @@ public class Robot extends BaseHardware {
                     intake.autoStopped = true;
             }
         }
+
+ */
     }
 
     public void autonLoop() {
@@ -172,7 +173,7 @@ public class Robot extends BaseHardware {
         launcherBlocker.loop();
         transitionRoller.loop();
         uppies.loop();
-
+/*
         if (transitionRoller.CurrentMode == TransitionRoller.Mode.Stop
                 && intake.CurrentMode == Intake.Mode.NTKforward) {
             sensors.cmdBLUE();
@@ -193,6 +194,8 @@ public class Robot extends BaseHardware {
                 intake.autoStopped = true;
             }
         }
+ */
+
     }
 
     @Override

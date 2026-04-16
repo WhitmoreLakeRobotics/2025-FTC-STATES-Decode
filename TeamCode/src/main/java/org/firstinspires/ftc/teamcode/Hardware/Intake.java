@@ -14,7 +14,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Common.CommonLogic;
 
-
 /**
  * Base class for FTC Team 8492 defined hardware
  */
