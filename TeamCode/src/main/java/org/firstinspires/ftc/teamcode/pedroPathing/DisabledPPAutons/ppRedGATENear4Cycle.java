@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
+package org.firstinspires.ftc.teamcode.pedroPathing.DisabledPPAutons;
 
 import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.pathConstraints;
 
@@ -13,18 +13,21 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
+import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
-
+@Disabled
 @Configurable
-@Autonomous(name = "ppRedNear4Cycle", group = "PP")
+@Autonomous(name = "ppRedGATENear4Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
 
-public class ppRedNear4Cycle extends OpMode {
+public class ppRedGATENear4Cycle extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -56,20 +59,20 @@ public class ppRedNear4Cycle extends OpMode {
     public static Pose scorePose = new Pose(57, 105, Math.toRadians(143)).mirror(); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     public static Pose scorePoseAP =new Pose(57,105,Math.toRadians(142)).mirror();
-    public static Pose pickup1aPose = new Pose(50, 84, Math.toRadians(180)).mirror(); // Highest (First Set) of Artifacts from the Spike Mark.
-    public static Pose pickup1bPose = new Pose(15, 84, Math.toRadians(180)).mirror(); // (First Set) of Artifacts picked up.
-
+    public static Pose pickup1aPose = new Pose(50, 84.5, Math.toRadians(180)).mirror(); // Highest (First Set) of Artifacts from the Spike Mark.
+    //public static Pose gatePose = new Pose(13 , 70,Math.toRadians(-90)) ;   //This pos will have robot hit gate After First Spike
+    public static Pose pickup1bPose = new Pose(14, 72, Math.toRadians(180)).mirror(); // was 84y (First Set) of Artifacts picked up.
     public static Pose pickup2aPose = new Pose(49, 55, Math.toRadians(180)).mirror(); // Middle (Second Set) of Artifacts from the Spike Mark.
-    public static Pose pickup2bPose = new Pose(5, 51.5, Math.toRadians(180)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    public static Pose pickup2bPose = new Pose(6, 51.5, Math.toRadians(180)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
     public static Pose pickReturn2 =new Pose(20,75,180).mirror();
     public static Pose pickup3aPose = new Pose(49, 34, Math.toRadians(180)).mirror(); // Middle (Second Set) of Artifacts from the Spike Mark.
-    public static Pose pickup3bPose = new Pose(6, 27, Math.toRadians(180)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    public static Pose pickup3bPose = new Pose(7, 27, Math.toRadians(180)).mirror(); // 7 was 6 Lowest (Third Set) of Artifacts from the Spike Mark.
     public static Pose endPose = new Pose(45,58,Math.toRadians(180)).mirror();
 
     private Pose currentTargetPose = startPose;
     private Pose lastPose = startPose;
     private PathChain scorePreload;
-    private PathChain grabPickup1a, grabPickup1b, scorePickup1, grabPickup2a,grabPickup2b, scorePickup2, grabPickup3a,grabPickup3b, scorePickup3, endPath;
+    private PathChain grabPickup1a,gogatePose, grabPickup1b, scorePickup1, grabPickup2a,grabPickup2b, scorePickup2, grabPickup3a,grabPickup3b, scorePickup3, endPath;
 
     // private Path grabPickup1a;
     public void buildPaths() {
@@ -92,6 +95,13 @@ public class ppRedNear4Cycle extends OpMode {
                 .addPath(new BezierLine(scorePose, pickup1aPose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1aPose.getHeading())
                 .build();
+           /*
+        gogatePose = follower.pathBuilder()
+                .addPath(new BezierLine(pickup1bPose, gatePose))
+                .setLinearHeadingInterpolation(pickup1bPose.getHeading(), gatePose.getHeading())
+                .build();
+            */
+
         grabPickup1b = follower.pathBuilder()
                 .addPath(new BezierLine(pickup1aPose, pickup1bPose))
                 .setLinearHeadingInterpolation(pickup1aPose.getHeading(), pickup1bPose.getHeading())
@@ -100,7 +110,7 @@ public class ppRedNear4Cycle extends OpMode {
 
         /* This is our scorePickup1 PathChain. We are using a single path with a BezierLine, which is a straight line. */
         scorePickup1 = follower.pathBuilder()
-                .addPath(new BezierLine(pickup1bPose, scorePoseAP))
+                .addPath(new BezierLine(pickup1bPose , scorePoseAP))
                 .setLinearHeadingInterpolation(pickup1bPose.getHeading(), scorePose.getHeading()).setHeadingConstraint(0.1)
                 .build();
 
@@ -316,7 +326,6 @@ public class ppRedNear4Cycle extends OpMode {
                 }
                 break;
 
-
             case _80_ScorePickup1:
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
@@ -432,8 +441,6 @@ public class ppRedNear4Cycle extends OpMode {
                     currentStage = stage._210_ScorePickup3;
                 }
              break;
-
-
 
             case _210_ScorePickup3:
                 if (!follower.isBusy()) {
