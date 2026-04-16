@@ -11,12 +11,13 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 
-
+@Disabled
 @Autonomous(name = "ppAutonbase", group = "PP")
 public class ppWrapAroundBlueNear6 extends OpMode {
 
@@ -40,7 +41,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
     private PathChain scorePreload;
     private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, scorePickup1, grabPickup2a, grabPickup2b, scorePickup2, goEndPose, goEndPose2, endPath;
-    private PathChain cyclePickup1;
+    private PathChain cyclePickup1,spikeB2, interruptedPickup, CornerPickup, Park;
 
 
     public void buildPaths() {
@@ -92,7 +93,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
     }
 
     @Override
-    public void start () {
+    public void start() {
         //super.start();
         robot.start();
     }
@@ -115,8 +116,8 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
             case _20_Prelaunch:
                 if (!follower.isBusy()) {
-                    follower.followPath(cyclePickup1,  true);
-
+                    follower.followPath();
+                    robot.autoRPM.Measure = true;
                     currentStage = stage._30_ScorePreload;
                 }
 
@@ -124,103 +125,104 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
             case _30_ScorePreload:
                 if (!follower.isBusy()) {
-
+                    dolaunch_process();
                     currentStage = stage._40_PickupSpike2Gate;
                 }
                 break;
             case _40_PickupSpike2Gate:
-                if (!follower.isBusy()) {
-
+                if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
+                    endlaunch_process();
+                    follower.followPath();
                     currentStage = stage._50_PreLaunch2;
                 }
                 break;
             case _50_PreLaunch2:
-                if (!follower.isBusy()) {
-
-                    currentStage = stage._60_Launch2;
+                if (follower.isBusy()) {
+                   AreYouSure(stage._60_Launch2);
                 }
                 break;
             case _60_Launch2:
                 if (!follower.isBusy()) {
-
+                    dolaunch_process();
                     currentStage = stage._70_GateWrapIntake;
                 }
                 break;
             case _70_GateWrapIntake:
-                if (!follower.isBusy()) {
-
+                if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
+                    endlaunch_process();
+                    follower.followPath();
                     currentStage = stage._80_Prelaunch3;
                 }
                 break;
             case _80_Prelaunch3:
-                if (!follower.isBusy()) {
-
-                    currentStage = stage._90_Launch3;
+                if (follower.isBusy()) {
+                    AreYouSure(stage._90_Launch3);
                 }
                 break;
             case _90_Launch3:
                 if (!follower.isBusy()) {
-
+                    dolaunch_process();
                     currentStage = stage._100_GateWrapIntake2;
                 }
                 break;
             case _100_GateWrapIntake2:
-                if (!follower.isBusy()) {
-
+                if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
+                    endlaunch_process();
+                    follower.followPath();
                     currentStage = stage._110_Prelaunch4;
                 }
                 break;
             case _110_Prelaunch4:
-                if (!follower.isBusy()) {
-
-                    currentStage = stage._120_Launch4;
+                if (follower.isBusy()) {
+                    AreYouSure(stage._120_Launch4);
                 }
                 break;
             case _120_Launch4:
                 if (!follower.isBusy()) {
-
+                    dolaunch_process();
                     currentStage = stage._130_GateWrapIntake3;
                 }
                 break;
             case _130_GateWrapIntake3:
-                if (!follower.isBusy()) {
-
+                if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
+                    endlaunch_process();
+                    follower.followPath();
                     currentStage = stage._140_Prelaunch5;
                 }
                 break;
             case _140_Prelaunch5:
                 if (!follower.isBusy()) {
-
-                    currentStage = stage._150_Launch5;
+                    AreYouSure(stage._150_Launch5);
                 }
                 break;
             case _150_Launch5:
                 if (!follower.isBusy()) {
-
+                    dolaunch_process();
                     currentStage = stage._160_GateWrapIntake4;
                 }
                 break;
             case _160_GateWrapIntake4:
-                if (!follower.isBusy()) {
-
+                if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
+                    endlaunch_process();
+                    follower.followPath();
                     currentStage = stage._170_Prelaunch6;
                 }
                 break;
             case _170_Prelaunch6:
                 if (!follower.isBusy()) {
-
-                    currentStage = stage._180_Launch6;
+                    AreYouSure(stage._180_Launch6);
                 }
                 break;
             case _180_Launch6:
                 if (!follower.isBusy()) {
-
+                    dolaunch_process();
                     currentStage = stage._190_ParkToBeContinued;
                 }
                 break;
             case _190_ParkToBeContinued:
                 if (!follower.isBusy()) {
-
+                    endlaunch_process();
+                    follower.followPath();
                     currentStage = stage._200_end;
                 }
                 break;
@@ -233,18 +235,17 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                 break;
 
 
-
         }
 
     }
 
 
-
     @Override
-    public void stop () {
+    public void stop() {
         //super.stop();
         robot.stop();
     }
+
     private enum stage {
 
         _00_unknown,
@@ -273,7 +274,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
     }
 
 
-    private void updateTelemetry () {
+    private void updateTelemetry() {
         telemetryMU.addData("Follower Busy?", follower.isBusy());
         telemetryMU.addData("Current Stage", currentStage);
         telemetryMU.addData("x", follower.getPose().getX());
@@ -298,7 +299,8 @@ public class ppWrapAroundBlueNear6 extends OpMode {
         telemetryMU.update();
         Drawing.drawDebug(follower);
     }
-    private void dolaunch_process(){
+
+    private void dolaunch_process() {
 
         robot.launcherBlocker.cmdUnBlock();
         robot.transitionRoller.cmdSpin();
@@ -307,7 +309,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
     }
 
-    private void endlaunch_process(){
+    private void endlaunch_process() {
 
         robot.launcherBlocker.cmdBlock();
         robot.autoRPM.Measure = false;
@@ -315,13 +317,13 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
     }
 
-    private void AreYouSure(stage NextStage){
+    private void AreYouSure(stage NextStage) {
 
         //telemetryMU.addData("pathPose2", pickup1bPose);
         //telemetryMU.addData("scorePose", scorePoseAP);
         if (follower.isBusy()) { //we are still running path
 //telemetryMU.addData("check intake status", robot.intake.AtIntakeStop); intake.AtIntakeStop is never set to false
-            if (robot.sensors.allFilled) {
+            if (robot.intake.autoStopped) {
                 telemetryMU.addLine("Intake stopped - break follower");
                 // we've got 3 artifacts, stop the path and return to scorePose
                 follower.breakFollowing();
@@ -342,6 +344,14 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
     }
 
+    private void newPath() {
+        interruptedPickup = follower.pathBuilder()
+                .addPath(new BezierLine(follower.getPose(), scorePose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
+                .build();
+        follower.followPath(interruptedPickup, true);
+
+    }
 
 
 }
