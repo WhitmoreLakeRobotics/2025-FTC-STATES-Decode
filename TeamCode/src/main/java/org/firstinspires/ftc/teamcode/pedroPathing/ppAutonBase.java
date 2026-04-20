@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Common.CommonLogic;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 
 
@@ -104,6 +105,8 @@ public class ppAutonBase extends OpMode {
         telemetry.addData("Auton_Current_Stage ", currentStage);
         robot.autonLoop();
         follower.update();
+
+        CommonLogic.StartEndPose = follower.getPose();
         switch (currentStage) {
             case _00_unknown:
                 currentStage = stage._10_preStart;
@@ -145,6 +148,7 @@ public class ppAutonBase extends OpMode {
 
         }
 
+        CommonLogic.StartEndPose = follower.getPose();
     }
 
 
@@ -152,6 +156,7 @@ public class ppAutonBase extends OpMode {
     @Override
     public void stop () {
         //super.stop();
+        CommonLogic.StartEndPose = follower.getPose();
         robot.stop();
     }
     private enum stage {

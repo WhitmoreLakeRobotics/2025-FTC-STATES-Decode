@@ -28,6 +28,7 @@ public class pp6CycleBlueFar extends OpMode {
 
     Robot robot = new Robot();
 
+
 //tristan and wyatt's fail of an auton (with assistance)
 
     private String thisUpdate = "0";
@@ -150,6 +151,7 @@ public class pp6CycleBlueFar extends OpMode {
         telemetry.addData("Auton_Current_Stage ", currentStage);
         robot.autonLoop();
         follower.update();
+        CommonLogic.StartEndPose = follower.getPose();
         switch (currentStage) {
             case _00_unknown:
                 currentStage = stage._10_preStart;
@@ -297,6 +299,8 @@ public class pp6CycleBlueFar extends OpMode {
             follower.followPath(goEndPose,true);
             currentStage = stage._200_end;
         }
+
+        CommonLogic.StartEndPose = follower.getPose();
 
     }
 

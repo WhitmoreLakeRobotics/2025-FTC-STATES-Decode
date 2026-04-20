@@ -178,7 +178,7 @@ public class ppRapidRoundRedNear extends OpMode {
         robot.hardwareMap = hardwareMap;
         robot.telemetry = telemetry;
         robot.init();
-        telemetry.addData("Test Auton", "Initialized");
+        telemetry.addData("Base Auton", "Initialized");
 
         //Initialize Gyro
         robot.driveTrain.ResetGyro();
