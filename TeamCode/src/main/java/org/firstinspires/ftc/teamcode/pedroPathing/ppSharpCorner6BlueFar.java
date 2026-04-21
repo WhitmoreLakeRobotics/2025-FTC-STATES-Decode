@@ -178,7 +178,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
                 }
                 break;
             case _40_PickupSpike1:
-                if (runtime.milliseconds() > 500 ){//|| robot.sensors.NoArtifacts) { //add sensors here
+                if (runtime.milliseconds() > 1500 ){//|| robot.sensors.NoArtifacts) { //add sensors here
                     endlaunch_process();
                     follower.followPath(cyclePickup1);
                     currentStage = stage._45_PreLaunch2;
@@ -191,18 +191,14 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _50_Launch2:
                 if (!follower.isBusy()) {
                     dolaunch_process();
-
-
                     currentStage = stage._60_PickupConer1;
                 }
                 break;
             case _60_PickupConer1:
-                if (!follower.isBusy()) {
                     if (runtime.milliseconds() > 500 ){ //|| robot.sensors.NoArtifacts) { //add sensors here
                         endlaunch_process();
                         follower.followPath(CornerPickup);
                         currentStage = stage._70_PreLaunch3;
-                    }
                 }
                 break;
             case _70_PreLaunch3:
@@ -227,6 +223,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _90_PreLaunch4:
                 AreYouSure(stage._100_Launch4);
                 break;
+
             case _100_Launch4:
                 if (!follower.isBusy()) {
                     dolaunch_process();
@@ -236,11 +233,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _110_PickupCorner2:
                 if (runtime.milliseconds() > 500 ){ // || robot.sensors.NoArtifacts) { //add sensors here
                     endlaunch_process();
-                    if (!follower.isBusy()) {
-                        follower.followPath(CornerPickup);
-
-                    }
-
+                    follower.followPath(CornerPickup);
                     currentStage = stage._120_Prelaunch5;
                 }
                 break;
@@ -401,7 +394,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
         //telemetryMU.addData("scorePose", scorePoseAP);
         if (follower.isBusy()) { //we are still running path
 //telemetryMU.addData("check intake status", robot.intake.AtIntakeStop); intake.AtIntakeStop is never set to false
-            if (false) { //(robot.sensors.allFilled) {
+            if (false) { //(robot.sensors.allFilled) */{
                 telemetryMU.addLine("Intake stopped - break follower");
                 // we've got 3 artifacts, stop the path and return to scorePose
                 follower.breakFollowing();

@@ -154,7 +154,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
             case _20_Prelaunch:
                 if (!follower.isBusy()) {
-                    follower.followPath(scorePreload);
+                    follower.followPath(ScorePreload  );
                     robot.autoRPM.Measure = true;
                     currentStage = stage._30_ScorePreload;
                 }
