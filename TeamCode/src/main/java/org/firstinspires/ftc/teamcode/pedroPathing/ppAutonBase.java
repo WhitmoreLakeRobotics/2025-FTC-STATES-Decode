@@ -41,7 +41,7 @@ public class ppAutonBase extends OpMode {
 
     private PathChain scorePreload;
     private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, scorePickup1, grabPickup2a, grabPickup2b, scorePickup2, goEndPose, goEndPose2, endPath;
-    private PathChain cyclePickup1;
+    private PathChain cyclePickup1, interruptedPickup;
 
 
     public void buildPaths() {
@@ -170,6 +170,57 @@ public class ppAutonBase extends OpMode {
 
     }
 
+
+    private void dolaunch_process(){
+
+        robot.launcherBlocker.cmdUnBlock();
+        robot.transitionRoller.cmdSpin();
+        robot.intake.cmdFoward();
+        runtime.reset();
+
+    }
+
+    private void endlaunch_process(){
+
+        robot.launcherBlocker.cmdBlock();
+        robot.autoRPM.Measure = false;
+        robot.launcher.cmdStop();
+
+    }
+    private  void newPath(){
+        interruptedPickup = follower.pathBuilder()
+                .addPath (new BezierLine(follower.getPose(), scorePose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePoseAP.getHeading())
+                .build();
+        follower.followPath(interruptedPickup,true);
+
+    }
+    private void AreYouSure(stage NextStage){
+
+        //telemetryMU.addData("pathPose2", pickup1bPose);
+        //telemetryMU.addData("scorePose", scorePoseAP);
+        if (follower.isBusy()) { //we are still running path
+//telemetryMU.addData("check intake status", robot.intake.AtIntakeStop); intake.AtIntakeStop is never set to false
+            if (false) { //(robot.sensors.allFilled) {
+                telemetryMU.addLine("Intake stopped - break follower");
+                // we've got 3 artifacts, stop the path and return to scorePose
+                follower.breakFollowing();
+                newPath();
+                //   robot.autoRPM.Measure = true; // start fly wheels
+                robot.autoRPM.Measure = true;
+                currentStage = NextStage;
+                runtime.reset();
+
+            } else if (follower.getCurrentTValue() > 0.75) { //the path is almost done
+                //  robot.autoRPM.Measure = true; //start fly wheels
+                robot.autoRPM.Measure = true;
+            }
+        } else {// path is complete we are back at scorePose move to launch
+            robot.autoRPM.Measure = true;
+            currentStage = NextStage;
+        }
+
+    }
 
     private void updateTelemetry () {
         telemetryMU.addData("Follower Busy?", follower.isBusy());
