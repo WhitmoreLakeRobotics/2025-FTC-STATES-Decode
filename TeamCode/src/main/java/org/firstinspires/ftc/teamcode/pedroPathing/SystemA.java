@@ -424,8 +424,6 @@ public class SystemA extends OpMode {
        telemetry.addData("C4",C4);
        telemetry.addData("C5",C5);
        telemetry.addData("C6",C6);
-
-
 */
 
 
@@ -891,7 +889,7 @@ public class SystemA extends OpMode {
                 }
                 break;
             case _40_Pickup:
-                if (runtime.milliseconds() >= 1500) { // change time // if empty
+                if (runtime.milliseconds() >= 1500 || robot.sensors.Empty) { // change time // if empty
                     endlaunch_process();
                     if(CyclesRemaining > 0) {
                         if (Cycles == CyclesRemaining) {
@@ -983,7 +981,7 @@ public class SystemA extends OpMode {
 
 
             case _50_PreLaunch:
-                if (!follower.isBusy()) { // add or if full
+                if (!follower.isBusy() || robot.intake.autoStopped) { // add or if full
                     robot.autoRPM.Measure = true;
                     if(Alliance == "RED"){
                         if(Grounds == "NEAR"){

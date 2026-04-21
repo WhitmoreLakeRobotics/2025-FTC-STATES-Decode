@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
+
 import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.pathConstraints;
+
 
 import com.bylazar.configurables.PanelsConfigurables;
 import com.bylazar.configurables.annotations.Configurable;
@@ -16,17 +18,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+
 import org.firstinspires.ftc.teamcode.Common.Settings;
-import org.firstinspires.ftc.teamcode.Hardware.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
-import org.firstinspires.ftc.teamcode.Hardware.Sensors;
+
 
 //@Disabled
 @Configurable
 @Autonomous(name = "ppTESTMEBlueFar7Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
 
-public class ppBLuefarBRAINROT extends OpMode {
+
+public class ppRedFarRory1 extends OpMode {
+
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -37,8 +41,10 @@ public class ppBLuefarBRAINROT extends OpMode {
     // private double AUTO_DRIVE_NORMAL_SPEED = DriveTrain.DRIVETRAIN_NORMALSPEED;
     // private double AUTO_TURN_SPEED = DriveTrain.DRIVETRAIN_TURNSPEED;
 
+
     private String RTAG = "8492-Auton";
 // Set up stuff for pedro path
+
 
     private String thisUpdate = "11";
     private TelemetryManager telemetryMU;
@@ -63,6 +69,7 @@ public class ppBLuefarBRAINROT extends OpMode {
     public static Pose pickup1bPoseC = new Pose(23, 27, Math.toRadians(200));
     public static Pose pickup1cPose = new Pose(4, 13.5, Math.toRadians(190));
 
+
     public static Pose pickup2aPose = new Pose(10, 37, Math.toRadians(190)); // 10 was 8 Middle (Second Set) of Artifacts from the Spike Mark.
     public static Pose pickup2aPoseC = new Pose(71, 39, Math.toRadians(190)); // Lowest (Third Set) of Artifacts from the Spike Mark.
     //public static Pose pickReturn2 =new Pose(20,75,(180));
@@ -75,23 +82,26 @@ public class ppBLuefarBRAINROT extends OpMode {
     private PathChain scorePreload;
     private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, scorePickup1, grabPickup2a,grabPickup2b, scorePickup2 ,goEndPose, goEndPose2, endPath;
 
+
     // private Path grabPickup1a;
     public void buildPaths() {
 
+
         class Paths {
-            public PathChain Path1;
-            public PathChain Path2;
-            public PathChain Path3;
-            public PathChain Path4;
-            public PathChain Path5;
-            public PathChain Path6;
-            public PathChain Path7;
-            public PathChain Path8;
-            public PathChain Path9;
-            public PathChain Path10;
+            public PathChain Spike1;
+            public PathChain Score2;
+            public PathChain Tunnel3;
+            public PathChain Score4;
+            public PathChain Corner5;
+            public PathChain Score6;
+            public PathChain Tunnel7;
+            public PathChain Score8;
+            public PathChain Corner9;
+            public PathChain Park10;
+
 
             public Paths(Follower follower) {
-                Path1 = follower.pathBuilder().addPath(
+                Spike1 = follower.pathBuilder().addPath(
                                 new BezierCurve(
                                         new Pose(77.618, 9.099),
                                         new Pose(88.962, 36.954),
@@ -99,11 +109,14 @@ public class ppBLuefarBRAINROT extends OpMode {
                                 )
                         ).setLinearHeadingInterpolation(Math.toRadians(57), Math.toRadians(-16))
 
-                        .build();
 
-                Path2 = follower.pathBuilder().addPath(
+                        .build();
+                Score2 = follower.pathBuilder().addPath(
+
+
                                 new BezierLine(
                                         new Pose(130.382, 36.550),
+
 
                                         new Pose(76.794, 11.084)
                                 )
@@ -111,7 +124,8 @@ public class ppBLuefarBRAINROT extends OpMode {
                         .setReversed()
                         .build();
 
-                Path3 = follower.pathBuilder().addPath(
+
+                Tunnel3 = follower.pathBuilder().addPath(
                                 new BezierCurve(
                                         new Pose(76.794, 11.084),
                                         new Pose(96.515, 29.221),
@@ -119,39 +133,50 @@ public class ppBLuefarBRAINROT extends OpMode {
                                 )
                         ).setTangentHeadingInterpolation()
 
+
                         .build();
 
-                Path4 = follower.pathBuilder().addPath(
+
+                Score4 = follower.pathBuilder().addPath(
                                 new BezierLine(
                                         new Pose(141.153, 23.527),
+
 
                                         new Pose(76.366, 11.573)
                                 )
                         ).setConstantHeadingInterpolation(Math.toRadians(57))
 
+
                         .build();
 
-                Path5 = follower.pathBuilder().addPath(
+
+                Corner5 = follower.pathBuilder().addPath(
                                 new BezierLine(
                                         new Pose(76.366, 11.573),
+
 
                                         new Pose(140.137, 7.176)
                                 )
                         ).setTangentHeadingInterpolation()
 
+
                         .build();
 
-                Path6 = follower.pathBuilder().addPath(
+
+                Score6 = follower.pathBuilder().addPath(
                                 new BezierLine(
                                         new Pose(140.137, 7.176),
+
 
                                         new Pose(77.588, 9.267)
                                 )
                         ).setConstantHeadingInterpolation(Math.toRadians(57))
 
+
                         .build();
 
-                Path7 = follower.pathBuilder().addPath(
+
+                Tunnel7 = follower.pathBuilder().addPath(
                                 new BezierCurve(
                                         new Pose(77.588, 9.267),
                                         new Pose(96.679, 28.924),
@@ -159,39 +184,52 @@ public class ppBLuefarBRAINROT extends OpMode {
                                 )
                         ).setTangentHeadingInterpolation()
 
+
                         .build();
 
-                Path8 = follower.pathBuilder().addPath(
+
+                Score8 = follower.pathBuilder().addPath(
                                 new BezierLine(
                                         new Pose(141.588, 23.496),
+
 
                                         new Pose(78.122, 9.947)
                                 )
                         ).setConstantHeadingInterpolation(Math.toRadians(57))
 
+
                         .build();
 
-                Path9 = follower.pathBuilder().addPath(
+
+                Corner9 = follower.pathBuilder().addPath(
                                 new BezierLine(
                                         new Pose(78.122, 9.947),
+
 
                                         new Pose(140.847, 21.977)
                                 )
                         ).setConstantHeadingInterpolation(Math.toRadians(1))
 
+
                         .build();
 
-                Path10 = follower.pathBuilder().addPath(
+
+                Park10 = follower.pathBuilder().addPath(
                                 new BezierLine(
                                         new Pose(140.847, 21.977),
+
 
                                         new Pose(106.679, 9.076)
                                 )
                         ).setTangentHeadingInterpolation()
 
+
                         .build();
             }
         }
+
+
+
 
 
 
@@ -200,11 +238,18 @@ public class ppBLuefarBRAINROT extends OpMode {
 
 
 
+
+
+
+
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
 
+
+
     //Code to run ONCE when the driver hits INIT
+
 
     @Override
     public void init() {
@@ -220,10 +265,12 @@ public class ppBLuefarBRAINROT extends OpMode {
         msStuckDetectLoop = Settings.msStuckDetectLoop;
         msStuckDetectStop = Settings.msStuckDetectStop;
 
+
         robot.hardwareMap = hardwareMap;
         robot.telemetry = telemetry;
         robot.init();
         telemetry.addData("Test Auton", "Initialized");
+
 
         //Initialize Gyro
         robot.driveTrain.ResetGyro();
@@ -231,6 +278,7 @@ public class ppBLuefarBRAINROT extends OpMode {
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
         pTimer = new ElapsedTime();
+
 
         follower =  CompBotConstants.createFollower(hardwareMap);
         buildPaths();
@@ -241,25 +289,28 @@ public class ppBLuefarBRAINROT extends OpMode {
         Drawing.init();
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
 
+
         // disp[lay starting postition
         telemetryMU.addData("initialized postition - Update ", thisUpdate);
         // Feedback to Driver Hub for debugging
         updateTelemetry();
+
 
     }
 
 
     //Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
 
+
     @Override
     public void init_loop() {
         // initialize robot
         robot.init_loop();
-
     }
 
 
     //Code to run ONCE when the driver hits PLAY
+
 
     @Override
     public void start() {
@@ -269,13 +320,19 @@ public class ppBLuefarBRAINROT extends OpMode {
         opmodeTimer.resetTimer();
 
 
+
+
     }
+
+
 
 
     //Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
 
+
     @Override
     public void loop() {
+
 
         telemetry.addData("Auton_Current_Stage ", currentStage);
         robot.autonLoop();
@@ -285,9 +342,11 @@ public class ppBLuefarBRAINROT extends OpMode {
                 currentStage = stage._00_preStart;
                 break;
 
+
             case _00_preStart:
                 currentStage = stage._20_DriveToScore;
                 break;
+
 
             case _20_DriveToScore:
                 if (!follower.isBusy()) {
@@ -306,6 +365,7 @@ public class ppBLuefarBRAINROT extends OpMode {
                 }
                 break;
 
+
             case _30_Shoot1:
                 if (!follower.isBusy()) {
                     if (runtime.milliseconds() >= 500) {
@@ -320,6 +380,7 @@ public class ppBLuefarBRAINROT extends OpMode {
                     }}
                 break;
 
+
             case _40_LauncherStop:
                 if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
@@ -328,6 +389,7 @@ public class ppBLuefarBRAINROT extends OpMode {
                     currentStage = stage._50_Pickup1;
                 }
                 break;
+
 
             case _50_Pickup1:
                 if (!follower.isBusy()) {
@@ -343,6 +405,7 @@ public class ppBLuefarBRAINROT extends OpMode {
                 }
                 break;
 
+
             case _60_Pickup1a:
                 if (!follower.isBusy() || runtime.milliseconds() > 3500) {
                     // follower.followPath(grabPickup1c,powerSlow, true);
@@ -352,18 +415,20 @@ public class ppBLuefarBRAINROT extends OpMode {
                         currentStage = stage._70_ToScorePoseAP;
                         runtime.reset();
 
+
                     }
-                  /*  if (runtime.milliseconds() < 300 ){
-                        follower.turnToDegrees(185);
-                    }
-                    else{
-                        follower.turnToDegrees(175); //wiggle to pick up more
-                    }*/
+                 /*  if (runtime.milliseconds() < 300 ){
+                       follower.turnToDegrees(185);
+                   }
+                   else{
+                       follower.turnToDegrees(175); //wiggle to pick up more
+                   }*/
                     // lastPose = currentTargetPose;
                     //currentTargetPose = pickup1cPose;
                     currentStage = stage._65_PickupWiggle;
                     runtime.reset();
                 }
+
 
                 break;
             case _65_PickupWiggle:
@@ -375,10 +440,12 @@ public class ppBLuefarBRAINROT extends OpMode {
                         follower.turnToDegrees(175); //wiggle to pick up more
                     }
 
+
                     currentStage = stage._70_ToScorePoseAP;
                     runtime.reset();
                 }
                 break;
+
 
             case _70_ToScorePoseAP:
                 if(!follower.isBusy() || runtime.milliseconds() > 1500){
@@ -397,6 +464,7 @@ public class ppBLuefarBRAINROT extends OpMode {
                 }
                 break;
 
+
             case _80_ScorePickup1:
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
@@ -409,7 +477,7 @@ public class ppBLuefarBRAINROT extends OpMode {
                         currentStage = stage._90_LauncherStop;
                         runtime.reset();
                     }}
-break;
+                break;
             case _90_LauncherStop:
                 if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
@@ -417,6 +485,7 @@ break;
                     currentStage = stage._100_Pickup2;
                 }
                 break;
+
 
             case _100_Pickup2:
                 if (!follower.isBusy()) {
@@ -427,6 +496,7 @@ break;
                 }
                 break;
 
+
             case _110_Pickup2_Startintake:
                 if (!follower.isBusy()) {
                     // follower.followPath(grabPickup1a, true);
@@ -434,6 +504,7 @@ break;
                     robot.intake.cmdFoward();
                     currentStage = stage._130_ToScorePoseAP;
                 }
+
 
                 break;
             case _130_ToScorePoseAP:
@@ -453,7 +524,11 @@ break;
 
 
 
+
+
+
                 break;
+
 
             case _150_ScorePickup2:
                 if (!follower.isBusy()) {
@@ -469,6 +544,7 @@ break;
                     }
                 }
 
+
             case _160_LauncherStop:
                 if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
@@ -477,6 +553,7 @@ break;
                     currentStage = stage._170_Pickup1;
                 }
                 break;
+
 
             case _170_Pickup1:
                 if (!follower.isBusy()) {
@@ -492,6 +569,7 @@ break;
                 }
                 break;
 
+
             case _190_Pickup1a:
                 if (!follower.isBusy() || runtime.milliseconds() > 3500) {
                     // follower.followPath(grabPickup1c,powerSlow, true);
@@ -501,10 +579,12 @@ break;
                         currentStage = stage._200_PickupWiggle;
                         runtime.reset();
 
+
                     }
                     currentStage = stage._200_PickupWiggle;
                     runtime.reset();
                 }
+
 
                 break;
             case _200_PickupWiggle:
@@ -516,10 +596,12 @@ break;
                         follower.turnToDegrees(175); //wiggle to pick up more ()
                     }
 
+
                     currentStage = stage._210_ToScorePoseAP;
                     runtime.reset();
                 }
                 break;
+
 
             case _210_ToScorePoseAP:
                 if(!follower.isBusy() || runtime.milliseconds() > 1000){
@@ -538,6 +620,7 @@ break;
                 }
                 break;
 
+
             case _230_ScorePickup1:
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
@@ -550,7 +633,7 @@ break;
                         currentStage = stage._240_LauncherStop;
                         runtime.reset();
                     }}
-break;
+                break;
             case _240_LauncherStop:
                 if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
@@ -558,6 +641,7 @@ break;
                     currentStage = stage._450_Park;
                 }
                 break;
+
 
             case _450_Park:
                 if (runtime.milliseconds() >= 1500) {
@@ -569,7 +653,9 @@ break;
                     currentStage = stage._500_End; //   75_ParkToBeContinued;
                 }
 
+
                 break;
+
 
             case _475_ParkToBeContinued:
                 if (runtime.milliseconds() >= 1500) {
@@ -581,6 +667,7 @@ break;
                     currentStage = stage._500_End;
                 }
 
+
                 break;
             case _500_End:
             { //do nothing let the time run out
@@ -590,11 +677,15 @@ break;
             }
 
 
+
+
             break;
         }
 
+
         updateTelemetry();
     }  //  loop
+
 
     private void updateTelemetry() {
         telemetryMU.addData("Follower Busy?", follower.isBusy());
@@ -618,16 +709,20 @@ break;
         // telemetryMU.addData("current Trans", follower.getTranslationalError());
         telemetryMU.addData("Heading Constraint", follower.pathConstraints.getHeadingConstraint());
 
+
         telemetryMU.update();
         Drawing.drawDebug(follower);
     }
 
+
     //Code to run ONCE after the driver hits STOP
+
 
     @Override
     public void stop() {
         robot.stop();
     }
+
 
     private enum stage {
         _unknown,
@@ -665,12 +760,13 @@ break;
         _230_ScorePickup1,
         _240_LauncherStop,
 
+
         _450_Park,
         _475_ParkToBeContinued,
         _500_End
 
+
     }
 
+
 }
-
-

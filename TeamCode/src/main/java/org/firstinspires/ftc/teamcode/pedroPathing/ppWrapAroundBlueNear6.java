@@ -34,12 +34,12 @@ public class ppWrapAroundBlueNear6 extends OpMode {
     public static Pose scorePose = new Pose(58, 77, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     public static Pose scorePoseAP = new Pose(20, 20, Math.toRadians(10));
-    public static Pose pickup1aPose = new Pose(25, 25, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    public static Pose pickup1bPose = new Pose(20, 20, Math.toRadians(190)); // (First Set) of Artifacts picked up.
+    public static Pose pickup1aPose = new Pose(41, 82.5, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    public static Pose pickup1bPose = new Pose(16, 82.5, Math.toRadians(190)); // (First Set) of Artifacts picked up.
     public static Pose pickup1bPoseC = new Pose(1, 27, Math.toRadians(200));
     public static Pose pickup1cPose = new Pose(4, 13.5, Math.toRadians(180));
     public static Pose gatePose = new Pose(16,62,Math.toRadians(180));
-    public static Pose gateNTKPose = new Pose(12,58,Math.toRadians(129));
+    public static Pose gateNTKPose = new Pose(12,57,Math.toRadians(129));
     public static Pose Spike2Gatecontrol = new Pose(40,50,Math.toRadians(180));
     public static Pose ParkPose = new Pose(15, 36, Math.toRadians(180));
 
