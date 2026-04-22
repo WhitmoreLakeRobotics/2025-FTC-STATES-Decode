@@ -5,32 +5,28 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 // Auto calculates RPM for launcher
 public class AutoRPM {
-private boolean debug = true;
+    private boolean debug = true;
     // -----------------------------
     // ORIGINAL FIELDS (unchanged)
     // -----------------------------
     public boolean Measure = false;
-
-    private Limey limey;
-    private Launcher launcher;
-
+    private double Distance = 0;
+    private double[] rpms = {0,0};
     HardwareMap hardwareMap;
     Telemetry telemetry;
 
-    public AutoRPM(Limey limey, Launcher launcher) {
-        this.limey = limey;
-        this.launcher = launcher;
+    public void init() {
+        telemetry.addData("AutoRPM init", true);
     }
 
-    public void init() {
-telemetry.addData("AutoRPM init",true);
-    }
     public void init_loop() {
 
     }
+
     public void start() {
 
     }
+
     public void stop() {
 
     }
@@ -43,23 +39,18 @@ telemetry.addData("AutoRPM init",true);
 
         if (!Measure) return;
 
-        if (limey == null || launcher == null) return;
+        // if (limey == null || launcher == null) return;
+        // if (limey.getTagID() < 0) return;
 
-        if (limey.getTagID() < 0) return;
-
-        double distance = limey.getTagDistance();
-
-        double[] rpms = calculateRPMs(distance);
-
-        launcher.setTargetRPMs(rpms[0], rpms[1]);
-        if (debug){
+        rpms = calculateRPMs(Distance);
+        if (debug) {
             telemetry.addData("In AutonRPM Measure is", Measure);
             telemetry.addData("rpms 0 = ", rpms[0]);
             telemetry.addData("rpms 1 = ", rpms[1]);
         }
     }
 
-    public double[] calculateRPMs(double distance) {
+    public double[] calculateRPMs(double Distance) {
 
         // Top motor interpolation
         double d1 = 0.5;       // meters
@@ -71,7 +62,7 @@ telemetry.addData("AutoRPM init",true);
         double m_top = (r2top - r1top) / (d2 - d1);
         double b_top = r1top - m_top * d1;
 
-        double targetTopRPM = m_top * distance + b_top;
+        double targetTopRPM = m_top * Distance + b_top;
 
         // Bottom motor interpolation
         double r1bottom = 4000;
@@ -80,8 +71,16 @@ telemetry.addData("AutoRPM init",true);
         double m_bottom = (r2bottom - r1bottom) / (d2 - d1);
         double b_bottom = r1bottom - m_bottom * d1;
 
-        double targetBottomRPM = m_bottom * distance + b_bottom;
+        double targetBottomRPM = m_bottom * Distance + b_bottom;
 
         return new double[]{targetTopRPM, targetBottomRPM};
     }
+
+    public void setDistance(double dist) {
+        Distance = dist;
+    }
+    public double[] getRPMs(){
+        return rpms;
+    }
 }
+

@@ -117,7 +117,7 @@ public class Robot extends BaseHardware {
 
 
         // autoRPM
-        autoRPM = new AutoRPM(limey, launcher);
+        autoRPM = new AutoRPM();
         autoRPM.hardwareMap = this.hardwareMap;
         autoRPM.telemetry = this.telemetry;
         autoRPM.init();
@@ -158,7 +158,9 @@ public class Robot extends BaseHardware {
         sensors.loop();
         intake.loop();
         limey.loop();
+        autoRPM.setDistance(limey.getTagDistance());
         autoRPM.loop();
+        launcher.setTargetRPMs(autoRPM.getRPMs());
         launcher.loop();
         launcherBlocker.loop();
         transitionRoller.loop();
@@ -312,14 +314,10 @@ public class Robot extends BaseHardware {
             launcher.CurrentCalcPos = Launcher.CalcPos.NotCalc;
         }
 
-
-
-
         if (transitionRoller.CurrentMode == TransitionRoller.Mode.Stop
                 && intake.CurrentMode == Intake.Mode.NTKforward) {
             sensors.cmdBLUE();
         }
-
 
         if(intake.CurrentMode == Intake.Mode.NTKforward || intake.CurrentMode == Intake.Mode.NTKbackward){
             sensors.cmdGREEN();
@@ -327,20 +325,16 @@ public class Robot extends BaseHardware {
             sensors.cmdRED();
         }
 
-
         if (intake.CurrentMode == Intake.Mode.NTKforward) {
-            if ((sensors.CurrentDistance2 == Sensors.Distance2.FILLED2 &&
-                    sensors.CurrentDistance3 == Sensors.Distance3.FILLED3 ||
-                    intake.InPain) && intake.MentallyStable && !launcherBlocker.AtUnBlocked) {
+            if ( ((sensors.CurrentDistance2 == Sensors.Distance2.FILLED2
+                    && sensors.CurrentDistance3 == Sensors.Distance3.FILLED3)
+                    || intake.InPain)
+                    && intake.MentallyStable && !launcherBlocker.AtUnBlocked) {
                 transitionRoller.cmdStop(); // possibly remove
                 intake.cmdStop();
                 intake.autoStopped = true;
             }
         }
-
-
-
-
     }
 
 

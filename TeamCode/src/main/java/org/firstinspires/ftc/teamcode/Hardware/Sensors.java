@@ -37,6 +37,7 @@ public class Sensors extends BaseHardware {
 
 
     private Servo PeaLight;
+    private Servo PeaDark;
     public ColorRangeSensor NTKAP2;
     public ColorRangeSensor NTKAP3;
 
@@ -54,17 +55,20 @@ public class Sensors extends BaseHardware {
     public static final double Orange = 0.333;
     public static final double Off = 0;
 
-
     private double NTKAP2distance;
     private double NTKAP3distance;
-
 
     public boolean AtIntakeStop = true;
     public boolean initLight1 = false;
     public boolean initLight2 = false;
     public boolean Empty = false;
+    public ElapsedTime GameTime = new ElapsedTime();
+    public int Total = 120;
+    public int TimeRemaining = (int)(Total - GameTime.seconds());
+
     public ElapsedTime initLightTime = new ElapsedTime();
     public ElapsedTime stable = new ElapsedTime();
+
 
 
 
@@ -112,7 +116,7 @@ public class Sensors extends BaseHardware {
         NTKAP3 = hardwareMap.get(ColorRangeSensor.class, "NTKAP3");
         NTKAP2 = hardwareMap.get(ColorRangeSensor.class, "NTKAP2");
         PeaLight = hardwareMap.get(Servo.class,"PeaLight");
-
+        PeaDark = hardwareMap.get(Servo.class,"PeaDark");
 
         initLightTime.reset();
         initLight1 = true;
@@ -127,7 +131,6 @@ public class Sensors extends BaseHardware {
      */
     public void init_loop() {
 
-
         if(initLight1 && initLightTime.milliseconds() >= 750){
             cmdORANGE();
             initLight1 = false;
@@ -135,14 +138,12 @@ public class Sensors extends BaseHardware {
             initLight2 = true;
         }
 
-
         if(initLight2 && initLightTime.milliseconds() >= 750){
             cmdOFF();
             initLight2 = false;
             initLightTime.reset();
             initLight1 = true;
         }
-
 
         /**
          * User defined init_loop method
@@ -167,6 +168,7 @@ public class Sensors extends BaseHardware {
         initLight1 = false;
         initLight2 = false;
         cmdRED();
+        GameTime.reset();
     }
 
 
@@ -176,7 +178,14 @@ public class Sensors extends BaseHardware {
      * This method will be called repeatedly in a loop while this op mode is running
      */
     public void loop(){
+        TimeRemaining = (int)(Total - GameTime.seconds());
 
+        if((CommonLogic.inRange(TimeRemaining,34,1))){
+
+        }else
+        if((CommonLogic.inRange(TimeRemaining,19,1))){
+
+        }
 
         if (NTKAP2distance <= 10) {
             CurrentDistance2 = Distance2.FILLED2;
@@ -204,11 +213,29 @@ public class Sensors extends BaseHardware {
 
         }
 
-
-
-
         getDistNTKAP2();
         getDistNTKAP3();
+
+        switch (TimeRemaining){
+
+            case 35:
+                PeaDark.setPosition(Yellow);
+                break;
+
+            case 20:
+                PeaDark.setPosition(Purple);
+                break;
+
+            case 10:
+                PeaDark.setPosition(Red);
+                break;
+
+            case 7:
+                PeaDark.setPosition(Green);
+                break;
+
+            default:
+        }
     }
 
 
@@ -355,9 +382,7 @@ public class Sensors extends BaseHardware {
             this.greenTol = greenTol;
         }
 
-
     }
-
 
     private void getDistNTKAP2() {
         NTKAP2distance = NTKAP2.getDistance(DistanceUnit.CM);}
@@ -365,18 +390,15 @@ public class Sensors extends BaseHardware {
         NTKAP3distance = NTKAP3.getDistance(DistanceUnit.CM);
     }
 
-
     public enum Distance3 {
         FILLED3,
         MISSING3
     }
 
-
     public enum Distance2 {
         FILLED2,
         MISSING2
     }
-
 
     public enum Color {
         GREEN,
@@ -387,20 +409,5 @@ public class Sensors extends BaseHardware {
         ORANGE,
         OFF
     }
-
-
-
-
-
-
-    private void updateColorSensor() {
-    }
-
-
-
-
-
-
-
 
 }

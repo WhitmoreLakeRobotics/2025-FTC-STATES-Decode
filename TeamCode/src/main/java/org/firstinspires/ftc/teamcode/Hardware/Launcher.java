@@ -177,9 +177,9 @@ public class Launcher extends BaseHardware{
 
     }
 
-    public void setTargetRPMs(double top, double bottom) {
-        targetRPM1 = top;
-        targetRPM2 = bottom;
+    public void setTargetRPMs(double[] rpms) {
+        targetRPM1 = rpms[0];
+        targetRPM2 = rpms[1];
     }
 
     public void cmdOuttouch(){

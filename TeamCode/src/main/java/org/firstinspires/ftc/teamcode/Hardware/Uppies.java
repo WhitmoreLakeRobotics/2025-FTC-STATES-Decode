@@ -17,7 +17,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Uppies extends BaseHardware{
 
     public HardwareMap hardwareMap = null;// will be set in Child class
-
     public Mode CurrentMode;
     public CRServo USC;
     public boolean UP = false;

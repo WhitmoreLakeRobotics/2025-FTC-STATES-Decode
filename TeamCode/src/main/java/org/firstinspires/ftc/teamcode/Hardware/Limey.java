@@ -9,7 +9,11 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import java.util.List;
 
@@ -34,15 +38,14 @@ public class Limey extends BaseHardware {
     private Limelight3A LemonLimey;
     private LLStatus status;
     private LLResult result;
-    private int AprilTagID;
-    private double ty;
-    private double tx;
+    private int AprilTagID = -1;
+    private double ty = 1000;
+    private double tx = 1000;
     private List<List<Double>> corners;
-   private Pose3D TagPose;
-    private double TagAngle;
-    private double TagDistance;
-    
-
+   private Pose3D TagPose = new Pose3D(new Position(DistanceUnit.METER,0,0,0,0),
+           new YawPitchRollAngles(AngleUnit.DEGREES,0,0,0,0));
+    private double TagAngle = 0;
+    private double TagDistance = 0;
 
     private boolean cmdComplete = true;
     private Mode CurrentMode = Mode.STOP;
