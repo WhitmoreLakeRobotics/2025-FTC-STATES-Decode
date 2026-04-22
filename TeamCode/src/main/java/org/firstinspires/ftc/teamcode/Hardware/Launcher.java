@@ -230,7 +230,6 @@ public class Launcher extends BaseHardware{
     public void cmdStop(){
         CurrentMode = Mode.LaunchMstop;
         CurrentPosition = Position.Off;
-
         targetRPM1 = 0;
         targetRPM2 = 0;
         LaunchM01.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -328,6 +327,7 @@ public class Launcher extends BaseHardware{
     public enum CalcPos {
         NotCalc,
         Far,
+        Farther,
         Near,
         Unknown
     }

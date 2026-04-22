@@ -224,7 +224,8 @@ public class Robot extends BaseHardware {
     public double targetAngleCalc() {
 
 
-        if (launcher.CurrentPosition == Launcher.Position.LaunchFar || launcher.CurrentCalcPos == Launcher.CalcPos.Far) {
+        if (launcher.CurrentPosition == Launcher.Position.LaunchFar
+                || launcher.CurrentCalcPos == Launcher.CalcPos.Far) { // far
 
 
             double currentTagId = limey.getTagID();
@@ -259,7 +260,42 @@ public class Robot extends BaseHardware {
             }
 
 
-        } else {
+        }else if (launcher.CurrentCalcPos == Launcher.CalcPos.Farther) { // farther
+
+
+            double currentTagId = limey.getTagID();
+            if (currentTagId != -1) {
+                double targetOffsetAngle_Horizontal = limey.getTx();
+
+
+                double tagAngle = limey.getTagAngle() + 90;
+                double targetDistanceCalc = targetDistanceCalc();
+                double hypotenuse = Math.sqrt((targetDistanceCalc * targetDistanceCalc)
+                        + (targetPointFromTag * targetPointFromTag)
+                        - (2 * (targetDistanceCalc * targetPointFromTag
+                        * Math.cos(Math.toRadians(tagAngle)))));
+
+
+                double compensationAngle = 180 - tagAngle
+                        - Math.toDegrees(Math.asin(Math.sin(Math.toRadians(tagAngle))
+                        * targetDistanceCalc) / hypotenuse);
+
+
+                if (currentTagId == 24) {
+                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal;
+                } else if (currentTagId == 20) {
+                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 5; // NEED TO UPDATE
+                } else {
+                    return driveTrain.getCurrentHeading();
+                }
+            } else {
+                double defaultAngle = 25;
+                if (driveTrain.getCurrentHeading() >= 90) return defaultAngle;
+                if (driveTrain.getCurrentHeading() <= -90) return -defaultAngle;
+            }
+
+
+        } else {                                              //near
 
 
             double currentTagId = limey.getTagID();
@@ -302,10 +338,12 @@ public class Robot extends BaseHardware {
     public void basicSystem(){
         if(autoRPM.Measure){
             launcher.CurrentPosition = Launcher.Position.LaunchCalc;
-            if(limey.getTagDistance() < 2){
+            if(limey.getTagDistance() < 3.1){
                 launcher.CurrentCalcPos = Launcher.CalcPos.Near;
-            }else if(limey.getTagDistance() >= 2){
+            }else if(limey.getTagDistance() >= 3.1 && limey.getTagDistance() < 3.4){
                 launcher.CurrentCalcPos = Launcher.CalcPos.Far;
+            }else if(limey.getTagDistance() >= 3.4){
+                launcher.CurrentCalcPos = Launcher.CalcPos.Farther;
             }else{
                 launcher.CurrentCalcPos = Launcher.CalcPos.Unknown;
             }
