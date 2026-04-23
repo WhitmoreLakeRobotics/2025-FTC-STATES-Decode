@@ -68,7 +68,8 @@ public class ppRedFarRory1 extends OpMode {
     public static Pose pickup1bPose = new Pose(12, 15, Math.toRadians(190)); // (First Set) of Artifacts picked up.
     public static Pose pickup1bPoseC = new Pose(23, 27, Math.toRadians(200));
     public static Pose pickup1cPose = new Pose(4, 13.5, Math.toRadians(190));
-
+    public static Pose Spike1 = new Pose(130,36,Math.toRadians(180));
+    public static Pose CornorPickUp = new Pose(140,7,Math.toRadians(72))
 
     public static Pose pickup2aPose = new Pose(10, 37, Math.toRadians(190)); // 10 was 8 Middle (Second Set) of Artifacts from the Spike Mark.
     public static Pose pickup2aPoseC = new Pose(71, 39, Math.toRadians(190)); // Lowest (Third Set) of Artifacts from the Spike Mark.
@@ -344,29 +345,29 @@ public class ppRedFarRory1 extends OpMode {
 
 
             case _00_preStart:
-                currentStage = stage._20_DriveToScore;
+                currentStage = stage._10_Prelaunch;
                 break;
 
 
-            case _20_DriveToScore:
+            case _10_Prelaunch:
                 if (!follower.isBusy()) {
                     follower.followPath(scorePreload, powerNormal, true);
                     lastPose = startPose;
                     currentTargetPose = scorePose;
                     // follower.update();
                     robot.launcher.cmdOutfar();
-                    currentStage = stage._25_checkDrivetoscore;
+                    currentStage = stage._20_DriveCornor;
                 }
-            case _25_checkDrivetoscore:
+            case _16_Spike:
                 if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._30_Shoot1; // we don't need to do the turn since heading is adjusted in path
+                    follower.followPath();
+                    currentStage = stage._25_DriveBack; // we don't need to do the turn since heading is adjusted in path
                     runtime.reset();
                 }
                 break;
 
 
-            case _30_Shoot1:
+            case _25_DriveBack:
                 if (!follower.isBusy()) {
                     if (runtime.milliseconds() >= 500) {
                         telemetryMU.addLine("wqiting to shoot 1");
@@ -374,24 +375,23 @@ public class ppRedFarRory1 extends OpMode {
                         //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
                         robot.intake.cmdFoward();
                         robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
                         runtime.reset();
-                        currentStage = stage._40_LauncherStop;
+                        currentStage = stage._30_Shoot;
                     }}
                 break;
 
 
-            case _40_LauncherStop:
+            case _30_Shoot:
                 if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     robot.launcherBlocker.cmdBlock();
                     // currentStage = stage._50_Pickup1;
-                    currentStage = stage._50_Pickup1;
+                    currentStage = stage._35_Drivetunnel;
                 }
                 break;
 
 
-            case _50_Pickup1:
+          /*  case _50_Pickup1:
                 if (!follower.isBusy()) {
                     // follower.followPath(grabPickup1a, powerNormal, true);
                     //  follower.followPath(grabPickup1,powerNormal,true);
@@ -422,7 +422,7 @@ public class ppRedFarRory1 extends OpMode {
                    }
                    else{
                        follower.turnToDegrees(175); //wiggle to pick up more
-                   }*/
+                   }
                     // lastPose = currentTargetPose;
                     //currentTargetPose = pickup1cPose;
                     currentStage = stage._65_PickupWiggle;
@@ -669,7 +669,7 @@ public class ppRedFarRory1 extends OpMode {
 
 
                 break;
-            case _500_End:
+            */case _500_End:
             { //do nothing let the time run out
                 if (runtime.milliseconds() > 3000){ //was 2500
                     follower.breakFollowing();
@@ -713,6 +713,22 @@ public class ppRedFarRory1 extends OpMode {
         telemetryMU.update();
         Drawing.drawDebug(follower);
     }
+    private void dolaunch_process(){
+
+        robot.launcherBlocker.cmdUnBlock();
+        robot.transitionRoller.cmdSpin();
+        robot.intake.cmdFoward();
+        runtime.reset();
+
+    }
+
+    private void endlaunch_process(){
+
+        robot.launcherBlocker.cmdBlock();
+        robot.autoRPM.Measure = false;
+        robot.launcher.cmdStop();
+
+    }
 
 
     //Code to run ONCE after the driver hits STOP
@@ -727,42 +743,43 @@ public class ppRedFarRory1 extends OpMode {
     private enum stage {
         _unknown,
         _00_preStart,
-        _20_DriveToScore,
-        _25_checkDrivetoscore,
-        _30_Shoot1,
-        _40_LauncherStop,
-        _50_Pickup1,
-        _55_Pickup1_Startintake,
-        _60_Pickup1a,
-        _65_PickupWiggle,
-        _70_ToScorePoseAP,
-        _75_chkDrive_to_score_P1,
-        _80_ScorePickup1,
-        _90_LauncherStop,
-        _100_Pickup2,
-        _110_Pickup2_Startintake,
-        _120_Pickupa2,
-        _130_ToScorePoseAP,
-        _140_chkDrive_to_scorePoseAP,
-        _142_Pickup3,
-        _143_Pickup3_Startintake,
-        _144_Pickupa2,
-        _146_ToScorePoseAP,
-        _148_chkDrive_to_scorePoseAP,
-        _150_ScorePickup2,
-        _160_LauncherStop,
-        _170_Pickup1,
-        _180_Pickup1_Startintake,
-        _190_Pickup1a,
-        _200_PickupWiggle,
-        _210_ToScorePoseAP,
-        _220_chkDrive_to_score_P1,
-        _230_ScorePickup1,
-        _240_LauncherStop,
-
-
-        _450_Park,
-        _475_ParkToBeContinued,
+        _10_Prelaunch,
+        _15_Launch,
+        _16_Spike,
+        _17_drivebacK,
+        _20_DriveCornor,
+        _25_DriveBack,
+        _30_Shoot,
+        _35_Drivetunnel,
+        _40_PreLaunch,
+        _45_Launch,
+        _50_DriveCornor,
+        _55_DriveBack,
+        _60_Shoot,
+        _65_Drivetunnel,,
+        _70_Launch,
+        _75_DriveCornor,
+        _80_DriveBack,
+        _85_Shoot,
+        _90_Drivetunnel,
+        _100_Prelaunch,
+        _110_Launch,
+        _115_DriveCornor,
+        _120_DriveBack,
+        _130_Shoot,
+        _135_Drivetunnel,
+        _140_PreLaunch,
+        _145_Launch,
+        _150_DriveCornor,
+        _155_DriveBack,
+        _160_Shoot,
+        _165_Drivetunnel,,
+        _170_Launch,
+        _175_DriveCornor,
+        _180_DriveBack,
+        _185_Shoot,
+        _190_Drivetunnel,
+        _200_DrivePark,
         _500_End
 
 
