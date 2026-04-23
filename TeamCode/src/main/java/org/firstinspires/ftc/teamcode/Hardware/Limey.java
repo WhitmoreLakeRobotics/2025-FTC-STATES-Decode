@@ -162,6 +162,7 @@ public class Limey extends BaseHardware {
                 telemetry.addData("Latency", "%.1f ms", result.getTargetingLatency());
             }
         }
+        telemetry.addData("TagDistance (m)", TagDistance); //disable after tuning
 
         //Always show connection status
        // status  = LemonLimey.getStatus();
