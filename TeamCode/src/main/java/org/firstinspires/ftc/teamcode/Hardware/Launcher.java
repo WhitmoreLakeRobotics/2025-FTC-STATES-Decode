@@ -61,13 +61,13 @@ public class Launcher extends BaseHardware{
     */
 
     // ---------------- PID CONSTANTS ----------------
-    public static double LkP = 0.00025;   // increased for faster recovery
+    public static double LkP = 0.00038;   // increased for faster recovery
     public static double LkI = 0.0;       // still unused
     public static double LkD = 0.0000015; // small D for damping
     public static double kF = 1.0 / 6000.0; // feedforward per RPM
 
     // ---------------- PID CONSTANTS ----------------
-    public static double bLkP = 0.00035;   // increased for faster recovery
+    public static double bLkP = 0.00055;   // increased for faster recovery
     public static double bLkI = 0.0;       // still unused
     public static double bLkD = 0.0000015; // small D for damping
     public static double bkF = 1.0 / 6000.0; // feedforward per RPM
