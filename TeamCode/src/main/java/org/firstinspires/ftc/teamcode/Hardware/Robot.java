@@ -364,7 +364,8 @@ public class Robot extends BaseHardware {
         }
 
         if (intake.CurrentMode == Intake.Mode.NTKforward) {
-            if ( ((sensors.CurrentDistance2 == Sensors.Distance2.FILLED2
+            if ( ((sensors.CurrentDistance1 == Sensors.Distance1.FILLED1
+                    && sensors.CurrentDistance2 == Sensors.Distance2.FILLED2
                     && sensors.CurrentDistance3 == Sensors.Distance3.FILLED3)
                     || intake.InPain)
                     && intake.MentallyStable && !launcherBlocker.AtUnBlocked) {

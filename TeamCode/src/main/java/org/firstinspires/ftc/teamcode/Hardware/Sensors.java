@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Common.CommonLogic;
 /**
  * Base class for FTC Team 8492 defined hardware
  */
-@Disabled
+
 public class Sensors extends BaseHardware {
 
 
@@ -38,10 +38,11 @@ public class Sensors extends BaseHardware {
 
     private Servo PeaLight;
     private Servo PeaDark;
+    public ColorRangeSensor NTKAP1; // expansion hub port 2
     public ColorRangeSensor NTKAP2;
     public ColorRangeSensor NTKAP3;
 
-
+    public Distance1 CurrentDistance1;
     public Distance2 CurrentDistance2;
     public Distance3 CurrentDistance3;
     public Color CurrentColor;
@@ -55,6 +56,7 @@ public class Sensors extends BaseHardware {
     public static final double Orange = 0.333;
     public static final double Off = 0;
 
+    private double NTKAP1distance;
     private double NTKAP2distance;
     private double NTKAP3distance;
 
@@ -115,6 +117,7 @@ public class Sensors extends BaseHardware {
 
         NTKAP3 = hardwareMap.get(ColorRangeSensor.class, "NTKAP3");
         NTKAP2 = hardwareMap.get(ColorRangeSensor.class, "NTKAP2");
+        NTKAP1 = hardwareMap.get(ColorRangeSensor.class, "NTKAP1");
         PeaLight = hardwareMap.get(Servo.class,"PeaLight");
         PeaDark = hardwareMap.get(Servo.class,"PeaDark");
 
@@ -133,6 +136,7 @@ public class Sensors extends BaseHardware {
 
         if(initLight1 && initLightTime.milliseconds() >= 750){
             cmdORANGE();
+            PeaDark.setPosition(Off);
             initLight1 = false;
             initLightTime.reset();
             initLight2 = true;
@@ -140,6 +144,7 @@ public class Sensors extends BaseHardware {
 
         if(initLight2 && initLightTime.milliseconds() >= 750){
             cmdOFF();
+            PeaDark.setPosition(Orange);
             initLight2 = false;
             initLightTime.reset();
             initLight1 = true;
@@ -168,6 +173,7 @@ public class Sensors extends BaseHardware {
         initLight1 = false;
         initLight2 = false;
         cmdRED();
+        PeaDark.setPosition(Off);
         GameTime.reset();
     }
 
@@ -180,11 +186,12 @@ public class Sensors extends BaseHardware {
     public void loop(){
         TimeRemaining = (int)(Total - GameTime.seconds());
 
-        if((CommonLogic.inRange(TimeRemaining,34,1))){
-
-        }else
-        if((CommonLogic.inRange(TimeRemaining,19,1))){
-
+        if (NTKAP1distance <= 10) {
+            CurrentDistance1 = Distance1.FILLED1;
+            Empty = false;
+        } else {
+            CurrentDistance1 = Distance1.MISSING1;
+            stable.reset();
         }
 
         if (NTKAP2distance <= 10) {
@@ -195,7 +202,6 @@ public class Sensors extends BaseHardware {
             stable.reset();
         }
 
-
         if (NTKAP3distance <= 10) {
             CurrentDistance3 = Distance3.FILLED3;
             Empty = false;
@@ -204,8 +210,7 @@ public class Sensors extends BaseHardware {
             stable.reset();
         }
 
-
-        if(CurrentDistance2 == Distance2.MISSING2 && CurrentDistance3 == Distance3.MISSING3){
+        if(CurrentDistance1 == Distance1.MISSING1 && CurrentDistance2 == Distance2.MISSING2 && CurrentDistance3 == Distance3.MISSING3){
             if(stable.milliseconds() >= 300){
                 Empty = true;
             }
@@ -213,6 +218,7 @@ public class Sensors extends BaseHardware {
 
         }
 
+        getDistNTKAP1();
         getDistNTKAP2();
         getDistNTKAP3();
 
@@ -389,6 +395,9 @@ public class Sensors extends BaseHardware {
     private void getDistNTKAP3() {
         NTKAP3distance = NTKAP3.getDistance(DistanceUnit.CM);
     }
+    private void getDistNTKAP1() {
+        NTKAP1distance = NTKAP1.getDistance(DistanceUnit.CM);
+    }
 
     public enum Distance3 {
         FILLED3,
@@ -398,6 +407,11 @@ public class Sensors extends BaseHardware {
     public enum Distance2 {
         FILLED2,
         MISSING2
+    }
+
+    public enum Distance1 {
+        FILLED1,
+        MISSING1
     }
 
     public enum Color {
