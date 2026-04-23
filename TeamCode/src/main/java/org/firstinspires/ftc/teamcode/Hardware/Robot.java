@@ -247,7 +247,7 @@ public class Robot extends BaseHardware {
 
 
                 if (currentTagId == 24) {
-                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal;
+                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal +2;
                 } else if (currentTagId == 20) {
                     return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 5;
                 } else {
