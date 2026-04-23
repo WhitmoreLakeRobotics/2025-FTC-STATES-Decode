@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 
-
+@Disabled
 @Autonomous(name = "dRedFarCornerCycle", group = "Auton")
 // @Autonomous(...) is the other common choice
 
