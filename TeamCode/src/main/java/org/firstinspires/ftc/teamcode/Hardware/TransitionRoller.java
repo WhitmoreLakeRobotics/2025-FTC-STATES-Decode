@@ -185,6 +185,6 @@ public class TransitionRoller extends BaseHardware{
         TRPower = compensated;
         TRM01.setPower(compensated);
 
-        
+
     }
 }
