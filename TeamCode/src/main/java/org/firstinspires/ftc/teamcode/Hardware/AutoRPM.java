@@ -57,7 +57,7 @@ public class AutoRPM {
         double r1top = 1600;
 
         double d2 = 2.4;       // meters
-        double r2top = 3000;
+        double r2top = 3500;
 
         double m_top = (r2top - r1top) / (d2 - d1);
         double b_top = r1top - m_top * d1;
@@ -65,8 +65,8 @@ public class AutoRPM {
         double targetTopRPM = m_top * Distance + b_top;
 
         // Bottom motor interpolation
-        double r1bottom = 3000;
-        double r2bottom = 4000;
+        double r1bottom = 3500;
+        double r2bottom = 4500;
 
         double m_bottom = (r2bottom - r1bottom) / (d2 - d1);
         double b_bottom = r1bottom - m_bottom * d1;
