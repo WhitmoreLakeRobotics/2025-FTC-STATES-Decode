@@ -5,10 +5,16 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 // Auto calculates RPM for launcher
 public class AutoRPM {
+    
+    public enum Mode {
+        MANUAL,
+        AUTO
+    }
+
+    public Mode mode = Mode.MANUAL;
+
     private boolean debug = true;
-    // -----------------------------
-    // ORIGINAL FIELDS (unchanged)
-    // -----------------------------
+
     public boolean Measure = false;
     private double Distance = 0;
     private double[] rpms = {0,0};
@@ -19,17 +25,11 @@ public class AutoRPM {
         telemetry.addData("AutoRPM init", true);
     }
 
-    public void init_loop() {
+    public void init_loop() {}
 
-    }
+    public void start() {}
 
-    public void start() {
-
-    }
-
-    public void stop() {
-
-    }
+    public void stop() {}
 
     public void loop() {
         update();
@@ -37,14 +37,15 @@ public class AutoRPM {
 
     public void update() {
 
+        if (mode != Mode.AUTO) return;
+
         if (!Measure) return;
 
-        // if (limey == null || launcher == null) return;
-        // if (limey.getTagID() < 0) return;
-
         rpms = calculateRPMs(Distance);
+
         if (debug) {
-            telemetry.addData("In AutonRPM Measure is", Measure);
+            telemetry.addData("In AutoRPM Mode", mode);
+            telemetry.addData("In AutoRPM Measure is", Measure);
             telemetry.addData("rpms 0 = ", rpms[0]);
             telemetry.addData("rpms 1 = ", rpms[1]);
         }
@@ -54,10 +55,10 @@ public class AutoRPM {
 
         // Top motor interpolation
         double d1 = 0.5;       // meters
-        double r1top = 1800;
+        double r1top = 1600;
 
-        double d2 = 3.4;       // meters
-        double r2top = 4400;
+        double d2 = 2.4;       // meters
+        double r2top = 3500;
 
         double m_top = (r2top - r1top) / (d2 - d1);
         double b_top = r1top - m_top * d1;
@@ -65,8 +66,8 @@ public class AutoRPM {
         double targetTopRPM = m_top * Distance + b_top;
 
         // Bottom motor interpolation
-        double r1bottom = 3800;
-        double r2bottom = 5800;
+        double r1bottom = 3500;
+        double r2bottom = 4500;
 
         double m_bottom = (r2bottom - r1bottom) / (d2 - d1);
         double b_bottom = r1bottom - m_bottom * d1;
@@ -79,8 +80,8 @@ public class AutoRPM {
     public void setDistance(double dist) {
         Distance = dist;
     }
-    public double[] getRPMs(){
+
+    public double[] getRPMs() {
         return rpms;
     }
 }
-

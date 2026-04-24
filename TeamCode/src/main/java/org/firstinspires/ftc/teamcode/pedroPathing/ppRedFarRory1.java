@@ -15,6 +15,7 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -23,7 +24,7 @@ import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 
 
-//@Disabled
+@Disabled
 @Configurable
 @Autonomous(name = "ppTESTMEBlueFar7Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
@@ -68,7 +69,10 @@ public class ppRedFarRory1 extends OpMode {
     public static Pose pickup1bPose = new Pose(12, 15, Math.toRadians(190)); // (First Set) of Artifacts picked up.
     public static Pose pickup1bPoseC = new Pose(23, 27, Math.toRadians(200));
     public static Pose pickup1cPose = new Pose(4, 13.5, Math.toRadians(190));
+<<<<<<< HEAD
     public static Pose Spike1a = new Pose()
+=======
+>>>>>>> f175b8dad5fcfa8ee612d5eaf95b0db19a068835
     public static Pose Spike1b = new Pose(130,36,Math.toRadians(180));
     public static Pose CornorPickUp = new Pose(140,7,Math.toRadians(72));
 
@@ -103,22 +107,38 @@ public class ppRedFarRory1 extends OpMode {
 
 
             public Paths(Follower follower) {
+<<<<<<< HEAD
                 Spike1 = follower.pathBuilder().addPath(
                         .addPath(new BezierLine(scorePose, ))
                               /*  new BezierCurve(
+=======
+               /* Spike1 = follower.pathBuilder().addPath(
+                        .addPath(new BezierLine(scorePose, ))
+                              / new BezierCurve(
+>>>>>>> f175b8dad5fcfa8ee612d5eaf95b0db19a068835
                                         new Pose(77.618, 9.099),
                                         new Pose(88.962, 36.954),
                                         new Pose(130.382, 36.550)
                                 )
+<<<<<<< HEAD
                         ).setLinearHeadingInterpolation(Math.toRadians(57), Math.toRadians(-16)
                         )
 
                                */
 
 
+=======
+>>>>>>> f175b8dad5fcfa8ee612d5eaf95b0db19a068835
 
 
-                        .build();
+                        ).setLinearHeadingInterpolation(Math.toRadians(57), Math.toRadians(-1)
+
+                        )
+
+                */
+
+
+                       // .build();
                 Score2 = follower.pathBuilder().addPath(
 
 
@@ -367,7 +387,7 @@ public class ppRedFarRory1 extends OpMode {
                 }
             case _16_Spike:
                 if (!follower.isBusy()) {
-                    follower.followPath();
+                    follower.followPath(grabPickup1);
                     currentStage = stage._25_DriveBack; // we don't need to do the turn since heading is adjusted in path
                     runtime.reset();
                 }

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Autons;
 
 import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,7 +15,7 @@ import java.util.Objects;
 
 
 
-
+@Disabled
 @Autonomous(name = "GameBoy", group = "PP")
 public class GameBoy extends OpMode {
     Robot robot = new Robot();

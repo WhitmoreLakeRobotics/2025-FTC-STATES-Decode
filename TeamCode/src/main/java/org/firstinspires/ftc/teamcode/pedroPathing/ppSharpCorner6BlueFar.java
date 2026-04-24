@@ -64,11 +64,11 @@ public class ppSharpCorner6BlueFar extends OpMode {
                 .addPath(new BezierLine(scorePose, pickup1aPose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1aPose.getHeading())
 
-                .addPath(new BezierLine(pickup1aPose, CornerPickupPose))
-                .setLinearHeadingInterpolation(pickup1aPose.getHeading(), CornerPickupPose.getHeading())
+                .addPath(new BezierLine(pickup1aPose, pickup1bPose))
+                .setLinearHeadingInterpolation(pickup1aPose.getHeading(), pickup1bPose.getHeading())
 
-                .addPath(new BezierCurve(CornerPickupPose, scorePoseAP))
-                .setLinearHeadingInterpolation(CornerPickupPose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierCurve(pickup1bPose, scorePoseAP))
+                .setLinearHeadingInterpolation(pickup1bPose.getHeading(), scorePose.getHeading())
 
                 .build();
         scorePreload = follower.pathBuilder()
@@ -180,7 +180,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _40_PickupSpike1:
                 if (runtime.milliseconds() > 1500 ){//|| robot.sensors.NoArtifacts) { //add sensors here
                     endlaunch_process();
-                    follower.followPath(cyclePickup1);
+                    follower.followPath(cyclePickup1,true);
                     currentStage = stage._45_PreLaunch2;
                 }
                 break;
@@ -197,7 +197,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _60_PickupConer1:
                     if (runtime.milliseconds() > 500 ){ //|| robot.sensors.NoArtifacts) { //add sensors here
                         endlaunch_process();
-                        follower.followPath(CornerPickup);
+                        follower.followPath(CornerPickup,true);
                         currentStage = stage._70_PreLaunch3;
                 }
                 break;
@@ -215,7 +215,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _80_PickupTunel1:
                 if (runtime.milliseconds() > 500 ){//|| robot.sensors.NoArtifacts) { //add sensors here
                     endlaunch_process();
-                    follower.followPath(TunelPickup);
+                    follower.followPath(TunelPickup,true);
 
                     currentStage = stage._90_PreLaunch4;
                 }
@@ -233,7 +233,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _110_PickupCorner2:
                 if (runtime.milliseconds() > 500 ){ // || robot.sensors.NoArtifacts) { //add sensors here
                     endlaunch_process();
-                    follower.followPath(CornerPickup);
+                    follower.followPath(CornerPickup,true);
                     currentStage = stage._120_Prelaunch5;
                 }
                 break;
@@ -249,8 +249,9 @@ public class ppSharpCorner6BlueFar extends OpMode {
                 }
                 break;
             case _140_PickupTunel2:
-                if (runtime.milliseconds() > 500 ){ // || robot.sensors.NoArtifacts) { //add sensors here
+                if (runtime.milliseconds() > 1500 ){ // || robot.sensors.NoArtifacts) { //add sensors here
                     endlaunch_process();
+                    follower.followPath(TunelPickup,true);
                     currentStage = stage._150_PreLaunch6;
                 }
             case _150_PreLaunch6:
@@ -267,8 +268,9 @@ public class ppSharpCorner6BlueFar extends OpMode {
 
 
             case _161_PickupCorner3:
-                if (runtime.milliseconds() > 500 ){ // || robot.sensors.NoArtifacts) { //add sensors here
+                if (runtime.milliseconds() > 1500 ){ // || robot.sensors.NoArtifacts) { //add sensors here
                     endlaunch_process();
+                    follower.followPath(CornerPickup,true);
                     currentStage = stage._162_PreLaunch7;
                 }
                 break;
@@ -290,6 +292,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _164_PickupTunel3:
                 if (runtime.milliseconds() > 500 ){ // || robot.sensors.NoArtifacts) { //add sensors here
                     endlaunch_process();
+                    follower.followPath(TunelPickup,true);
                     currentStage = stage._165_Prelaunch8;
                 }
                 break;

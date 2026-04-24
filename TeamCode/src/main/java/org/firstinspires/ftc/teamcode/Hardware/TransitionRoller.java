@@ -50,7 +50,7 @@ public class TransitionRoller extends BaseHardware{
     public HardwareMap hardwareMap = null; // will be set in Child class
 
     // Voltage Sensor
-    private VoltageSensor batteryVoltageSensor;
+    private VoltageSensor Raichu;
 
 
 
@@ -76,7 +76,7 @@ public class TransitionRoller extends BaseHardware{
         // Find a valid voltage sensor
         for (VoltageSensor sensor : hardwareMap.getAll(VoltageSensor.class)) {
             if (sensor.getVoltage() > 0) {
-                batteryVoltageSensor = sensor;
+                Raichu = sensor;
                 break;
             }
         }
@@ -165,8 +165,8 @@ public class TransitionRoller extends BaseHardware{
      * Voltage Compensation (Limited to 11V)
      */
     private double getVoltage() {
-        if (batteryVoltageSensor == null) return 11.0;
-        return batteryVoltageSensor.getVoltage();
+        if (Raichu == null) return 11.0;
+        return Raichu.getVoltage();
     }
 
     private void setCompensatedPower(double targetPower) {
