@@ -160,7 +160,9 @@ public class Robot extends BaseHardware {
         limey.loop();
         autoRPM.setDistance(limey.getTagDistance());
         autoRPM.loop();
-        launcher.setTargetRPMs(autoRPM.getRPMs());
+        if(autoRPM.Measure) {
+            launcher.setTargetRPMs(autoRPM.getRPMs());   // <-- this one fix this
+        }
         launcher.loop();
         launcherBlocker.loop();
         transitionRoller.loop();
