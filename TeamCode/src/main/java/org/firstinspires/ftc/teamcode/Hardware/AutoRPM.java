@@ -5,10 +5,16 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 // Auto calculates RPM for launcher
 public class AutoRPM {
+    
+    public enum Mode {
+        MANUAL,
+        AUTO
+    }
+
+    public Mode mode = Mode.MANUAL;
+
     private boolean debug = true;
-    // -----------------------------
-    // ORIGINAL FIELDS (unchanged)
-    // -----------------------------
+
     public boolean Measure = false;
     private double Distance = 0;
     private double[] rpms = {0,0};
@@ -19,17 +25,11 @@ public class AutoRPM {
         telemetry.addData("AutoRPM init", true);
     }
 
-    public void init_loop() {
+    public void init_loop() {}
 
-    }
+    public void start() {}
 
-    public void start() {
-
-    }
-
-    public void stop() {
-
-    }
+    public void stop() {}
 
     public void loop() {
         update();
@@ -37,14 +37,15 @@ public class AutoRPM {
 
     public void update() {
 
+        if (mode != Mode.AUTO) return;
+
         if (!Measure) return;
 
-        // if (limey == null || launcher == null) return;
-        // if (limey.getTagID() < 0) return;
-
         rpms = calculateRPMs(Distance);
+
         if (debug) {
-            telemetry.addData("In AutonRPM Measure is", Measure);
+            telemetry.addData("In AutoRPM Mode", mode);
+            telemetry.addData("In AutoRPM Measure is", Measure);
             telemetry.addData("rpms 0 = ", rpms[0]);
             telemetry.addData("rpms 1 = ", rpms[1]);
         }
@@ -79,8 +80,8 @@ public class AutoRPM {
     public void setDistance(double dist) {
         Distance = dist;
     }
-    public double[] getRPMs(){
+
+    public double[] getRPMs() {
         return rpms;
     }
 }
-
