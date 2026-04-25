@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
-import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.followerConstants;
 import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.pathConstraints;
+import static org.firstinspires.ftc.teamcode.pedroPathing.ppSharpCorner6BlueFar.poseSpike1;
 
 import com.bylazar.configurables.PanelsConfigurables;
 import com.bylazar.telemetry.PanelsTelemetry;
@@ -23,8 +23,8 @@ import org.firstinspires.ftc.teamcode.Hardware.Robot;
  * */
 
 
-@Autonomous(name = "ppSharpCorner6BlueFar", group = "PP")
-public class ppSharpCorner6BlueFar extends OpMode {
+@Autonomous(name = "ppRedNear1", group = "PP")
+public class ppRedNear extends OpMode {
 
 
     Robot robot = new Robot();
@@ -37,12 +37,11 @@ public class ppSharpCorner6BlueFar extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     public boolean End = false;
 
-
-
     public static Follower follower;
-    public static Pose startPose = new Pose(55, 8, Math.toRadians(90)); // Start Pose of our robot.
-    public static Pose scorePose = new Pose(55, 17, Math.toRadians(114)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    public static Pose startPose = new Pose(108, 135, Math.toRadians(0)); // Start Pose of our robot.
+    public static Pose scorePose = new Pose(108, 108, Math.toRadians(53)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    /*
     public static Pose scorePoseAP = new Pose(52, 15, Math.toRadians(10));
     public static Pose poseSpike1 = new Pose(12.5,35,Math.toRadians(210));
     public static Pose pickup1aPose = new Pose(15, 35.5, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
@@ -55,14 +54,55 @@ public class ppSharpCorner6BlueFar extends OpMode {
     public static Pose CornerPickupPose = new Pose (11,11,Math.toRadians(190));
     public static Pose TunelPose = new Pose(12, 30,Math.toDegrees(165));
 
+     */
+
+    public static Pose spiwkep1c = new Pose(128.5,83.5,Math.toRadians(0));
+    public static Pose conspiwkep1c = new Pose(74,81,Math.toRadians(0));//control
+    public static Pose gatepos = new Pose(127.,70.5,Math.toRadians(0));
+    public static Pose congatepos = new Pose(92,73.4,Math.toRadians(0));//control
+    public static Pose wraparoundpos = new Pose(130.5,59,Math.toRadians(53));
+    public static Pose conwraparoundpos = new Pose(113.5,60,Math.toRadians(0));//control
+    public static Pose conaltscore = new Pose(107,68,Math.toRadians(0));//control
+
+
 
     private PathChain scorePreload;
-    private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, scorePickup1, grabPickup2a, grabPickup2b, scorePickup2, goEndPose, goEndPose2, endPath;
-    private PathChain cyclePickup1,spikeB2, interruptedPickup, CornerPickup, Park, TunelPickup,PickupSpike1;
+    private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, scorePickup1,
+            grabPickup2a, grabPickup2b, scorePickup2, goEndPose, goEndPose2, endPath;
+    private PathChain interruptedPickup,
+            PickupSpike1,ScorePreload,ScorePath,GateWrap,WrapScore;
 
 
     public void buildPaths() {
 
+        ScorePreload = follower.pathBuilder()
+                .addPath(new BezierLine(startPose, scorePose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
+                .build();
+
+        PickupSpike1 = follower.pathBuilder()
+                .addPath(new BezierCurve(scorePose, conspiwkep1c, spiwkep1c))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), spiwkep1c.getHeading())
+                .build();
+
+        ScorePath = follower.pathBuilder()
+                .addPath(new BezierLine(spiwkep1c, scorePose))
+                .setLinearHeadingInterpolation(spiwkep1c.getHeading(), scorePose.getHeading())
+                .build();
+
+        GateWrap = follower.pathBuilder()
+                .addPath(new BezierCurve(scorePose, congatepos, gatepos))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), gatepos.getHeading())
+                .addPath(new BezierCurve(gatepos, conwraparoundpos, wraparoundpos))
+                .setLinearHeadingInterpolation(gatepos.getHeading(), wraparoundpos.getHeading())
+                .build();
+
+        WrapScore = follower.pathBuilder()
+                .addPath(new BezierCurve(wraparoundpos, conaltscore, scorePose))
+                .setLinearHeadingInterpolation(wraparoundpos.getHeading(), scorePose.getHeading())
+                .build();
+
+/*
         PickupSpike1 = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, poseSpike1))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), poseSpike1.getHeading())
@@ -109,6 +149,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
                 .addPath(new BezierLine(scorePose, CornerPickupPose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), CornerPickupPose.getHeading())
                 .build();
+        */
 
     }
 
@@ -170,7 +211,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
 
             case _20_PreLaunch:
                 if (!follower.isBusy()) {
-                    follower.followPath(scorePreload,  true);
+                    follower.followPath(ScorePreload,true);
                     //lastPose = startPose;
                     /* currentTargetPose = scorePose;*/
                     // follower.update();
@@ -203,13 +244,21 @@ public class ppSharpCorner6BlueFar extends OpMode {
                     currentStage = stage._60_PickupConer1;
                 }
                 break;
-            case _60_PickupConer1:
+             case _60_PickupConer1:
                     if (runtime.milliseconds() > 1500 || robot.sensors.Empty){ //added sensors here
                         endlaunch_process();
-                        follower.followPath(CornerPickup,true);
+                        follower.followPath(GateWrap,true);
+                        runtime.reset();
                         currentStage = stage._70_PreLaunch3;
                 }
                 break;
+
+            case _65_GateWrap1:
+                if(!follower.isBusy() && runtime.milliseconds() >= 3000){
+                    follower.followPath(WrapScore,true);
+                }
+                break;
+
             case _70_PreLaunch3:
                 AreYouSure(stage._75_Launch3);
                 break;
@@ -224,7 +273,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _80_PickupTunel1:
                 if (runtime.milliseconds() > 1500 || robot.sensors.Empty){ //added sensors here
                     endlaunch_process();
-                    follower.followPath(TunelPickup,true);
+                    //follower.followPath(TunelPickup,true);
 
                     currentStage = stage._90_PreLaunch4;
                 }
@@ -242,7 +291,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _110_PickupCorner2:
                 if (runtime.milliseconds() > 1500 || robot.sensors.Empty){ //added sensors here
                     endlaunch_process();
-                    follower.followPath(CornerPickup,true);
+                    //follower.followPath(CornerPickup,true);
                     currentStage = stage._120_Prelaunch5;
                 }
                 break;
@@ -260,7 +309,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _140_PickupTunel2:
                 if (runtime.milliseconds() > 1500 || robot.sensors.Empty){ //added sensors here
                     endlaunch_process();
-                    follower.followPath(TunelPickup,true);
+                    //follower.followPath(TunelPickup,true);
                     currentStage = stage._150_PreLaunch6;
                 }
             case _150_PreLaunch6:
@@ -279,7 +328,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _161_PickupCorner3:
                 if (runtime.milliseconds() > 1500 || robot.sensors.Empty){ //added sensors here
                     endlaunch_process();
-                    follower.followPath(CornerPickup,true);
+                    //follower.followPath(CornerPickup,true);
                     currentStage = stage._162_PreLaunch7;
                 }
                 break;
@@ -301,7 +350,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
             case _164_PickupTunel3:
                 if (runtime.milliseconds() > 1500 || robot.sensors.Empty){ //added sensors here
                     endlaunch_process();
-                    follower.followPath(TunelPickup,true);
+                    //follower.followPath(TunelPickup,true);
                     currentStage = stage._165_Prelaunch8;
                 }
                 break;
@@ -321,7 +370,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
 
             case _170_ParkToBeContinued:
                 if (!follower.isBusy()) {
-                    follower.followPath(Park);
+                    //follower.followPath(Park);
                     currentStage = stage._200_end;
                 }
                 break;
@@ -360,6 +409,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
         _45_PreLaunch2,
         _50_Launch2,
         _60_PickupConer1,
+        _65_GateWrap1,
         _70_PreLaunch3,
         _75_Launch3,
         _80_PickupTunel1,

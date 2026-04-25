@@ -78,8 +78,7 @@ public class SystemA extends OpMode {
 
 
     public static Follower follower;
-    public Pose currentPose = new Pose(follower.getPose().getX(), follower.getPose().getY(), Math.toRadians(follower.getPose().getHeading()));
-
+    public Pose currentPose = new Pose(0,0,0);
 
     public static Pose startPose = new Pose(10, 10, Math.toRadians(90)); // Start Pose of our robot.
     public static Pose scorePose = new Pose(15, 15, Math.toRadians(114)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
@@ -94,18 +93,18 @@ public class SystemA extends OpMode {
     public static Pose scoreCheck = new Pose(90,135,(Math.toRadians(90)));   //check
     public static Pose startPose2 = new Pose(110, 135, Math.toRadians(90));
     //  public static Pose scoreCheckCorrect = new Pose (54,135, Math.toRadians(-90));//check
-    public static Pose spikeB1start = new Pose (35,84,Math.toRadians(90));
-    public static Pose spikeB1end = new Pose (15,84,Math.toRadians(90));
-    public static Pose spikeB2start = new Pose (35,60,Math.toRadians(90));
-    public static Pose spikeB2end = new Pose (15,60,Math.toRadians(90));
-    public static Pose spikeB3start = new Pose (35,36,Math.toRadians(90));
-    public static Pose spikeB3end = new Pose (15,36,Math.toRadians(90));
-    public static Pose spikeR1start = new Pose (110,84,Math.toRadians(-90));
-    public static Pose spikeR1end = new Pose (130,84,Math.toRadians(-90));
-    public static Pose spikeR2start = new Pose (110,60,Math.toRadians(-90));
-    public static Pose spikeR2end = new Pose (130,60,Math.toRadians(-90));
-    public static Pose spikeR3start = new Pose (110,36,Math.toRadians(-90));
-    public static Pose spikeR3end = new Pose (130,36,Math.toRadians(-90));
+    public static Pose spikeB1start = new Pose (35,84,Math.toRadians(180));
+    public static Pose spikeB1end = new Pose (15,84,Math.toRadians(180));
+    public static Pose spikeB2start = new Pose (35,60,Math.toRadians(180));
+    public static Pose spikeB2end = new Pose (15,60,Math.toRadians(180));
+    public static Pose spikeB3start = new Pose (35,36,Math.toRadians(180));
+    public static Pose spikeB3end = new Pose (15,36,Math.toRadians(180));
+    public static Pose spikeR1start = new Pose (110,84,Math.toRadians(0));
+    public static Pose spikeR1end = new Pose (130,84,Math.toRadians(0));
+    public static Pose spikeR2start = new Pose (110,60,Math.toRadians(0));
+    public static Pose spikeR2end = new Pose (130,60,Math.toRadians(0));
+    public static Pose spikeR3start = new Pose (110,36,Math.toRadians(0));
+    public static Pose spikeR3end = new Pose (130,36,Math.toRadians(0));
     public static Pose launchFarRed = new Pose(48, 96, Math.toRadians(135));
     public static Pose launchFarBlue = new Pose(96, 96, Math.toRadians(45));
     public static Pose pickTunnelRed = new Pose(19, 35, Math.toRadians(190));
@@ -841,8 +840,7 @@ public class SystemA extends OpMode {
 
     @Override
     public void loop() {
-
-
+        setCurrentPose();
         updateTelemetry();
         telemetry.addData("Auton_Current_Stage ", currentStage);
         robot.autonLoop();
@@ -1359,5 +1357,8 @@ public class SystemA extends OpMode {
                 return 0;
             }
         }
+    }
+    public void setCurrentPose(){
+        currentPose = follower.getPose();
     }
 }

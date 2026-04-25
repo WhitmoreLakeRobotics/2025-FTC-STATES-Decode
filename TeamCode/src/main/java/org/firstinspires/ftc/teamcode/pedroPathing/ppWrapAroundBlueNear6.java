@@ -152,7 +152,8 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
             case _20_Prelaunch:
                 if (!follower.isBusy()) {
-                    robot.autoRPM.Measure = true;
+                    robot.launcher.cmdOutnear();
+                   // robot.autoRPM.Measure = true;
                     follower.followPath(ScorePreload,true);
                     currentStage = stage._30_ScorePreload;
                 }
@@ -367,16 +368,16 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                 follower.breakFollowing();
                 newPath();
                 //   robot.autoRPM.Measure = true; // start fly wheels
-                robot.autoRPM.Measure = true;
+             //   robot.autoRPM.Measure = true;
                 currentStage = NextStage;
                 runtime.reset();
 
             } else if (follower.getCurrentTValue() > 0.75) { //the path is almost done
                 //  robot.autoRPM.Measure = true; //start fly wheels
-                robot.autoRPM.Measure = true;
+                //robot.autoRPM.Measure = true;
             }
         } else {// path is complete we are back at scorePose move to launch
-            robot.autoRPM.Measure = true;
+           // robot.autoRPM.Measure = true;
             currentStage = NextStage;
         }
 
