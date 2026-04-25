@@ -22,7 +22,6 @@ import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
-@Disabled
 @Configurable
 @Autonomous(name = "ppBlueNear4Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
