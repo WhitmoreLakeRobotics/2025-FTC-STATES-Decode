@@ -14,17 +14,16 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-//this is for adjusting the competition robot.
-// you need to change which constants file the code points to for the different robots.
-public class CompBotConstants {
+
+public class orgCompBotConstants {
     public static FollowerConstants followerConstants = new FollowerConstants()
-        .forwardZeroPowerAcceleration(31.9247)
+         .forwardZeroPowerAcceleration(31.9247)
         .lateralZeroPowerAcceleration(70.968)
         .translationalPIDFCoefficients(new PIDFCoefficients(0.03,0, 0.01, 0.03))
-        .headingPIDFCoefficients(new PIDFCoefficients(1.0,0.003, 0.09,0.025))
-        .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.015, 0, 0.0015, 0.6, 0.00001))
-        .mass(14.9)
-        ;
+            .headingPIDFCoefficients(new PIDFCoefficients(1.0,0.003, 0.09,0.025))
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.015, 0, 0.0015, 0.6, 0.00001))
+            .mass(14.9)
+            ;
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(.3) //this should be 1 for tuning
