@@ -39,10 +39,12 @@ public class TransitionRoller extends BaseHardware{
     public final double maxPower = 1.0;
 
     public static final double TRSpeed = 1.0; //0.85;
+    public static final double TRSpeedFar = 0.75;
     public static final double stopSpeed = 0.0;
     static final double TRBack = -0.5;
     private ElapsedTime runtime = new ElapsedTime();
-
+    public double TRSpeedCurrent = TRSpeed;
+   // public boolean bSpin = false;
 
     /**
      * Hardware Mappings
@@ -72,7 +74,6 @@ public class TransitionRoller extends BaseHardware{
     public void init(){
 
         TRM01 = hardwareMap.get(DcMotorEx.class,"TRM01");
-
         // Find a valid voltage sensor
         for (VoltageSensor sensor : hardwareMap.getAll(VoltageSensor.class)) {
             if (sensor.getVoltage() > 0) {
@@ -119,6 +120,11 @@ public class TransitionRoller extends BaseHardware{
          }
 
  */
+        if(CurrentMode == Mode.Spin){
+            setCompensatedPower(TRSpeedCurrent);
+
+        }
+
 
     }
     void stop (){
@@ -138,7 +144,8 @@ public class TransitionRoller extends BaseHardware{
 
     public void cmdSpin() {
         CurrentMode = Mode.Spin;
-        setCompensatedPower(TRSpeed);
+       // setCompensatedPower(TRSpeedCurrent);
+       // bSpin = true;
         runtime.reset();
     }
 

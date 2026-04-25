@@ -11,7 +11,6 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -28,6 +27,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
     private TelemetryManager telemetryMU;
     private stage currentStage = stage._00_unknown;
     private ElapsedTime runtime = new ElapsedTime();
+    private Pose currentTargetPose = new Pose(0,0,0);
 
     public static Follower follower;
     public static Pose startPose = new Pose(34, 134, Math.toRadians(180)); // Start Pose of our robot.
@@ -104,6 +104,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
         PanelsConfigurables.INSTANCE.refreshClass(this);
         follower.setStartingPose(startPose);
         follower.update();
+        currentTargetPose = startPose;
 //  pedroPanelsTelemetry.init();
         Drawing.init();
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
@@ -155,6 +156,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                     robot.launcher.cmdOutnear();
                    // robot.autoRPM.Measure = true;
                     follower.followPath(ScorePreload,true);
+                    currentTargetPose = scorePose;
                     currentStage = stage._30_ScorePreload;
                 }
 
@@ -170,6 +172,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
                     follower.followPath(Spike2Gate,true);
+                    currentTargetPose = gatePose;
                     currentStage = stage._50_PreLaunch2;
                 }
                 break;
@@ -188,6 +191,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
                     follower.followPath(GatePickup,true);
+                    currentTargetPose = gatePose;
                     currentStage = stage._80_Prelaunch3;
                 }
                 break;
@@ -320,7 +324,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
         telemetryMU.addData("y", follower.getPose().getY());
         telemetryMU.addData("heading", Math.toDegrees(follower.getPose().getHeading()));
         //  telemetryMU.addData("LAST Pose", lastPose);
-        //  telemetryMU.addData("Current Target Pose", currentTargetPose);
+          telemetryMU.addData("Current Target Pose", currentTargetPose);
         telemetryMU.addData("breakingStrength", pathConstraints.getBrakingStrength());
         telemetryMU.addData("breakstart ", pathConstraints.getBrakingStart());
         telemetryMU.addData("drivepid P", follower.constants.coefficientsDrivePIDF.P);

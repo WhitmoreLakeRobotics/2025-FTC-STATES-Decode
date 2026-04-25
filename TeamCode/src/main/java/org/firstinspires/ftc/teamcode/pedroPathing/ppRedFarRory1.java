@@ -9,7 +9,6 @@ import com.bylazar.configurables.annotations.Configurable;
 import com.bylazar.telemetry.PanelsTelemetry;
 import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -24,9 +23,9 @@ import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 
 
-@Disabled
+
 @Configurable
-@Autonomous(name = "ppTESTMEBlueFar7Cycle", group = "PP")
+@Autonomous(name = "ppRedFar7Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
 
 
@@ -61,7 +60,9 @@ public class ppRedFarRory1 extends OpMode {
     public static double powerFast = 0.8;
     // poses for pedropath
     // poses for pedropath
-    public static Pose startPose = new Pose(57, 9, Math.toRadians(90)); // Start Pose of our robot.
+    public static Pose currentPose = new Pose(follower.getPose().getX(),follower.getPose().getY(),follower.getPose().getHeading());
+
+    public static Pose startPose = new Pose(57, 9, Math.toRadians(57)); // Start Pose of our robot.
     public static Pose scorePose = new Pose(57, 15, Math.toRadians(112)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     public static Pose scorePoseAP =new Pose(52,18,Math.toRadians(10));
@@ -73,7 +74,7 @@ public class ppRedFarRory1 extends OpMode {
     public static Pose Spike1b = new Pose(130,36,Math.toRadians(180));
 
     public static Pose Pickuptunnel1 = new Pose(130,37, Math.toRadians(45));
-    public static Pose Pickuptunnel2 = new Pose(133, 30, Math.toRadians(5));
+    public static Pose PickupCorner = new Pose(133, 30, Math.toRadians(5));
 
     public static Pose pickup2aPose = new Pose(10, 37, Math.toRadians(190)); // 10 was 8 Middle (Second Set) of Artifacts from the Spike Mark.
     public static Pose pickup2aPoseC = new Pose(71, 39, Math.toRadians(190)); // Lowest (Third Set) of Artifacts from the Spike Mark.
@@ -81,11 +82,15 @@ public class ppRedFarRory1 extends OpMode {
     //public static Pose pickup3bPose = new Pose(15, 35, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
     public static Pose endPose = new Pose(11,15,Math.toRadians(180));
     public static Pose endPose2 = new Pose(11,15,Math.toRadians(180));
+
+    public static Pose Park = new Pose(15,10,Math.toRadians(90));
+
+
     private Pose currentTargetPose = startPose;
     private Pose lastPose = startPose;
 
     private PathChain Spike3;
-    private PathChain Pickup1, Tunnelpickupa, Tunnelpickupb;
+    private PathChain Pickup1, Tunnelpickupa,PickupCorner1,ParkPath,ScorePreload;
 
 
     // private Path grabPickup1a;
@@ -97,6 +102,12 @@ public class ppRedFarRory1 extends OpMode {
 
 
             public Paths(Follower follower) {
+
+                ParkPath = follower.pathBuilder()
+                        .addPath(new BezierLine(currentPose, Park))
+                        .setLinearHeadingInterpolation(currentPose.getHeading(), Park.getHeading())
+                        .build();
+
                 Spike3 = follower.pathBuilder()
                         .addPath(new BezierLine(scorePose,Spike1a))
                         .setLinearHeadingInterpolation(scorePose.getHeading(), Spike1a.getHeading())
@@ -129,13 +140,21 @@ public class ppRedFarRory1 extends OpMode {
                         .setLinearHeadingInterpolation(Pickuptunnel1.getHeading(),scorePose.getHeading())
                         .build();
 
-                Tunnelpickupb = follower.pathBuilder()
-                        .addPath(new BezierLine(scorePose,Pickuptunnel2))
-                        .setLinearHeadingInterpolation(scorePose.getHeading(),Pickuptunnel2.getHeading())
-
-                        .addPath(new BezierLine(Pickuptunnel2,scorePose))
-                        .setLinearHeadingInterpolation(Pickuptunnel2.getHeading(),scorePose.getHeading())
+                ScorePreload = follower.pathBuilder()
+                        .addPath(new BezierLine(startPose,scorePose))
+                        .setLinearHeadingInterpolation(startPose.getHeading(),scorePose.getHeading())
                         .build();
+
+                PathChain TunnelCorner = follower.pathBuilder()
+                        .addPath(new BezierLine(scorePose, PickupCorner))
+                        .setLinearHeadingInterpolation(scorePose.getHeading(), PickupCorner.getHeading())
+
+                        .addPath(new BezierLine(PickupCorner, scorePose))
+                        .setLinearHeadingInterpolation(PickupCorner.getHeading(), scorePose.getHeading())
+                        .build();
+
+
+
 
 
 
@@ -382,15 +401,27 @@ public class ppRedFarRory1 extends OpMode {
 
             case _10_Prelaunch:
                 if (!follower.isBusy()) {
-                   // follower.followPath(scorePreload, powerNormal, true);
+                    follower.followPath(ScorePreload, powerNormal, true);
                     lastPose = startPose;
                     currentTargetPose = scorePose;
                     // follower.update();
                     robot.launcher.cmdOutfar();
-                    currentStage = stage._20_DriveCornor;
+                    currentStage = stage._16_Spike;
                 }
+                break;
+            case _15_Launch:
+                if (runtime.milliseconds() >= 1500) {
+                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
+                    dolaunch_process();
+                    // currentStage = stage._50_Pickup1;
+                    currentStage = stage._16_Spike;
+                }
+
+                break;
+
             case _16_Spike:
                 if (!follower.isBusy()) {
+                    endlaunch_process();
                     follower.followPath(Spike3);
                     currentStage = stage._25_DriveBack; // we don't need to do the turn since heading is adjusted in path
                     runtime.reset();
@@ -407,11 +438,21 @@ public class ppRedFarRory1 extends OpMode {
                         robot.intake.cmdFoward();
                         robot.transitionRoller.cmdSpin();
                         runtime.reset();
-                        currentStage = stage._30_Shoot;
+                        currentStage = stage._27_Prelaunch;
                     }}
                 break;
+            case _27_Prelaunch:
+                if (!follower.isBusy()) {
+                    // follower.followPath(scorePreload, powerNormal, true);
+                    lastPose = startPose;
+                    currentTargetPose = scorePose;
+                    // follower.update();
+                    robot.launcher.cmdOutfar();
+                    currentStage = stage._30_Shoot;
+                }
 
 
+break;
             case _30_Shoot:
                 if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
@@ -419,288 +460,297 @@ public class ppRedFarRory1 extends OpMode {
                     // currentStage = stage._50_Pickup1;
                     currentStage = stage._35_Drivetunnel;
                 }
+
                 break;
-
-
-          /*  case _50_Pickup1:
+            case _35_Drivetunnel:
                 if (!follower.isBusy()) {
-                    // follower.followPath(grabPickup1a, powerNormal, true);
-                    //  follower.followPath(grabPickup1,powerNormal,true);
-                    follower.turnToDegrees(190);
-                    follower.followPath(grabPickup1,powerFast,true);
-                    robot.intake.cmdFoward();
-                    lastPose = currentTargetPose;
-                    currentTargetPose = pickup1cPose;
-                    // currentStage = stage._55_Pickup1_Startintake;
-                    currentStage = stage._60_Pickup1a;
-                }
-                break;
-
-
-            case _60_Pickup1a:
-                if (!follower.isBusy() || runtime.milliseconds() > 3500) {
-                    // follower.followPath(grabPickup1c,powerSlow, true);
-                    //if we have 3 artifacts stop the path and go to next stage
-                    if (robot.intake.autoStopped){
-                        follower.breakFollowing();
-                        currentStage = stage._70_ToScorePoseAP;
-                        runtime.reset();
-
-
-                    }
-                 /*  if (runtime.milliseconds() < 300 ){
-                       follower.turnToDegrees(185);
-                   }
-                   else{
-                       follower.turnToDegrees(175); //wiggle to pick up more
-                   }
-                    // lastPose = currentTargetPose;
-                    //currentTargetPose = pickup1cPose;
-                    currentStage = stage._65_PickupWiggle;
-                    runtime.reset();
-                }
-
-
-                break;
-            case _65_PickupWiggle:
-                if (!follower.isBusy()) {
-                    // follower.followPath(grabPickup1c, powerSlow, true);
-                    if (runtime.milliseconds() < 100) {
-                        follower.turnToDegrees(185);
-                    } else {
-                        follower.turnToDegrees(175); //wiggle to pick up more
-                    }
-
-
-                    currentStage = stage._70_ToScorePoseAP;
+                    follower.followPath(Tunnelpickupa);
+                    currentStage = stage._37_DriveBackT; // we don't need to do the turn since heading is adjusted in path
                     runtime.reset();
                 }
                 break;
-
-
-            case _70_ToScorePoseAP:
-                if(!follower.isBusy() || runtime.milliseconds() > 1500){
-                    follower.followPath(scorePickup1,powerMedium,true);
-                    lastPose = currentTargetPose;
-                    currentTargetPose = scorePose;
-                    robot.launcher.cmdOutfar();
-                    currentStage = stage._75_chkDrive_to_score_P1;
-                }
-                break;
-            case _75_chkDrive_to_score_P1:
+            case _37_DriveBackT:
                 if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._80_ScorePickup1; // we don't need to do the turn since heading is adjusted in path
-                    runtime.reset();
-                }
-                break;
-
-
-            case _80_ScorePickup1:
-                if (!follower.isBusy()) {
-                    //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
-                    //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 1000) {
-                        telemetryMU.addLine("wqiting to shoot 2");
-                        robot.intake.cmdFoward();
-                        robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
-                        currentStage = stage._90_LauncherStop;
-                        runtime.reset();
-                    }}
-                break;
-            case _90_LauncherStop:
-                if (runtime.milliseconds() >= 1500) {
-                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
-                    robot.launcherBlocker.cmdBlock();
-                    currentStage = stage._100_Pickup2;
-                }
-                break;
-
-
-            case _100_Pickup2:
-                if (!follower.isBusy()) {
-                    follower.followPath(grabPickup2a, powerMedium, true);
-                    lastPose = currentTargetPose;
-                    currentTargetPose = pickup2aPose;
-                    currentStage = stage._110_Pickup2_Startintake;
-                }
-                break;
-
-
-            case _110_Pickup2_Startintake:
-                if (!follower.isBusy()) {
-                    // follower.followPath(grabPickup1a, true);
-                    currentTargetPose = pickup2aPose;
-                    robot.intake.cmdFoward();
-                    currentStage = stage._130_ToScorePoseAP;
-                }
-
-
-                break;
-            case _130_ToScorePoseAP:
-                if(!follower.isBusy()){
-                    follower.followPath(scorePickup2,powerNormal,true);
-                    currentTargetPose = scorePose;
-                    robot.launcher.cmdOutfar();
-                    currentStage = stage._140_chkDrive_to_scorePoseAP;
-                }
-                break;
-            case _140_chkDrive_to_scorePoseAP:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._150_ScorePickup2; // we don't need to do the turn since heading is adjusted in path
-                    runtime.reset();
-                }
-
-
-
-
-
-
-                break;
-
-
-            case _150_ScorePickup2:
-                if (!follower.isBusy()) {
-                    //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
-                    //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 1000) {
+                    if (runtime.milliseconds() >= 500) {
                         telemetryMU.addLine("wqiting to shoot 1");
-                        robot.intake.cmdFoward();
-                        robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
-                        currentStage = stage._160_LauncherStop;
-                        runtime.reset();
-                    }
-                }
-
-
-            case _160_LauncherStop:
-                if (runtime.milliseconds() >= 1500) {
-                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
-                    robot.launcherBlocker.cmdBlock();
-                    // currentStage = stage._50_Pickup1;
-                    currentStage = stage._170_Pickup1;
-                }
-                break;
-
-
-            case _170_Pickup1:
-                if (!follower.isBusy()) {
-                    // follower.followPath(grabPickup1a, powerNormal, true);
-                    //  follower.followPath(grabPickup1,powerNormal,true);
-                    follower.turnToDegrees(190);
-                    follower.followPath(grabPickup1,powerNormal,true);
-                    robot.intake.cmdFoward();
-                    lastPose = currentTargetPose;
-                    currentTargetPose = pickup1cPose;
-                    // currentStage = stage._55_Pickup1_Startintake;
-                    currentStage = stage._190_Pickup1a;
-                }
-                break;
-
-
-            case _190_Pickup1a:
-                if (!follower.isBusy() || runtime.milliseconds() > 3500) {
-                    // follower.followPath(grabPickup1c,powerSlow, true);
-                    //if we have 3 artifacts stop the path and go to next stage
-                    if (robot.intake.autoStopped){
-                        follower.breakFollowing();
-                        currentStage = stage._200_PickupWiggle;
-                        runtime.reset();
-
-
-                    }
-                    currentStage = stage._200_PickupWiggle;
-                    runtime.reset();
-                }
-
-
-                break;
-            case _200_PickupWiggle:
-                if (!follower.isBusy()) {
-                    // follower.followPath(grabPickup1c, powerSlow, true);
-                    if (runtime.milliseconds() < 100) {
-                        follower.turnToDegrees(185);
-                    } else {
-                        follower.turnToDegrees(175); //wiggle to pick up more ()
-                    }
-
-
-                    currentStage = stage._210_ToScorePoseAP;
-                    runtime.reset();
-                }
-                break;
-
-
-            case _210_ToScorePoseAP:
-                if(!follower.isBusy() || runtime.milliseconds() > 1000){
-                    follower.followPath(scorePickup1,powerNormal,true);
-                    lastPose = currentTargetPose;
-                    currentTargetPose = scorePose;
+                        // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
+                        //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
                     robot.launcher.cmdOutfar();
-                    currentStage = stage._220_chkDrive_to_score_P1;
-                }
-                break;
-            case _220_chkDrive_to_score_P1:
-                if (!follower.isBusy()) {
-                    telemetryMU.addData("Drive Complete?", follower.isBusy());
-                    currentStage = stage._230_ScorePickup1; // we don't need to do the turn since heading is adjusted in path
-                    runtime.reset();
-                }
-                break;
-
-
-            case _230_ScorePickup1:
-                if (!follower.isBusy()) {
-                    //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
-                    //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 1000) {
-                        telemetryMU.addLine("wqiting to shoot 2");
-                        robot.intake.cmdFoward();
-                        robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
-                        currentStage = stage._240_LauncherStop;
                         runtime.reset();
+                        currentStage = stage._45_Launch;
                     }}
                 break;
-            case _240_LauncherStop:
+            case _45_Launch:
                 if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
-                    robot.launcherBlocker.cmdBlock();
-                    currentStage = stage._450_Park;
-                }
-                break;
-
-
-            case _450_Park:
-                if (runtime.milliseconds() >= 1500) {
-                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
-                    robot.launcherBlocker.cmdBlock();
-                    follower.followPath(goEndPose, powerNormal,true);
-                    lastPose = currentTargetPose;
-                    currentTargetPose = endPose;
-                    currentStage = stage._500_End; //   75_ParkToBeContinued;
+              dolaunch_process();
+                    // currentStage = stage._50_Pickup1;
+                    currentStage = stage._50_DriveCornor;
                 }
 
+                break;
+            case _50_DriveCornor:
+                if (!follower.isBusy()) {
+                    follower.followPath(PickupCorner1);
+                    endlaunch_process();
+                    currentStage = stage._55_DriveBackC; // we don't need to do the turn since heading is adjusted in path
+                    runtime.reset();
+                }
+                break;
+            case _55_DriveBackC:
+                if (!follower.isBusy()) {
+                    if (runtime.milliseconds() >= 500) {
+                        telemetryMU.addLine("wqiting to shoot 1");
+                        // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
+                        //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
+                        robot.launcher.cmdOutfar();
+                        runtime.reset();
+                        currentStage = stage._60_Shoot;
+                    }}
+                break;
+            case _60_Shoot:
+                if (runtime.milliseconds() >= 1500) {
+               dolaunch_process();
+                    currentStage = stage._65_Drivetunnel;
+                }
+                break;
+            case _65_Drivetunnel:
+                if (!follower.isBusy()) {
+                    follower.followPath(Tunnelpickupa);
+                    endlaunch_process();
+                    currentStage = stage._67_DriveBackT; // we don't need to do the turn since heading is adjusted in path
+                    runtime.reset();
+                }
+                break;
+            case _67_DriveBackT:
+                if (!follower.isBusy()) {
+                    if (runtime.milliseconds() >= 500) {
+                        telemetryMU.addLine("wqiting to shoot 1");
+                        // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
+                        //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
+                        robot.launcher.cmdOutfar();
+                        runtime.reset();
+                        currentStage = stage._70_Launch;
+                    }}
+                break;
+            case _70_Launch:
+                if (runtime.milliseconds() >= 1500) {
+                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
+                  dolaunch_process();
+                    // currentStage = stage._50_Pickup1;
+                    currentStage = stage._75_DriveCornor;
+                }
 
                 break;
 
-
-            case _475_ParkToBeContinued:
+            case _75_DriveCornor:
+                if (!follower.isBusy()) {
+                    follower.followPath(PickupCorner1);
+                    endlaunch_process();
+                    currentStage = stage._80_DriveBackC; // we don't need to do the turn since heading is adjusted in path
+                    runtime.reset();
+                }
+                break;
+            case _80_DriveBackC:
+                if (!follower.isBusy()) {
+                    if (runtime.milliseconds() >= 500) {
+                        telemetryMU.addLine("wqiting to shoot 1");
+                        // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
+                        //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
+                        robot.launcher.cmdOutfar();
+                        runtime.reset();
+                        currentStage = stage._85_Shoot;
+                    }}
+                break;
+            case _85_Shoot:
+                if (runtime.milliseconds() >= 1500) {
+                    dolaunch_process();
+                    currentStage = stage._90_Drivetunnel;
+                }
+                break;
+            case _90_Drivetunnel:
+                if (!follower.isBusy()) {
+                    follower.followPath(Tunnelpickupa);
+                    endlaunch_process();
+                    currentStage = stage._100_Prelaunch; // we don't need to do the turn since heading is adjusted in path
+                    runtime.reset();
+                }
+                break;
+            case _100_Prelaunch:
+                if (!follower.isBusy()) {
+                    if (runtime.milliseconds() >= 500) {
+                        telemetryMU.addLine("wqiting to shoot 1");
+                        // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
+                        //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
+                        robot.launcher.cmdOutfar();
+                        runtime.reset();
+                        currentStage = stage._110_Launch;
+                    }}
+                break;
+            case _110_Launch:
                 if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
-                    robot.launcherBlocker.cmdBlock();
-                    follower.followPath(goEndPose2, powerNormal,true);
-                    lastPose = currentTargetPose;
-                    currentTargetPose = endPose2;
+                    dolaunch_process();
+                    // currentStage = stage._50_Pickup1;
+                    currentStage = stage._115_DriveCornor;
+                }
+
+                break;
+
+            case _115_DriveCornor:
+                if (!follower.isBusy()) {
+                    follower.followPath(PickupCorner1);
+                    endlaunch_process();
+                    currentStage = stage._120_DriveBackc; // we don't need to do the turn since heading is adjusted in path
+                    runtime.reset();
+                }
+                break;
+            case _120_DriveBackc:
+                if (!follower.isBusy()) {
+                    if (runtime.milliseconds() >= 500) {
+                        telemetryMU.addLine("wqiting to shoot 1");
+                        // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
+                        //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
+                        robot.launcher.cmdOutfar();
+                        runtime.reset();
+                        currentStage = stage._130_Shoot;
+                    }}
+                break;
+            case _130_Shoot:
+                if (runtime.milliseconds() >= 1500) {
+                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
+                    dolaunch_process();
+                    // currentStage = stage._50_Pickup1;
+                    currentStage = stage._135_Drivetunnel;
+                }
+
+                break;
+            case _135_Drivetunnel:
+                if (!follower.isBusy()) {
+                    follower.followPath(Tunnelpickupa);
+                    endlaunch_process();
+                    currentStage = stage._140_DriveBackT; // we don't need to do the turn since heading is adjusted in path
+                    runtime.reset();
+                }
+                break;
+            case _140_DriveBackT:
+                if (!follower.isBusy()) {
+                    if (runtime.milliseconds() >= 500) {
+                        telemetryMU.addLine("wqiting to shoot 1");
+                        // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
+                        //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
+                        robot.launcher.cmdOutfar();
+                        runtime.reset();
+                        currentStage = stage._145_Launch;
+                    }}
+                break;
+            case _145_Launch:
+                if (runtime.milliseconds() >= 1500) {
+                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
+                    dolaunch_process();
+                    // currentStage = stage._50_Pickup1;
+                    currentStage = stage._150_DriveCornor;
+                }
+
+                break;
+            case _150_DriveCornor:
+                if (!follower.isBusy()) {
+                    follower.followPath(PickupCorner1);
+                    endlaunch_process();
+                    currentStage = stage._155_DriveBackC; // we don't need to do the turn since heading is adjusted in path
+                    runtime.reset();
+                }
+                break;
+            case _155_DriveBackC:
+                if (!follower.isBusy()) {
+                    if (runtime.milliseconds() >= 500) {
+                        telemetryMU.addLine("wqiting to shoot 1");
+                        // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
+                        //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
+                        robot.launcher.cmdOutfar();
+                        runtime.reset();
+                        currentStage = stage._160_Shoot;
+                    }}
+                break;
+            case _160_Shoot:
+                if (runtime.milliseconds() >= 1500) {
+                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
+                    dolaunch_process();
+                    // currentStage = stage._50_Pickup1;
+                    currentStage = stage._165_Drivetunnel;
+                }
+
+                break;
+            case _165_Drivetunnel:
+                if (!follower.isBusy()) {
+                    follower.followPath(Tunnelpickupa);
+                    endlaunch_process();
+                    currentStage = stage._167_DriveBackT; // we don't need to do the turn since heading is adjusted in path
+                    runtime.reset();
+                }
+                break;
+            case _167_DriveBackT:
+                if (!follower.isBusy()) {
+                    if (runtime.milliseconds() >= 500) {
+                        telemetryMU.addLine("wqiting to shoot 1");
+                        // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
+                        //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
+                        robot.launcher.cmdOutfar();
+                        runtime.reset();
+                        currentStage = stage._170_Launch;
+                    }}
+                break;
+            case _170_Launch:
+                if (runtime.milliseconds() >= 1500) {
+                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
+                    dolaunch_process();
+                    // currentStage = stage._50_Pickup1;
+                    currentStage = stage._175_DriveCornor;
+                }
+
+                break;
+            case _175_DriveCornor:
+                if (!follower.isBusy()) {
+                    follower.followPath(PickupCorner1);
+                    endlaunch_process();
+                    currentStage = stage._180_DriveBackC; // we don't need to do the turn since heading is adjusted in path
+                    runtime.reset();
+                }
+
+
+                break;
+            case _180_DriveBackC:
+                if (!follower.isBusy()) {
+                    if (runtime.milliseconds() >= 500) {
+                        telemetryMU.addLine("wqiting to shoot 1");
+                        // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
+                        //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
+                        robot.launcher.cmdOutfar();
+                        runtime.reset();
+                        currentStage = stage._185_Shoot;
+                    }}
+                break;
+
+            case _185_Shoot:
+                if (!follower.isBusy()) {
+                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
+                    dolaunch_process();
+                    // currentStage = stage._50_Pickup1;
+                    currentStage = stage._200_DrivePark;
+                }
+
+                break;
+            case _200_DrivePark:
+                if (runtime.milliseconds() >= 1250) {
+                    endlaunch_process();
+                    follower.followPath(ParkPath,true);
+                    runtime.reset();
                     currentStage = stage._500_End;
                 }
 
-
                 break;
-            */case _500_End:
+
+            case _500_End:
             { //do nothing let the time run out
                 if (runtime.milliseconds() > 3000){ //was 2500
                     follower.breakFollowing();
@@ -780,34 +830,38 @@ public class ppRedFarRory1 extends OpMode {
         _17_drivebacK,
         _20_DriveCornor,
         _25_DriveBack,
+        _27_Prelaunch,
         _30_Shoot,
         _35_Drivetunnel,
+        _37_DriveBackT,
         _40_PreLaunch,
         _45_Launch,
         _50_DriveCornor,
-        _55_DriveBack,
+        _55_DriveBackC,
         _60_Shoot,
         _65_Drivetunnel,
+        _67_DriveBackT,
         _70_Launch,
         _75_DriveCornor,
-        _80_DriveBack,
+        _80_DriveBackC,
         _85_Shoot,
         _90_Drivetunnel,
         _100_Prelaunch,
         _110_Launch,
         _115_DriveCornor,
-        _120_DriveBack,
+        _120_DriveBackc,
         _130_Shoot,
         _135_Drivetunnel,
-        _140_PreLaunch,
+        _140_DriveBackT,
         _145_Launch,
         _150_DriveCornor,
-        _155_DriveBack,
+        _155_DriveBackC,
         _160_Shoot,
         _165_Drivetunnel,
+        _167_DriveBackT,
         _170_Launch,
         _175_DriveCornor,
-        _180_DriveBack,
+        _180_DriveBackC,
         _185_Shoot,
         _190_Drivetunnel,
         _200_DrivePark,

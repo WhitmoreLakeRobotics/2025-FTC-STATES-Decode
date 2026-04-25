@@ -36,6 +36,7 @@ public class pp6CycleBlueFar extends OpMode {
     private stage currentStage = stage._00_unknown;
     private ElapsedTime runtime = new ElapsedTime();
     public boolean End = false;
+    private Pose currentTargetPose = new Pose(0,0,0);
 
     private ElapsedTime Gameruntime = new ElapsedTime(); // this is to ensure we end facing the correct position for teleop
 
@@ -165,9 +166,10 @@ public class pp6CycleBlueFar extends OpMode {
                 if (!follower.isBusy()) {
                     follower.followPath(scorePreload,  true);
                     //lastPose = startPose;
-                    /* currentTargetPose = scorePose;*/
+                     currentTargetPose = scorePose;
                     // follower.update();
-                    robot.autoRPM.Measure = true;
+                    //robot.autoRPM.Measure = true;
+                    robot.launcher.cmdOutfar();
                     currentStage = stage._30_ScorePreload;
                 }
 
@@ -176,13 +178,14 @@ public class pp6CycleBlueFar extends OpMode {
             case _30_ScorePreload:
                 if (!follower.isBusy()) {
                     dolaunch_process();
-                    currentStage = stage._40_PickupCornor;
+                    currentStage = stage._40_PickupCorner;
                 }
                 break;
-            case _40_PickupCornor:
+            case _40_PickupCorner:
                 if (runtime.milliseconds() > 500 ){//|| robot.sensors.NoArtifacts) { //add sensors here
                     endlaunch_process();
                     follower.followPath(CornerPickup);
+                    currentTargetPose = CornerPickupPose;
                     currentStage = stage._45_PreLaunch2;
                 }
                 break;
@@ -319,7 +322,7 @@ public class pp6CycleBlueFar extends OpMode {
         _10_preStart,
         _20_PreLaunch,
         _30_ScorePreload,
-        _40_PickupCornor,
+        _40_PickupCorner,
         _42_,
         _45_PreLaunch2,
         _50_Launch2,
@@ -353,8 +356,8 @@ public class pp6CycleBlueFar extends OpMode {
     private void endlaunch_process(){
 
         robot.launcherBlocker.cmdBlock();
-        robot.autoRPM.Measure = false;
-        robot.launcher.cmdStop();
+        //robot.autoRPM.Measure = false;
+       // robot.launcher.cmdStop();
 
     }
 
@@ -392,7 +395,7 @@ public class pp6CycleBlueFar extends OpMode {
         telemetryMU.addData("y", follower.getPose().getY());
         telemetryMU.addData("heading", Math.toDegrees(follower.getPose().getHeading()));
         //  telemetryMU.addData("LAST Pose", lastPose);
-        //  telemetryMU.addData("Current Target Pose", currentTargetPose);
+          telemetryMU.addData("Current Target Pose", currentTargetPose);
         telemetryMU.addData("breakingStrength", pathConstraints.getBrakingStrength());
         telemetryMU.addData("breakstart ", pathConstraints.getBrakingStart());
         telemetryMU.addData("drivepid P", follower.constants.coefficientsDrivePIDF.P);
@@ -414,9 +417,10 @@ public class pp6CycleBlueFar extends OpMode {
     private  void newPath(){
         interruptedPickup = follower.pathBuilder()
                 .addPath (new BezierLine(follower.getPose(), scorePose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), scorePoseAP.getHeading())
+                .setLinearHeadingInterpolation(follower.getHeading(), scorePoseAP.getHeading())
                 .build();
         follower.followPath(interruptedPickup,true);
+        currentTargetPose = scorePoseAP;
 
     }
 
