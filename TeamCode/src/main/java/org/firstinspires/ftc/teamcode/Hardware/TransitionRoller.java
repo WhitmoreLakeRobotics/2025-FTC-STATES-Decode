@@ -177,7 +177,7 @@ public class TransitionRoller extends BaseHardware{
         double limitedVoltage = Math.min(measuredVoltage, 11.0);
 
         // Compensation formula
-        double compensated = targetPower * (11.0 / limitedVoltage);
+        double compensated = targetPower * (9.0 / limitedVoltage);// was 11.0
 
         // Clamp to [-1, 1]
         compensated = Math.max(-1.0, Math.min(1.0, compensated));
