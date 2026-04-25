@@ -23,7 +23,7 @@ public class CompBotConstants {
         .translationalPIDFCoefficients(new PIDFCoefficients(0.03,0, 0.01, 0.03))
         .headingPIDFCoefficients(new PIDFCoefficients(1.0,0.003, 0.09,0.025))
         .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.015, 0, 0.0015, 0.6, 0.00001))
-        .mass(14.9)
+        .mass(15.0)
         ;
 
     public static MecanumConstants driveConstants = new MecanumConstants()
