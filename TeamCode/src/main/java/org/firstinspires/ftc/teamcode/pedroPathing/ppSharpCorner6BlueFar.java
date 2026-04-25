@@ -40,9 +40,9 @@ public class ppSharpCorner6BlueFar extends OpMode {
 
     public static Follower follower;
     public static Pose startPose = new Pose(55, 8, Math.toRadians(90)); // Start Pose of our robot.
-    public static Pose scorePose = new Pose(55, 17, Math.toRadians(114)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    public static Pose scorePose = new Pose(55, 17, Math.toRadians(108.5)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    public static Pose scorePoseAP = new Pose(52, 15, Math.toRadians(10));
+    //public static Pose scorePoseAP = new Pose(52, 15, Math.toRadians(10));
     public static Pose pickup1aPose = new Pose(25, 25, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     public static Pose pickup1bPose = new Pose(20, 20, Math.toRadians(190)); // (First Set) of Artifacts picked up.
     public static Pose pickup1bPoseC = new Pose(1, 27, Math.toRadians(200));
@@ -67,7 +67,7 @@ public class ppSharpCorner6BlueFar extends OpMode {
                 .addPath(new BezierLine(pickup1aPose, pickup1bPose))
                 .setLinearHeadingInterpolation(pickup1aPose.getHeading(), pickup1bPose.getHeading())
 
-                .addPath(new BezierCurve(pickup1bPose, scorePoseAP))
+                .addPath(new BezierCurve(pickup1bPose, scorePose))
                 .setLinearHeadingInterpolation(pickup1bPose.getHeading(), scorePose.getHeading())
 
                 .build();

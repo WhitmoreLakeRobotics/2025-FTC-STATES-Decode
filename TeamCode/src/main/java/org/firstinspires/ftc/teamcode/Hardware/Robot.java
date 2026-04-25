@@ -249,9 +249,9 @@ public class Robot extends BaseHardware {
 
 
                 if (currentTagId == 24) {
-                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal +2;
+                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 1.31;//+2
                 } else if (currentTagId == 20) {
-                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 5;
+                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 5;//-5
                 } else {
                     return driveTrain.getCurrentHeading();
                 }
@@ -319,7 +319,7 @@ public class Robot extends BaseHardware {
 
 
                 if (currentTagId == 24) {
-                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 4;
+                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 1.60; //was -4
                 } else if (currentTagId == 20) {
                     return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal;
                 } else {
@@ -336,15 +336,23 @@ public class Robot extends BaseHardware {
         return driveTrain.getCurrentHeading();
     }
 
+    public void UpdateTransRoller(){
+        if(limey.getTagDistance() < 1.1){
+            transitionRoller.TRSpeedCurrent = TransitionRoller.TRSpeed;
+        }else if(limey.getTagDistance() >= 1.1){
+            transitionRoller.TRSpeedCurrent = TransitionRoller.TRSpeedFar;
+           }
+    }
+
 
     public void basicSystem(){
         if(autoRPM.Measure){
             launcher.CurrentPosition = Launcher.Position.LaunchCalc;
-            if(limey.getTagDistance() < 3.1){
+            if(limey.getTagDistance() < 1.1){ //3.1
                 launcher.CurrentCalcPos = Launcher.CalcPos.Near;
-            }else if(limey.getTagDistance() >= 3.1 && limey.getTagDistance() < 3.4){
+            }else if(limey.getTagDistance() >= 1.1 && limey.getTagDistance() < 1.965){
                 launcher.CurrentCalcPos = Launcher.CalcPos.Far;
-            }else if(limey.getTagDistance() >= 3.4){
+            }else if(limey.getTagDistance() >= 1.965){ //3.4
                 launcher.CurrentCalcPos = Launcher.CalcPos.Farther;
             }else{
                 launcher.CurrentCalcPos = Launcher.CalcPos.Unknown;
