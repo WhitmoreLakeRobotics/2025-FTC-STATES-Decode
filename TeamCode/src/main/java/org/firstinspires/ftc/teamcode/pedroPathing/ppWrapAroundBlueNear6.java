@@ -56,9 +56,8 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                 .addPath(new BezierLine(pickup1aPose, pickup1bPose))
                 .setLinearHeadingInterpolation(pickup1aPose.getHeading(), pickup1bPose.getHeading())
 
-                .addPath(new BezierCurve(pickup1bPose, scorePoseAP))
+                .addPath(new BezierCurve(pickup1bPose, scorePose))
                 .setLinearHeadingInterpolation(pickup1bPose.getHeading(), scorePose.getHeading())
-
                 .build();
 
         GatePickup = follower.pathBuilder()
@@ -77,7 +76,6 @@ public class ppWrapAroundBlueNear6 extends OpMode {
         ScorePreload = follower.pathBuilder()
                 .addPath(new BezierLine(startPose, scorePose))
                 .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
-
                 .build();
 
         Spike2Gate = follower.pathBuilder()
