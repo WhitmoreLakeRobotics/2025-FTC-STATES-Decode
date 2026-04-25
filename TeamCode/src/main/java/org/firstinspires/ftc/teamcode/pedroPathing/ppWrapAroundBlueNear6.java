@@ -11,7 +11,6 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -28,6 +27,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
     private TelemetryManager telemetryMU;
     private stage currentStage = stage._00_unknown;
     private ElapsedTime runtime = new ElapsedTime();
+    private Pose currentTargetPose = new Pose(0,0,0);
 
     public static Follower follower;
     public static Pose startPose = new Pose(34, 134, Math.toRadians(180)); // Start Pose of our robot.
@@ -154,6 +154,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                 if (!follower.isBusy()) {
                     robot.autoRPM.Measure = true;
                     follower.followPath(ScorePreload,true);
+                    currentTargetPose = scorePose;
                     currentStage = stage._30_ScorePreload;
                 }
 
@@ -319,7 +320,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
         telemetryMU.addData("y", follower.getPose().getY());
         telemetryMU.addData("heading", Math.toDegrees(follower.getPose().getHeading()));
         //  telemetryMU.addData("LAST Pose", lastPose);
-        //  telemetryMU.addData("Current Target Pose", currentTargetPose);
+          telemetryMU.addData("Current Target Pose", currentTargetPose);
         telemetryMU.addData("breakingStrength", pathConstraints.getBrakingStrength());
         telemetryMU.addData("breakstart ", pathConstraints.getBrakingStart());
         telemetryMU.addData("drivepid P", follower.constants.coefficientsDrivePIDF.P);
