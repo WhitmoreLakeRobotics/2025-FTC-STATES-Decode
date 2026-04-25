@@ -566,7 +566,7 @@ public class Tele_Op extends OpMode {
 
 
         }else{
-            robot.launcherBlocker.cmdBlock();//experiment
+            robot.launcherBlocker.cmdBlock();//experimentf
             robot.launcher.launching = false;
         }
 
