@@ -172,7 +172,7 @@ public class SystemA extends OpMode {
                 .setLinearHeadingInterpolation(pickup1aPose.getHeading(), pickup1bPose.getHeading())
 
 
-                .addPath(new BezierCurve(pickup1bPose, scorePoseAP))
+                .addPath(new BezierLine(pickup1bPose, scorePoseAP))
                 .setLinearHeadingInterpolation(pickup1bPose.getHeading(), scorePose.getHeading())
 
 
