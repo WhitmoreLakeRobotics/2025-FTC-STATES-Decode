@@ -134,7 +134,7 @@ public class Sensors extends BaseHardware {
      */
     public void init_loop() {
 
-        if(initLight1 && initLightTime.milliseconds() >= 750){
+        if(initLight1 && initLightTime.milliseconds() >= 2000){
             cmdORANGE();
             PeaDark.setPosition(Off);
             initLight1 = false;
@@ -142,7 +142,7 @@ public class Sensors extends BaseHardware {
             initLight2 = true;
         }
 
-        if(initLight2 && initLightTime.milliseconds() >= 750){
+        if(initLight2 && initLightTime.milliseconds() >= 2000){
             cmdOFF();
             PeaDark.setPosition(Orange);
             initLight2 = false;
@@ -186,7 +186,7 @@ public class Sensors extends BaseHardware {
     public void loop(){
         TimeRemaining = (int)(Total - GameTime.seconds());
 
-        if (NTKAP1distance <= 10) {
+        if (NTKAP1distance <= 6) {
             CurrentDistance1 = Distance1.FILLED1;
             Empty = false;
         } else {
@@ -194,7 +194,7 @@ public class Sensors extends BaseHardware {
             stable.reset();
         }
 
-        if (NTKAP2distance <= 10) {
+        if (NTKAP2distance <= 6) {
             CurrentDistance2 = Distance2.FILLED2;
             Empty = false;
         } else {
@@ -202,7 +202,7 @@ public class Sensors extends BaseHardware {
             stable.reset();
         }
 
-        if (NTKAP3distance <= 10) {
+        if (NTKAP3distance <= 6) {
             CurrentDistance3 = Distance3.FILLED3;
             Empty = false;
         } else {
@@ -211,7 +211,7 @@ public class Sensors extends BaseHardware {
         }
 
         if(CurrentDistance1 == Distance1.MISSING1 && CurrentDistance2 == Distance2.MISSING2 && CurrentDistance3 == Distance3.MISSING3){
-            if(stable.milliseconds() >= 300){
+            if(stable.milliseconds() >= 600){
                 Empty = true;
             }
 
@@ -244,26 +244,10 @@ public class Sensors extends BaseHardware {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
     public void doStop(){
         CurrentMode = Mode.STOP;
         cmdComplete = true;
     }
-
-
-
-
-
 
     /**
      * User defined stop method
@@ -273,18 +257,13 @@ public class Sensors extends BaseHardware {
      * The stop method is optional. By default this method takes no action.
      */
 
-
-
-
-
-
     public void stop(){
 
 
     }
 
-
-    public TargetType getSlotArtifact(ColorSensor v3) {
+/*
+   public TargetType getSlotArtifact(ColorSensor v3) {
         int red1 = v3.red();
         int green1 = v3.green();
         int blue1 = v3.blue();
@@ -304,9 +283,9 @@ public class Sensors extends BaseHardware {
             return TargetType.UNKNOWNT;
         }
 
-
     }
 
+*/
 
     public enum Mode{
         STOP
@@ -391,7 +370,8 @@ public class Sensors extends BaseHardware {
     }
 
     private void getDistNTKAP2() {
-        NTKAP2distance = NTKAP2.getDistance(DistanceUnit.CM);}
+        NTKAP2distance = NTKAP2.getDistance(DistanceUnit.CM);
+    }
     private void getDistNTKAP3() {
         NTKAP3distance = NTKAP3.getDistance(DistanceUnit.CM);
     }

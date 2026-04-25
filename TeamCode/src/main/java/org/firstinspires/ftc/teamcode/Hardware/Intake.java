@@ -131,12 +131,12 @@ public class Intake extends BaseHardware{
 */
 
 
-        if((CommonLogic.inRange(getMotorRPM(NTKM01), 600, 600))){
+        /*if((CommonLogic.inRange(getMotorRPM(NTKM01), 600, 600))){
             InPain = true;
         }else{
             InPain = false;
         }
-
+*/
         if(runtime.milliseconds() >= 1000){
             MentallyStable = true;
         }else{

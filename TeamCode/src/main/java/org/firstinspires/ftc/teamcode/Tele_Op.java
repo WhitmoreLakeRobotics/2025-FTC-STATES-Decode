@@ -562,9 +562,12 @@ public class Tele_Op extends OpMode {
         }
         if (gamepad2.left_trigger > 0.7) { //0.8
             robot.launcherBlocker.cmdUnBlock();
+            robot.launcher.launching = true;
+
 
         }else{
-            robot.launcherBlocker.cmdBlock();  //experiment
+            robot.launcherBlocker.cmdBlock();//experiment
+            robot.launcher.launching = false;
         }
 
         /*

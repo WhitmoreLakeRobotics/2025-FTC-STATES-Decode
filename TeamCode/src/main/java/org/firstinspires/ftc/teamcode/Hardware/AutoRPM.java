@@ -5,7 +5,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 // Auto calculates RPM for launcher
 public class AutoRPM {
-    
+
     public enum Mode {
         MANUAL,
         AUTO
