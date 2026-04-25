@@ -298,7 +298,7 @@ public class Launcher extends BaseHardware{
         LaunchM01.setPower(power1);
         LaunchM02.setPower(power2);
 
-        /*
+
         telemetryMU.addData("Target targetRPM1",targetRPM1);
         telemetryMU.addData("Current currentRPM1",currentRPM1);
         telemetryMU.addData("Motor 1",power1);
@@ -309,7 +309,7 @@ public class Launcher extends BaseHardware{
         telemetryMU.addData("Current currentRPM2",currentRPM2);
         telemetryMU.addData("Motor Power2",power2);
         telemetryMU.update();
-        */
+        
     }
 
     public enum Mode {
