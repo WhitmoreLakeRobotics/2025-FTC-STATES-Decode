@@ -543,10 +543,13 @@ public class Tele_Op extends OpMode {
         }
         if (CommonLogic.oneShot(gamepad2.dpad_right, gp2_prev_dpad_right)) {
         //    robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.VIOLET);
+            robot.launcher.RPMoffset -= robot.launcher.RPMoffset;
         }
 
         if (CommonLogic.oneShot(gamepad2.dpad_left, gp2_prev_dpad_left)) {
   //          robot.lighting.UpdateBaseColor(RevBlinkinLedDriver.BlinkinPattern.ORANGE);
+            robot.launcher.RPMoffset += robot.launcher.RPMoffset;
+
         }
 
 

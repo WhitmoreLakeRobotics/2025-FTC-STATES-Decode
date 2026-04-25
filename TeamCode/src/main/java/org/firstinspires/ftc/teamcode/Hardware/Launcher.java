@@ -49,6 +49,10 @@ public class Launcher extends BaseHardware{
     private double LaunchM02Power;
     private VoltageSensor Pikachu;
 
+    public int RPMoffset = 0;
+    public int RPMtopStep = 10;
+    public int RPMbottomStep = 7;
+
     public final double minPower = -1.0;
     public final double maxPower = 1.0;
 
@@ -183,22 +187,22 @@ public class Launcher extends BaseHardware{
     }
 
     public void setTargetRPMs(double[] rpms) {
-        targetRPM1 = rpms[0];
-        targetRPM2 = rpms[1];
+        targetRPM1 = rpms[0] + (RPMoffset * RPMtopStep);
+        targetRPM2 = rpms[1] + (RPMoffset * RPMbottomStep);
     }
 
     public void cmdOuttouch(){
         CurrentMode = Mode.LaunchMout;
         CurrentPosition = Position.LaunchNear;
-        targetRPM1 = topMotorRPMtouch;
-        targetRPM2 = bottomMotortouch;
+        targetRPM1 = topMotorRPMtouch + (RPMoffset * RPMtopStep);
+        targetRPM2 = bottomMotortouch + (RPMoffset * RPMbottomStep);
     }
 
     public void cmdOuttelletouch(){
         CurrentMode = Mode.LaunchMout;
         CurrentPosition = Position.LaunchNear;
-        targetRPM1 = topMotorRPMTelletouch;
-        targetRPM2 = bottomMotorRPMTelletouch;
+        targetRPM1 = topMotorRPMTelletouch + (RPMoffset * RPMtopStep);
+        targetRPM2 = bottomMotorRPMTelletouch + (RPMoffset * RPMbottomStep);
     }
 
     //public void cmdoutlaser(){
@@ -211,15 +215,15 @@ public class Launcher extends BaseHardware{
     public void cmdOutnear(){
         CurrentMode = Mode.LaunchMout;
         CurrentPosition = Position.LaunchNear;
-        targetRPM1 = topMotorRPMnear;
-        targetRPM2 = bottomMotornear;
+        targetRPM1 = topMotorRPMnear + (RPMoffset * RPMtopStep);
+        targetRPM2 = bottomMotornear + (RPMoffset * RPMbottomStep);
     }
 
     public void cmdOutfar(){
         CurrentMode = Mode.LaunchMout;
         CurrentPosition = Position.LaunchFar;
-        targetRPM1 = topMotorRPMfar;
-        targetRPM2 = bottomMotorfar;
+        targetRPM1 = topMotorRPMfar + (RPMoffset * RPMtopStep);
+        targetRPM2 = bottomMotorfar + (RPMoffset * RPMbottomStep);
     }
 
 /*
