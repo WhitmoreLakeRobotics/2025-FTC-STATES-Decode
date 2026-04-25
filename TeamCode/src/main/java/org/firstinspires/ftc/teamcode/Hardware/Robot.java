@@ -406,6 +406,15 @@ public class Robot extends BaseHardware {
                 intake.autoStopped = true;
             }
         }
+
+        /*
+        if(launcher.CurrentMode == Launcher.Mode.LaunchMout || autoRPM.Measure)
+         && launcherBlocker.AtUnBlocked){//maybe remove blocker
+            launcher.launching = true;
+        }else{
+            launcher.launching = false;
+        }
+         */
     }
 
 

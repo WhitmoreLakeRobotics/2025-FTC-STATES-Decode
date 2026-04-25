@@ -262,10 +262,12 @@ public class ppBlueNear4Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     if (runtime.milliseconds() >= 500) {
                         robot.launcherBlocker.cmdUnBlock();
+                        robot.launcher.launching = true;
                         telemetryMU.addLine("waiting to shoot 1");
                         // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                         //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
                         robot.intake.cmdFoward();
+                        robot.bCkSenors = true;
                         robot.transitionRoller.cmdSpin();
                         runtime.reset();
                         currentStage = stage._40_LauncherStop;
@@ -274,8 +276,9 @@ public class ppBlueNear4Cycle extends OpMode {
 
             case _40_LauncherStop:
                 if (runtime.milliseconds() >= 1350) {
-                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
+                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0)
                     robot.launcherBlocker.cmdBlock();
+                    robot.launcher.launching = false;
                     currentStage = stage._50_Pickup1;
                 }
                 break;
@@ -324,8 +327,10 @@ public class ppBlueNear4Cycle extends OpMode {
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
                     if (runtime.milliseconds() >= 500) {
                         robot.launcherBlocker.cmdUnBlock();
+                        robot.launcher.launching = true;
                         telemetryMU.addLine("waiting to shoot 2");
                         robot.intake.cmdFoward();
+                        robot.bCkSenors = true;
                         robot.transitionRoller.cmdSpin();
                         runtime.reset();
                         currentStage = stage._90_LauncherStop;
@@ -335,6 +340,7 @@ public class ppBlueNear4Cycle extends OpMode {
                 if (runtime.milliseconds() >= 1350) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     robot.launcherBlocker.cmdBlock();
+                    robot.launcher.launching = false;
                     currentStage = stage._100_Pickup2;
                 }
                 break;
@@ -382,8 +388,10 @@ public class ppBlueNear4Cycle extends OpMode {
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
                     if (runtime.milliseconds() >= 500) {
                         robot.launcherBlocker.cmdUnBlock();
+                        robot.launcher.launching = false;
                         telemetryMU.addLine("waiting to shoot 3");
                         robot.intake.cmdFoward();
+                        robot.bCkSenors = false;
                         robot.transitionRoller.cmdSpin();
                         runtime.reset();
                         currentStage = stage._155_LauncherStop;
@@ -395,6 +403,7 @@ public class ppBlueNear4Cycle extends OpMode {
                 if (runtime.milliseconds() >= 1400) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     robot.launcherBlocker.cmdBlock();
+                    robot.launcher.launching = true;
                     runtime.reset();
                     currentStage = stage._160_pickup3;
                 }
@@ -402,6 +411,7 @@ public class ppBlueNear4Cycle extends OpMode {
             case _160_pickup3:
                 if(!follower.isBusy()) {
                     follower.followPath(grabPickup3a, powerNormal, true);
+                    robot.bCkSenors = true;
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup3aPose;
                     currentStage = stage._170_pickup3_startintake;
@@ -440,10 +450,12 @@ public class ppBlueNear4Cycle extends OpMode {
                    //
                     //
                     if (runtime.milliseconds() >= 500) {
+                        robot.launcherBlocker.cmdUnBlock();
+                        robot.launcher.launching = true;
                         telemetryMU.addLine("waiting to shoot 4");
                         robot.intake.cmdFoward();
+                        robot.bCkSenors = false;
                         robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
                         runtime.reset();
                         currentStage = stage._450_Park;
                     }
@@ -453,6 +465,7 @@ public class ppBlueNear4Cycle extends OpMode {
                 if (runtime.milliseconds() >= 1400) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     robot.launcherBlocker.cmdBlock();
+                    robot.launcher.launching = false;
                     follower.followPath(endPath, powerFast,true);
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup2bPose;

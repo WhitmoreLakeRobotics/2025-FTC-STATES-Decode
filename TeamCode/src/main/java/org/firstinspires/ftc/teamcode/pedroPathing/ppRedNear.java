@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
 import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.pathConstraints;
+import static org.firstinspires.ftc.teamcode.pedroPathing.ppSharpCorner6BlueFar.TunelPose;
 import static org.firstinspires.ftc.teamcode.pedroPathing.ppSharpCorner6BlueFar.poseSpike1;
 
 import com.bylazar.configurables.PanelsConfigurables;
@@ -63,6 +64,8 @@ public class ppRedNear extends OpMode {
     public static Pose wraparoundpos = new Pose(130.5,59,Math.toRadians(53));
     public static Pose conwraparoundpos = new Pose(113.5,60,Math.toRadians(0));//control
     public static Pose conaltscore = new Pose(107,68,Math.toRadians(0));//control
+    public static Pose parkpos = new Pose(108,72,Math.toRadians(0));
+
 
 
 
@@ -70,7 +73,7 @@ public class ppRedNear extends OpMode {
     private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, scorePickup1,
             grabPickup2a, grabPickup2b, scorePickup2, goEndPose, goEndPose2, endPath;
     private PathChain interruptedPickup,
-            PickupSpike1,ScorePreload,ScorePath,GateWrap,WrapScore;
+            PickupSpike1,ScorePreload,ScorePath,GateWrap,WrapScore,ParkPath;
 
 
     public void buildPaths() {
@@ -100,6 +103,11 @@ public class ppRedNear extends OpMode {
         WrapScore = follower.pathBuilder()
                 .addPath(new BezierCurve(wraparoundpos, conaltscore, scorePose))
                 .setLinearHeadingInterpolation(wraparoundpos.getHeading(), scorePose.getHeading())
+                .build();
+
+        ParkPath = follower.pathBuilder()
+                .addPath(new BezierLine(scorePose, parkpos))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), parkpos.getHeading())
                 .build();
 
 /*
@@ -249,13 +257,14 @@ public class ppRedNear extends OpMode {
                         endlaunch_process();
                         follower.followPath(GateWrap,true);
                         runtime.reset();
-                        currentStage = stage._70_PreLaunch3;
+                        currentStage = stage._65_GateWrap1;
                 }
                 break;
 
             case _65_GateWrap1:
-                if(!follower.isBusy() && runtime.milliseconds() >= 3000){
+                if(!follower.isBusy() && runtime.milliseconds() >= 3000){ // change timeing, maybe even how it does it
                     follower.followPath(WrapScore,true);
+                    currentStage = stage._70_PreLaunch3;
                 }
                 break;
 
@@ -273,10 +282,17 @@ public class ppRedNear extends OpMode {
             case _80_PickupTunel1:
                 if (runtime.milliseconds() > 1500 || robot.sensors.Empty){ //added sensors here
                     endlaunch_process();
-                    //follower.followPath(TunelPickup,true);
-
+                    follower.followPath(GateWrap,true);
+                    runtime.reset();
+                    currentStage = stage._85_GateWrap2;
+                }
+                break;
+            case _85_GateWrap2:
+                if(!follower.isBusy() && runtime.milliseconds() >= 3000){ // change timeing, maybe even how it does it
+                    follower.followPath(WrapScore,true);
                     currentStage = stage._90_PreLaunch4;
                 }
+
                 break;
             case _90_PreLaunch4:
                 AreYouSure(stage._100_Launch4);
@@ -291,7 +307,14 @@ public class ppRedNear extends OpMode {
             case _110_PickupCorner2:
                 if (runtime.milliseconds() > 1500 || robot.sensors.Empty){ //added sensors here
                     endlaunch_process();
-                    //follower.followPath(CornerPickup,true);
+                    follower.followPath(GateWrap,true);
+                    runtime.reset();
+                    currentStage = stage._115_GateWrap3;
+                }
+                break;
+            case _115_GateWrap3:
+                if(!follower.isBusy() && runtime.milliseconds() >= 3000){ // change timeing, maybe even how it does it
+                    follower.followPath(WrapScore,true);
                     currentStage = stage._120_Prelaunch5;
                 }
                 break;
@@ -309,7 +332,15 @@ public class ppRedNear extends OpMode {
             case _140_PickupTunel2:
                 if (runtime.milliseconds() > 1500 || robot.sensors.Empty){ //added sensors here
                     endlaunch_process();
-                    //follower.followPath(TunelPickup,true);
+                    follower.followPath(GateWrap,true);
+                    runtime.reset();
+                    currentStage = stage._145_GateWrap4;
+                }
+
+                break;
+            case _145_GateWrap4:
+                if(!follower.isBusy() && runtime.milliseconds() >= 3000){ // change timeing, maybe even how it does it
+                    follower.followPath(WrapScore,true);
                     currentStage = stage._150_PreLaunch6;
                 }
             case _150_PreLaunch6:
@@ -328,11 +359,17 @@ public class ppRedNear extends OpMode {
             case _161_PickupCorner3:
                 if (runtime.milliseconds() > 1500 || robot.sensors.Empty){ //added sensors here
                     endlaunch_process();
-                    //follower.followPath(CornerPickup,true);
-                    currentStage = stage._162_PreLaunch7;
+                    follower.followPath(GateWrap,true);
+                    currentStage = stage._1615_GateWrap5;
                 }
                 break;
 
+            case _1615_GateWrap5:
+                if(!follower.isBusy() && runtime.milliseconds() >= 3000){ // change timeing, maybe even how it does it
+                    follower.followPath(WrapScore,true);
+                    currentStage = stage._162_PreLaunch7;
+                }
+                break;
 
             case _162_PreLaunch7:
                 AreYouSure(stage._163_Launch7);
@@ -350,11 +387,11 @@ public class ppRedNear extends OpMode {
             case _164_PickupTunel3:
                 if (runtime.milliseconds() > 1500 || robot.sensors.Empty){ //added sensors here
                     endlaunch_process();
-                    //follower.followPath(TunelPickup,true);
-                    currentStage = stage._165_Prelaunch8;
+                    //follower.followPath(TunelPose,true);
+                    currentStage = stage._170_ParkToBeContinued;
                 }
                 break;
-
+/*
             case _165_Prelaunch8:
                 AreYouSure(stage._166_Launch8);
                 break;
@@ -366,11 +403,13 @@ public class ppRedNear extends OpMode {
                 }
                 break;
 
+ */
+
 
 
             case _170_ParkToBeContinued:
                 if (!follower.isBusy()) {
-                    //follower.followPath(Park);
+                    follower.followPath(ParkPath);
                     currentStage = stage._200_end;
                 }
                 break;
@@ -413,15 +452,19 @@ public class ppRedNear extends OpMode {
         _70_PreLaunch3,
         _75_Launch3,
         _80_PickupTunel1,
+        _85_GateWrap2,
         _90_PreLaunch4,
         _100_Launch4,
         _110_PickupCorner2,
+        _115_GateWrap3,
         _120_Prelaunch5,
         _130_Launch5,
         _140_PickupTunel2,
+        _145_GateWrap4,
         _150_PreLaunch6,
         _160_Launch6,
         _161_PickupCorner3,
+        _1615_GateWrap5,
         _162_PreLaunch7,
         _163_Launch7,
         _164_PickupTunel3,

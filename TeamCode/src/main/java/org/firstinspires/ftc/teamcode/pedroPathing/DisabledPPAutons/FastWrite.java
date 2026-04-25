@@ -18,11 +18,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
-@Disabled
-@Autonomous(name = "SystemA", group = "PP")
+
+
+@Autonomous(name = "FastWrite", group = "PP")
 public class FastWrite extends OpMode {
-    // It's the final auton! ne ne neee nee , ne ne nee ne neee!
-    //missing start poses (get at robotics)
 
     Robot robot = new Robot();
 
@@ -82,7 +81,7 @@ public class FastWrite extends OpMode {
     //  public static Pose scoreCheckCorrect = new Pose (54,135, Math.toRadians(-90));//check
     public static Pose spikeB1start = new Pose (35,84,Math.toRadians(180));
     public static Pose spikeB1end = new Pose (15,84,Math.toRadians(180));
-    public static Pose spikeB2start = new Pose (35,60,Math.toRadians(18));
+    public static Pose spikeB2start = new Pose (35,60,Math.toRadians(180));
     public static Pose spikeB2end = new Pose (15,60,Math.toRadians(180));
     public static Pose spikeB3start = new Pose (35,36,Math.toRadians(180));
     public static Pose spikeB3end = new Pose (15,36,Math.toRadians(180));
