@@ -18,10 +18,8 @@ import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
-@Autonomous(name = "SystemA", group = "PP")
+@Autonomous(name = "FastWrite", group = "PP")
 public class FastWrite extends OpMode {
-    // It's the final auton! ne ne neee nee , ne ne nee ne neee!
-    //missing start poses (get at robotics)
 
     Robot robot = new Robot();
 
