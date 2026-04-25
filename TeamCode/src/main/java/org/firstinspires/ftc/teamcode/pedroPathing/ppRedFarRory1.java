@@ -62,7 +62,7 @@ public class ppRedFarRory1 extends OpMode {
     // poses for pedropath
     public static Pose currentPose = new Pose(follower.getPose().getX(),follower.getPose().getY(),follower.getPose().getHeading());
 
-    public static Pose startPose = new Pose(57, 9, Math.toRadians(90)); // Start Pose of our robot.
+    public static Pose startPose = new Pose(57, 9, Math.toRadians(57)); // Start Pose of our robot.
     public static Pose scorePose = new Pose(57, 15, Math.toRadians(112)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     public static Pose scorePoseAP =new Pose(52,18,Math.toRadians(10));
@@ -90,7 +90,7 @@ public class ppRedFarRory1 extends OpMode {
     private Pose lastPose = startPose;
 
     private PathChain Spike3;
-    private PathChain Pickup1, Tunnelpickupa,PickupCorner1,ParkPath;
+    private PathChain Pickup1, Tunnelpickupa,PickupCorner1,ParkPath,ScorePreload;
 
 
     // private Path grabPickup1a;
@@ -140,6 +140,11 @@ public class ppRedFarRory1 extends OpMode {
                         .setLinearHeadingInterpolation(Pickuptunnel1.getHeading(),scorePose.getHeading())
                         .build();
 
+                ScorePreload = follower.pathBuilder()
+                        .addPath(new BezierLine(lastPose,scorePose))
+                        .setLinearHeadingInterpolation(lastPose.getHeading(),scorePose.getHeading())
+                        .build();
+
                 PathChain TunnelCorner = follower.pathBuilder()
                         .addPath(new BezierLine(scorePose, PickupCorner))
                         .setLinearHeadingInterpolation(scorePose.getHeading(), PickupCorner.getHeading())
@@ -147,6 +152,7 @@ public class ppRedFarRory1 extends OpMode {
                         .addPath(new BezierLine(PickupCorner, scorePose))
                         .setLinearHeadingInterpolation(PickupCorner.getHeading(), scorePose.getHeading())
                         .build();
+
 
 
 
@@ -395,7 +401,7 @@ public class ppRedFarRory1 extends OpMode {
 
             case _10_Prelaunch:
                 if (!follower.isBusy()) {
-                   // follower.followPath(scorePreload, powerNormal, true);
+                    follower.followPath(ScorePreload, powerNormal, true);
                     lastPose = startPose;
                     currentTargetPose = scorePose;
                     // follower.update();
@@ -403,8 +409,19 @@ public class ppRedFarRory1 extends OpMode {
                     currentStage = stage._16_Spike;
                 }
                 break;
+            case _15_Launch:
+                if (runtime.milliseconds() >= 1500) {
+                    // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
+                    dolaunch_process();
+                    // currentStage = stage._50_Pickup1;
+                    currentStage = stage._16_Spike;
+                }
+
+                break;
+
             case _16_Spike:
                 if (!follower.isBusy()) {
+                    endlaunch_process();
                     follower.followPath(Spike3);
                     currentStage = stage._25_DriveBack; // we don't need to do the turn since heading is adjusted in path
                     runtime.reset();
