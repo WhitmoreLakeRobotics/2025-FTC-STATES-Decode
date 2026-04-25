@@ -186,7 +186,7 @@ public class Sensors extends BaseHardware {
     public void loop(){
         TimeRemaining = (int)(Total - GameTime.seconds());
 
-        if (NTKAP1distance <= 6) {
+        if (NTKAP1distance <= 8) {
             CurrentDistance1 = Distance1.FILLED1;
             Empty = false;
         } else {
@@ -194,7 +194,7 @@ public class Sensors extends BaseHardware {
             stable.reset();
         }
 
-        if (NTKAP2distance <= 6) {
+        if (NTKAP2distance <= 8) {
             CurrentDistance2 = Distance2.FILLED2;
             Empty = false;
         } else {
@@ -202,7 +202,7 @@ public class Sensors extends BaseHardware {
             stable.reset();
         }
 
-        if (NTKAP3distance <= 6) {
+        if (NTKAP3distance <= 8) {
             CurrentDistance3 = Distance3.FILLED3;
             Empty = false;
         } else {

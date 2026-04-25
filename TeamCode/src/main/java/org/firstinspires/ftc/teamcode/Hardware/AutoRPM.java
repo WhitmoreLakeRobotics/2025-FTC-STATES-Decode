@@ -39,15 +39,15 @@ public class AutoRPM {
 
         //if (mode != Mode.AUTO) return;
 
-        if (!Measure) return;
+        if (Measure) {
+            rpms = calculateRPMs(Distance);
 
-        rpms = calculateRPMs(Distance);
-
-        if (debug) {
-            telemetry.addData("In AutoRPM Mode", mode);
-            telemetry.addData("In AutoRPM Measure is", Measure);
-            telemetry.addData("rpms 0 = ", rpms[0]);
-            telemetry.addData("rpms 1 = ", rpms[1]);
+            if (debug) {
+                telemetry.addData("In AutoRPM Mode", mode);
+                telemetry.addData("In AutoRPM Measure is", Measure);
+                telemetry.addData("rpms 0 = ", rpms[0]);
+                telemetry.addData("rpms 1 = ", rpms[1]);
+            }
         }
     }
 
