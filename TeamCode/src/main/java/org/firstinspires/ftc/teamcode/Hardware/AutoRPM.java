@@ -5,7 +5,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 // Auto calculates RPM for launcher
 public class AutoRPM {
-    
+
     public enum Mode {
         MANUAL,
         AUTO
@@ -37,17 +37,17 @@ public class AutoRPM {
 
     public void update() {
 
-        if (mode != Mode.AUTO) return;
+        //if (mode != Mode.AUTO) return;
 
-        if (!Measure) return;
+        if (Measure) {
+            rpms = calculateRPMs(Distance);
 
-        rpms = calculateRPMs(Distance);
-
-        if (debug) {
-            telemetry.addData("In AutoRPM Mode", mode);
-            telemetry.addData("In AutoRPM Measure is", Measure);
-            telemetry.addData("rpms 0 = ", rpms[0]);
-            telemetry.addData("rpms 1 = ", rpms[1]);
+            if (debug) {
+                telemetry.addData("In AutoRPM Mode", mode);
+                telemetry.addData("In AutoRPM Measure is", Measure);
+                telemetry.addData("rpms 0 = ", rpms[0]);
+                telemetry.addData("rpms 1 = ", rpms[1]);
+            }
         }
     }
 

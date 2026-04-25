@@ -160,7 +160,9 @@ public class Robot extends BaseHardware {
         limey.loop();
         autoRPM.setDistance(limey.getTagDistance());
         autoRPM.loop();
-        launcher.setTargetRPMs(autoRPM.getRPMs());
+        if(autoRPM.Measure) {
+            launcher.setTargetRPMs(autoRPM.getRPMs());   // <-- this one fix this
+        }
         launcher.loop();
         launcherBlocker.loop();
         transitionRoller.loop();
@@ -204,8 +206,8 @@ public class Robot extends BaseHardware {
     }
     public double targetDistanceCalc() {
         double targetOffsetAngle_Vertical = limey.getTy();
-        double limelightMountAngleDegrees = 14.5;
-        double limelightLensHeightInches = 14.0;
+        double limelightMountAngleDegrees = 14.1;
+        double limelightLensHeightInches = 13.6875;
         double goalHeightInches = 29.5;
 
 
@@ -354,6 +356,13 @@ public class Robot extends BaseHardware {
 
         if (transitionRoller.CurrentMode == TransitionRoller.Mode.Stop
                 && intake.CurrentMode == Intake.Mode.NTKforward) {
+            sensors.cmdBLUE();
+        }
+
+        if  (sensors.CurrentDistance1 == Sensors.Distance1.FILLED1
+                && sensors.CurrentDistance2 == Sensors.Distance2.FILLED2
+                && !launcher.launching){
+            transitionRoller.cmdStop();
             sensors.cmdBLUE();
         }
 

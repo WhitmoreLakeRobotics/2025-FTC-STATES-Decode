@@ -30,7 +30,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     public static Follower follower;
-    public static Pose startPose = new Pose(34, 133, Math.toRadians(180)); // Start Pose of our robot.
+    public static Pose startPose = new Pose(34, 134, Math.toRadians(180)); // Start Pose of our robot.
     public static Pose scorePose = new Pose(58, 77, Math.toRadians(135)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     public static Pose scorePoseAP = new Pose(20, 20, Math.toRadians(10));
@@ -154,8 +154,8 @@ public class ppWrapAroundBlueNear6 extends OpMode {
 
             case _20_Prelaunch:
                 if (!follower.isBusy()) {
-                    follower.followPath(ScorePreload  );
                     robot.autoRPM.Measure = true;
+                    follower.followPath(ScorePreload,true);
                     currentStage = stage._30_ScorePreload;
                 }
 
@@ -170,7 +170,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _40_PickupSpike2Gate:
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
-                    follower.followPath(Spike2Gate);
+                    follower.followPath(Spike2Gate,true);
                     currentStage = stage._50_PreLaunch2;
                 }
                 break;
@@ -188,7 +188,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _70_GateWrapIntake:
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
-                    follower.followPath(GatePickup);
+                    follower.followPath(GatePickup,true);
                     currentStage = stage._80_Prelaunch3;
                 }
                 break;
@@ -206,7 +206,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _100_GateWrapIntake2:
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
-                    follower.followPath(GatePickup);
+                    follower.followPath(GatePickup,true);
                     currentStage = stage._110_Prelaunch4;
                 }
                 break;
@@ -224,7 +224,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _130_GateWrapIntake3:
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
-                    follower.followPath(GatePickup);
+                    follower.followPath(GatePickup,true);
                     currentStage = stage._140_Prelaunch5;
                 }
                 break;
@@ -242,7 +242,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _160_GateWrapIntake4:
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
-                    follower.followPath(GatePickup);
+                    follower.followPath(GatePickup,true);
                     currentStage = stage._170_Prelaunch6;
                 }
                 break;
@@ -260,7 +260,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
             case _190_ParkToBeContinued:
                 if (!follower.isBusy()) {
                     endlaunch_process();
-                    follower.followPath(Park);
+                    follower.followPath(Park,true);
                     currentStage = stage._200_end;
                 }
                 break;

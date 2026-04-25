@@ -52,6 +52,8 @@ public class Launcher extends BaseHardware{
     public final double minPower = -1.0;
     public final double maxPower = 1.0;
 
+    public boolean launching = false;
+
     /* naj commenting these unused items out to clear the configurables in pp Panels
         public static  double stopSpeed = 0;
         public static  double topSpeednear =  0.5;
@@ -117,6 +119,9 @@ public class Launcher extends BaseHardware{
 
         LaunchM01.setDirection(DcMotorSimple.Direction.REVERSE);
         LaunchM02.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        LaunchM01.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        LaunchM02.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
         PanelsConfigurables.INSTANCE.refreshClass(this);
@@ -232,8 +237,7 @@ public class Launcher extends BaseHardware{
         CurrentPosition = Position.Off;
         targetRPM1 = 0;
         targetRPM2 = 0;
-        LaunchM01.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        LaunchM02.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
     }
 
     public double getMotorRPM(DcMotorEx motor){

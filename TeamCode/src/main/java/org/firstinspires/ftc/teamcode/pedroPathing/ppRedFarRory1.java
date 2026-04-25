@@ -65,28 +65,27 @@ public class ppRedFarRory1 extends OpMode {
     public static Pose scorePose = new Pose(57, 15, Math.toRadians(112)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     public static Pose scorePoseAP =new Pose(52,18,Math.toRadians(10));
-    public static Pose pickup1aPose = new Pose(20, 20, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    public static Pose pickup1bPose = new Pose(12, 15, Math.toRadians(190)); // (First Set) of Artifacts picked up.
+    public static Pose pickup1aPose = new Pose(120, 8, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    public static Pose pickup1bPose = new Pose(135, 8, Math.toRadians(190)); // (First Set) of Artifacts picked up.
     public static Pose pickup1bPoseC = new Pose(23, 27, Math.toRadians(200));
-    public static Pose pickup1cPose = new Pose(4, 13.5, Math.toRadians(190));
-<<<<<<< HEAD
-    public static Pose Spike1a = new Pose()
-=======
->>>>>>> f175b8dad5fcfa8ee612d5eaf95b0db19a068835
+    public static Pose pickup1cPoseC = new Pose(4, 13.5, Math.toRadians(190));
+    public static Pose Spike1a = new Pose(103,36, Math.toRadians(180));
     public static Pose Spike1b = new Pose(130,36,Math.toRadians(180));
-    public static Pose CornorPickUp = new Pose(140,7,Math.toRadians(72));
+
+    public static Pose Pickuptunnel1 = new Pose(130,37, Math.toRadians(45));
+    public static Pose Pickuptunnel2 = new Pose(133, 30, Math.toRadians(5));
 
     public static Pose pickup2aPose = new Pose(10, 37, Math.toRadians(190)); // 10 was 8 Middle (Second Set) of Artifacts from the Spike Mark.
     public static Pose pickup2aPoseC = new Pose(71, 39, Math.toRadians(190)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    //public static Pose pickReturn2 =new Pose(20,75,(180));
     //public static Pose pickup3aPose = new Pose(47, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
     //public static Pose pickup3bPose = new Pose(15, 35, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
     public static Pose endPose = new Pose(11,15,Math.toRadians(180));
     public static Pose endPose2 = new Pose(11,15,Math.toRadians(180));
     private Pose currentTargetPose = startPose;
     private Pose lastPose = startPose;
-    private PathChain scorePreload;
-    private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, scorePickup1, grabPickup2a,grabPickup2b, scorePickup2 ,goEndPose, goEndPose2, endPath;
+
+    private PathChain Spike3;
+    private PathChain Pickup1, Tunnelpickupa, Tunnelpickupb;
 
 
     // private Path grabPickup1a;
@@ -94,52 +93,53 @@ public class ppRedFarRory1 extends OpMode {
 
 
         class Paths {
-            public PathChain Spike1;
-            public PathChain Score2;
-            public PathChain Tunnel3;
-            public PathChain Score4;
-            public PathChain Corner5;
-            public PathChain Score6;
-            public PathChain Tunnel7;
-            public PathChain Score8;
-            public PathChain Corner9;
-            public PathChain Park10;
+
 
 
             public Paths(Follower follower) {
-<<<<<<< HEAD
-                Spike1 = follower.pathBuilder().addPath(
-                        .addPath(new BezierLine(scorePose, ))
-                              /*  new BezierCurve(
-=======
-               /* Spike1 = follower.pathBuilder().addPath(
-                        .addPath(new BezierLine(scorePose, ))
-                              / new BezierCurve(
->>>>>>> f175b8dad5fcfa8ee612d5eaf95b0db19a068835
-                                        new Pose(77.618, 9.099),
-                                        new Pose(88.962, 36.954),
-                                        new Pose(130.382, 36.550)
-                                )
-<<<<<<< HEAD
-                        ).setLinearHeadingInterpolation(Math.toRadians(57), Math.toRadians(-16)
-                        )
+                Spike3 = follower.pathBuilder()
+                        .addPath(new BezierLine(scorePose,Spike1a))
+                        .setLinearHeadingInterpolation(scorePose.getHeading(), Spike1a.getHeading())
 
-                               */
+                        .addPath(new BezierLine(Spike1a, Spike1b))
+                        .setLinearHeadingInterpolation(Spike1a.getHeading(),Spike1b.getHeading())
+
+                        .addPath(new BezierLine(Spike1b,scorePose))
+                        .setLinearHeadingInterpolation(Spike1b.getHeading(),scorePose.getHeading())
+                        .build();
 
 
-=======
->>>>>>> f175b8dad5fcfa8ee612d5eaf95b0db19a068835
+                Pickup1 = follower.pathBuilder()
+                        .addPath(new BezierLine(scorePose,pickup1aPose))
+                        .setLinearHeadingInterpolation(scorePose.getHeading(),pickup1aPose.getHeading())
+
+                        .addPath(new BezierLine(pickup1aPose, pickup1bPose))
+                        .setLinearHeadingInterpolation(pickup1aPose.getHeading(), pickup1bPose.getHeading())
+
+                        .addPath(new BezierLine(pickup1bPose, scorePose))
+                        .setLinearHeadingInterpolation(pickup1bPose.getHeading(),scorePose.getHeading())
+                        .build();
 
 
-                        ).setLinearHeadingInterpolation(Math.toRadians(57), Math.toRadians(-1)
+                Tunnelpickupa = follower.pathBuilder()
+                        .addPath(new BezierLine(scorePose, Pickuptunnel1))
+                        .setLinearHeadingInterpolation(scorePose.getHeading(), Pickuptunnel1.getHeading())
 
-                        )
+                        .addPath(new BezierLine(Pickuptunnel1,scorePose))
+                        .setLinearHeadingInterpolation(Pickuptunnel1.getHeading(),scorePose.getHeading())
+                        .build();
 
-                */
+                Tunnelpickupb = follower.pathBuilder()
+                        .addPath(new BezierLine(scorePose,Pickuptunnel2))
+                        .setLinearHeadingInterpolation(scorePose.getHeading(),Pickuptunnel2.getHeading())
+
+                        .addPath(new BezierLine(Pickuptunnel2,scorePose))
+                        .setLinearHeadingInterpolation(Pickuptunnel2.getHeading(),scorePose.getHeading())
+                        .build();
 
 
-                       // .build();
-                Score2 = follower.pathBuilder().addPath(
+
+              /*  Score2 = follower.pathBuilder().addPath(
 
 
                                 new BezierLine(
@@ -152,8 +152,10 @@ public class ppRedFarRory1 extends OpMode {
                         .setReversed()
                         .build();
 
+               */
 
-                Tunnel3 = follower.pathBuilder().addPath(
+
+              /*  Tunnel3 = follower.pathBuilder().addPath(
                                 new BezierCurve(
                                         new Pose(76.794, 11.084),
                                         new Pose(96.515, 29.221),
@@ -253,6 +255,8 @@ public class ppRedFarRory1 extends OpMode {
 
 
                         .build();
+
+               */
             }
         }
 
@@ -378,7 +382,7 @@ public class ppRedFarRory1 extends OpMode {
 
             case _10_Prelaunch:
                 if (!follower.isBusy()) {
-                    follower.followPath(scorePreload, powerNormal, true);
+                   // follower.followPath(scorePreload, powerNormal, true);
                     lastPose = startPose;
                     currentTargetPose = scorePose;
                     // follower.update();
@@ -387,7 +391,7 @@ public class ppRedFarRory1 extends OpMode {
                 }
             case _16_Spike:
                 if (!follower.isBusy()) {
-                    follower.followPath(grabPickup1);
+                    follower.followPath(Spike3);
                     currentStage = stage._25_DriveBack; // we don't need to do the turn since heading is adjusted in path
                     runtime.reset();
                 }

@@ -148,7 +148,7 @@ public class ppAutonBase extends OpMode {
 
         }
 
-        CommonLogic.StartEndPose = follower.getPose();
+        //CommonLogic.StartEndPose = follower.getPose();
     }
 
 
