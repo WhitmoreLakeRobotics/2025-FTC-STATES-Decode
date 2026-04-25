@@ -261,12 +261,12 @@ public class ppBlueNear4Cycle extends OpMode {
             case _30_Shoot1:
                 if (!follower.isBusy()) {
                     if (runtime.milliseconds() >= 500) {
+                        robot.launcherBlocker.cmdUnBlock();
                         telemetryMU.addLine("waiting to shoot 1");
                         // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                         //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
                         robot.intake.cmdFoward();
                         robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
                         runtime.reset();
                         currentStage = stage._40_LauncherStop;
                     }}
@@ -323,10 +323,10 @@ public class ppBlueNear4Cycle extends OpMode {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
                     if (runtime.milliseconds() >= 500) {
+                        robot.launcherBlocker.cmdUnBlock();
                         telemetryMU.addLine("waiting to shoot 2");
                         robot.intake.cmdFoward();
                         robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
                         runtime.reset();
                         currentStage = stage._90_LauncherStop;
                     }}
@@ -381,10 +381,10 @@ public class ppBlueNear4Cycle extends OpMode {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
                     if (runtime.milliseconds() >= 500) {
+                        robot.launcherBlocker.cmdUnBlock();
                         telemetryMU.addLine("waiting to shoot 3");
                         robot.intake.cmdFoward();
                         robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
                         runtime.reset();
                         currentStage = stage._155_LauncherStop;
                     }
