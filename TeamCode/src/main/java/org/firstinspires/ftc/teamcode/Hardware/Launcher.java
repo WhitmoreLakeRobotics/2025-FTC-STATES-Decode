@@ -63,7 +63,7 @@ public class Launcher extends BaseHardware{
     */
 
     // ---------------- PID CONSTANTS ----------------
-    public static double LkP = 0.00050;   // increased for faster recovery
+    public static double LkP = 0.00060;   // increased for faster recovery
     public static double LkI = 0.0;       // still unused
     public static double LkD = 0.0000015; // small D for damping
     public static double kF = 1.24 / 6000.0; // feedforward per RPM
@@ -77,8 +77,8 @@ public class Launcher extends BaseHardware{
     // ---------------- RPM TARGETS ----------------
     public static double topMotorRPMnear = 2600;
     public static double bottomMotornear = 2875;
-    public static double topMotorRPMfar = 2800;
-    public static double bottomMotorfar = 3800; //was4600
+    public static double topMotorRPMfar = 2850;
+    public static double bottomMotorfar = 3700; //was4600
     public static double topMotorRPMtouch = 2200; //was 2300
     public static double bottomMotortouch = 3730; //was 3800
     public static double topMotorRPMTelletouch = 2235;

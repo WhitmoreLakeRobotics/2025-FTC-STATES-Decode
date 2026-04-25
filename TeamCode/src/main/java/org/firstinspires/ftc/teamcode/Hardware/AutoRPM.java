@@ -57,8 +57,8 @@ public class AutoRPM {
         double d1 = 0.6;       // meters
         double r1top = 2210;
 
-        double d2 = 2.0;       // meters
-        double r2top = 2900;
+        double d2 = 2.24;       // meters
+        double r2top = 3050;
 
         double m_top = (r2top - r1top) / (d2 - d1);
         double b_top = r1top - m_top * d1;

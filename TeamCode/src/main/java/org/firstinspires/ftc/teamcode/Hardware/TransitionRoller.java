@@ -39,7 +39,7 @@ public class TransitionRoller extends BaseHardware{
     public final double maxPower = 1.0;
 
     public static final double TRSpeed = 1.0; //0.85;
-    public static final double TRSpeedFar = 0.60;
+    public static final double TRSpeedFar = 0.75;
     public static final double stopSpeed = 0.0;
     static final double TRBack = -0.5;
     private ElapsedTime runtime = new ElapsedTime();
@@ -74,7 +74,6 @@ public class TransitionRoller extends BaseHardware{
     public void init(){
 
         TRM01 = hardwareMap.get(DcMotorEx.class,"TRM01");
-
         // Find a valid voltage sensor
         for (VoltageSensor sensor : hardwareMap.getAll(VoltageSensor.class)) {
             if (sensor.getVoltage() > 0) {
