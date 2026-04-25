@@ -37,7 +37,7 @@ public class AutoRPM {
 
     public void update() {
 
-        if (mode != Mode.AUTO) return;
+        //if (mode != Mode.AUTO) return;
 
         if (!Measure) return;
 
