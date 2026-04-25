@@ -248,6 +248,7 @@ public class Intake extends BaseHardware{
         CurrentMode = Mode.NTKstop;
         NTKM01.setPower (stopSpeed);
         //cmdRED(); //line not needed when finished
+        runtime.reset();
         //PeaLight.enableLight(true);
 
     }
