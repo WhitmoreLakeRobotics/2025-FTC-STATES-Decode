@@ -80,13 +80,13 @@ public class Launcher extends BaseHardware{
 
     // ---------------- RPM TARGETS ----------------
     public static double topMotorRPMnear = 2600;
-    public static double bottomMotornear = 2875;
-    public static double topMotorRPMfar = 2850;
+    public static double bottomMotornear = 2725;
+    public static double topMotorRPMfar = 2900;
     public static double bottomMotorfar = 3700; //was4600
     public static double topMotorRPMtouch = 2200; //was 2300
     public static double bottomMotortouch = 3730; //was 3800
     public static double topMotorRPMTelletouch = 2235;
-    public static double bottomMotorRPMTelletouch = 3025;
+    public static double bottomMotorRPMTelletouch = 2975;
    // public static double topMotorRPMlaser = 6000;
    // public static double bottomMotorRPMlaser = 6000;
 

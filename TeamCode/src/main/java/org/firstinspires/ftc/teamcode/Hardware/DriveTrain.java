@@ -41,7 +41,7 @@ public class DriveTrain extends BaseHardware {
 
     private boolean cmdComplete = true;
 
-    private static double TURNSPEED_TELEOP = 0.80;
+    private static double TURNSPEED_TELEOP = 0.90;
 
     private double LDM1Power;
     private double LDM2Power;
