@@ -251,16 +251,16 @@ public class Robot extends BaseHardware {
                 if (currentTagId == 24) {
                     if ( Math.abs(limey.getTagAngle()) > 6){
                         //if off to the side of tag
-                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 9.5;//+2
+                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 5.5;//+2
 
                     }else {
                         //if in front of tag
                         return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 1.81;//+2
                     }
                 } else if (currentTagId == 20) {
-                    if ( Math.abs(limey.getTagAngle()) > 6){
+                    if ( Math.abs(limey.getTagAngle()) > -6){
                         //if off to the side of tag
-                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 5.7;//-5
+                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 2.4;//-5
 
                     }else {
                         // if in front of tag
@@ -299,9 +299,9 @@ public class Robot extends BaseHardware {
 
 
                 if (currentTagId == 24) {
-                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 0.17;
+                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 0.14;
                 } else if (currentTagId == 20) {
-                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 1.69; // NEED TO UPDATE
+                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 5.4; // NEED TO UPDATE
                 } else {
                     return driveTrain.getCurrentHeading();
                 }
