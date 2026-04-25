@@ -167,7 +167,7 @@ public class Launcher extends BaseHardware{
         } else {
             bAtSpeed = false;
         }
-
+ telemetry.addData("RPM offset: " , RPMoffset);
         // double voltage = hardwareMap.voltageSensor.get("Expansion Hub 3").getVoltage();
         // {
         // telemetry.addData("Battery Voltage", voltage);
