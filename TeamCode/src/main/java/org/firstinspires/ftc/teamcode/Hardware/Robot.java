@@ -251,7 +251,7 @@ public class Robot extends BaseHardware {
                 if (currentTagId == 24) {
                     if ( Math.abs(limey.getTagAngle()) > 30){
                         //if off to the side of tag
-                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 1.81;//+2
+                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 8.19;//+2
 
                     }else {
                         //if in front of tag
@@ -260,7 +260,7 @@ public class Robot extends BaseHardware {
                 } else if (currentTagId == 20) {
                     if ( Math.abs(limey.getTagAngle()) > 30){
                         //if off to the side of tag
-                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 2.58;//-5
+                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 10.58;//-5
 
                     }else {
                         // if in front of tag
