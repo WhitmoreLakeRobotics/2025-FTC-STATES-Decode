@@ -23,9 +23,9 @@ import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 
 
-@Disabled
+
 @Configurable
-@Autonomous(name = "ppBlueFar7Cycle", group = "PP")
+@Autonomous(name = "ppRedFar7Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
 
 
