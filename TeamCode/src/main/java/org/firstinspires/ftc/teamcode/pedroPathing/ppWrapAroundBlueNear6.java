@@ -104,6 +104,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
         PanelsConfigurables.INSTANCE.refreshClass(this);
         follower.setStartingPose(startPose);
         follower.update();
+        currentTargetPose = startPose;
 //  pedroPanelsTelemetry.init();
         Drawing.init();
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
@@ -170,6 +171,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
                     follower.followPath(Spike2Gate,true);
+                    currentTargetPose = gatePose;
                     currentStage = stage._50_PreLaunch2;
                 }
                 break;
@@ -188,6 +190,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                 if (!follower.isBusy()|| runtime.milliseconds()>=1500) {
                     endlaunch_process();
                     follower.followPath(GatePickup,true);
+                    currentTargetPose = gatePose;
                     currentStage = stage._80_Prelaunch3;
                 }
                 break;
