@@ -56,7 +56,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                 .addPath(new BezierLine(pickup1aPose, pickup1bPose))
                 .setLinearHeadingInterpolation(pickup1aPose.getHeading(), pickup1bPose.getHeading())
 
-                .addPath(new BezierCurve(pickup1bPose, scorePose))
+                .addPath(new BezierLine(pickup1bPose, scorePose))
                 .setLinearHeadingInterpolation(pickup1bPose.getHeading(), scorePose.getHeading())
                 .build();
 
@@ -68,7 +68,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
                 .setLinearHeadingInterpolation(gatePose.getHeading(), gateNTKPose.getHeading())
                 .setTimeoutConstraint(2000)
 
-                .addPath(new BezierCurve(gateNTKPose, scorePose))
+                .addPath(new BezierLine(gateNTKPose, scorePose))
                 .setLinearHeadingInterpolation(gateNTKPose.getHeading(), scorePose.getHeading())
 
                 .build();
