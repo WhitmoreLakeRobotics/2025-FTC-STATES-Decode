@@ -141,8 +141,8 @@ public class ppRedFarRory1 extends OpMode {
                         .build();
 
                 ScorePreload = follower.pathBuilder()
-                        .addPath(new BezierLine(lastPose,scorePose))
-                        .setLinearHeadingInterpolation(lastPose.getHeading(),scorePose.getHeading())
+                        .addPath(new BezierLine(startPose,scorePose))
+                        .setLinearHeadingInterpolation(startPose.getHeading(),scorePose.getHeading())
                         .build();
 
                 PathChain TunnelCorner = follower.pathBuilder()
