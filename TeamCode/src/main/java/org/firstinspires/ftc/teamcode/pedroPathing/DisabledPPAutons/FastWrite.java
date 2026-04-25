@@ -81,7 +81,7 @@ public class FastWrite extends OpMode {
     //  public static Pose scoreCheckCorrect = new Pose (54,135, Math.toRadians(-90));//check
     public static Pose spikeB1start = new Pose (35,84,Math.toRadians(180));
     public static Pose spikeB1end = new Pose (15,84,Math.toRadians(180));
-    public static Pose spikeB2start = new Pose (35,60,Math.toRadians(18));
+    public static Pose spikeB2start = new Pose (35,60,Math.toRadians(180));
     public static Pose spikeB2end = new Pose (15,60,Math.toRadians(180));
     public static Pose spikeB3start = new Pose (35,36,Math.toRadians(180));
     public static Pose spikeB3end = new Pose (15,36,Math.toRadians(180));
