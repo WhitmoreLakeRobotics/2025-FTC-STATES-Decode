@@ -59,7 +59,7 @@ public class ppBlueNear4Cycle extends OpMode {
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     public static Pose scorePoseAP =new Pose(57,105,Math.toRadians(142));
     public static Pose pickup1aPose = new Pose(50, 84, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    public static Pose pickup1bPose = new Pose(15, 84, Math.toRadians(180)); // (First Set) of Artifacts picked up.
+    public static Pose pickup1bPose = new Pose(15, 81, Math.toRadians(180)); // (First Set) of Artifacts picked up.
 
     public static Pose pickup2aPose = new Pose(49, 55, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
     public static Pose pickup2bPose = new Pose(5, 51.5, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
@@ -103,7 +103,7 @@ public class ppBlueNear4Cycle extends OpMode {
         /* This is our scorePickup1 PathChain. We are using a single path with a BezierLine, which is a straight line. */
         scorePickup1 = follower.pathBuilder()
                 .addPath(new BezierLine(pickup1bPose, scorePoseAP))
-                .setLinearHeadingInterpolation(pickup1bPose.getHeading(), scorePose.getHeading()).setHeadingConstraint(0.1)
+                .setLinearHeadingInterpolation(pickup1bPose.getHeading(), scorePose.getHeading())//.setHeadingConstraint(0.1)
                 .build();
 
         /* This is our grabPickup2 PathChain. We are using a single path with a BezierLine, which is a straight line. */
@@ -316,7 +316,7 @@ public class ppBlueNear4Cycle extends OpMode {
                     lastPose = currentTargetPose;
                     currentTargetPose = scorePose;
                     robot.launcher.cmdOuttouch();
-                    currentStage = stage._70_ToScorePoseAP;
+                    currentStage = stage._80_ScorePickup1;
                 }
 
                 break;
