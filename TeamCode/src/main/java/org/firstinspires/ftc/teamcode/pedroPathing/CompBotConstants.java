@@ -51,12 +51,22 @@ public class CompBotConstants {
             //.angularScalar(0.3938925)
             ;
 
+    public static PathConstraints pathConstraints = new PathConstraints(
+            0.98,
+            3.0,
+            02.0,
+            .98,
+            50,
+            1,10,1);
+
+/* switched to above at 11:00pm on wed. I think below was for predictive breaking
 
     public static PathConstraints pathConstraints = new PathConstraints(
             0.99,
             100,
             1,
             1);
+*/
 
 
 
