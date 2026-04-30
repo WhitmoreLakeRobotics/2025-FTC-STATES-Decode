@@ -13,7 +13,6 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -22,12 +21,11 @@ import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
-@Disabled
 @Configurable
-@Autonomous(name = "ppRedGATENear4Cycle", group = "PP")
+@Autonomous(name = "ppRedGATE2Near3Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
 
-public class ppRedGATENear4Cycle extends OpMode {
+public class ppRedGATE2Near3Cycle extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -62,12 +60,12 @@ public class ppRedGATENear4Cycle extends OpMode {
     public static Pose pickup1aPose = new Pose(50, 84.5, Math.toRadians(180)).mirror(); // Highest (First Set) of Artifacts from the Spike Mark.
     //public static Pose gatePose = new Pose(13 , 70,Math.toRadians(-90)) ;   //This pos will have robot hit gate After First Spike
     public static Pose pickup1bPose = new Pose(14, 72, Math.toRadians(180)).mirror(); // was 84y (First Set) of Artifacts picked up.
-    public static Pose pickup2aPose = new Pose(49, 55, Math.toRadians(180)).mirror(); // Middle (Second Set) of Artifacts from the Spike Mark.
-    public static Pose pickup2bPose = new Pose(6, 51.5, Math.toRadians(180)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    public static Pose pickup2aPose = new Pose(49, 58, Math.toRadians(180)).mirror(); // Middle (Second Set) of Artifacts from the Spike Mark.
+    public static Pose pickup2bPose = new Pose(6, 64, Math.toRadians(180)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
     public static Pose pickReturn2 =new Pose(20,75,180).mirror();
     public static Pose pickup3aPose = new Pose(49, 34, Math.toRadians(180)).mirror(); // Middle (Second Set) of Artifacts from the Spike Mark.
     public static Pose pickup3bPose = new Pose(7, 27, Math.toRadians(180)).mirror(); // 7 was 6 Lowest (Third Set) of Artifacts from the Spike Mark.
-    public static Pose endPose = new Pose(45,58,Math.toRadians(180)).mirror();
+    public static Pose endPose = new Pose(30,70,Math.toRadians(180)).mirror();
 
     private Pose currentTargetPose = startPose;
     private Pose lastPose = startPose;
@@ -273,9 +271,7 @@ public class ppRedGATENear4Cycle extends OpMode {
                         telemetryMU.addLine("waiting to shoot 1");
                         // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                         //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                        robot.intake.cmdFoward();
-                        robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
+                        dolaunch_process();
                         runtime.reset();
                         currentStage = stage._40_LauncherStop;
                     }}
@@ -284,7 +280,8 @@ public class ppRedGATENear4Cycle extends OpMode {
             case _40_LauncherStop:
                 if (runtime.milliseconds() >= 1350) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
-                    robot.launcherBlocker.cmdBlock();
+                    endlaunch_process();
+                    runtime.reset();
                     currentStage = stage._50_Pickup1;
                 }
                 break;
@@ -317,7 +314,7 @@ public class ppRedGATENear4Cycle extends OpMode {
                 }
                 break;
             case _70_ToScorePoseAP:
-                if(!follower.isBusy() || pathTimer.milliseconds() >= 2300){
+                if(!follower.isBusy() || pathTimer.milliseconds() >= 2000){
                     follower.followPath(scorePickup1,powerNormal,true);
                     lastPose = currentTargetPose;
                     currentTargetPose = scorePose;
@@ -332,9 +329,7 @@ public class ppRedGATENear4Cycle extends OpMode {
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
                     if (runtime.milliseconds() >= 500) {
                         telemetryMU.addLine("waiting to shoot 2");
-                        robot.intake.cmdFoward();
-                        robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
+                       dolaunch_process();
                         runtime.reset();
                         currentStage = stage._90_LauncherStop;
                     }}
@@ -342,7 +337,8 @@ public class ppRedGATENear4Cycle extends OpMode {
             case _90_LauncherStop:
                 if (runtime.milliseconds() >= 1350) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
-                    robot.launcherBlocker.cmdBlock();
+                    endlaunch_process();
+                    runtime.reset();
                     currentStage = stage._100_Pickup2;
                 }
                 break;
@@ -367,7 +363,7 @@ public class ppRedGATENear4Cycle extends OpMode {
 
             case _120_Pickupa2:
                 if (!follower.isBusy()) {
-                    follower.followPath(grabPickup2b ,powerSlow, true);
+                    follower.followPath(grabPickup2b ,powerStart, true);
                     lastPose = currentTargetPose;
                     currentTargetPose= pickup2bPose;
                     pathTimer.reset();
@@ -375,7 +371,7 @@ public class ppRedGATENear4Cycle extends OpMode {
                 }
                 break;
             case _130_ToScorePoseAP:
-                if(!follower.isBusy() || pathTimer.milliseconds() >= 2450){
+                if(!follower.isBusy() || pathTimer.milliseconds() >= 2000){
                     follower.followPath(scorePickup2,powerFast,true);
                     currentTargetPose = scorePoseAP;
                     robot.launcher.cmdOuttouch();
@@ -389,9 +385,7 @@ public class ppRedGATENear4Cycle extends OpMode {
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
                     if (runtime.milliseconds() >= 500) {
                         telemetryMU.addLine("waiting to shoot 3");
-                        robot.intake.cmdFoward();
-                        robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
+                        dolaunch_process();
                         runtime.reset();
                         currentStage = stage._155_LauncherStop;
                     }
@@ -401,9 +395,9 @@ public class ppRedGATENear4Cycle extends OpMode {
             case _155_LauncherStop:
                 if (runtime.milliseconds() >= 1400) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
-                    robot.launcherBlocker.cmdBlock();
+                    endlaunch_process();
                     runtime.reset();
-                    currentStage = stage._160_pickup3;
+                    currentStage = stage._450_Park;
                 }
                 break;
             case _160_pickup3:
@@ -448,18 +442,16 @@ public class ppRedGATENear4Cycle extends OpMode {
                     //
                     if (runtime.milliseconds() >= 500) {
                         telemetryMU.addLine("waiting to shoot 4");
-                        robot.intake.cmdFoward();
-                        robot.transitionRoller.cmdSpin();
-                        robot.launcherBlocker.cmdUnBlock();
+                        dolaunch_process();
                         runtime.reset();
-                        currentStage = stage._450_Park;
+                        //currentStage = stage._450_Park;
                     }
                 }
 
             case _450_Park:
                 if (runtime.milliseconds() >= 1400) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
-                    robot.launcherBlocker.cmdBlock();
+                    endlaunch_process();
                     follower.followPath(endPath, powerFast,true);
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup2bPose;
@@ -503,6 +495,20 @@ public class ppRedGATENear4Cycle extends OpMode {
         Drawing.drawDebug(follower);
     }
 
+    private void dolaunch_process() {
+        robot.launcher.launching = true;
+        robot.launcherBlocker.cmdUnBlock();
+        robot.transitionRoller.cmdSpin();
+        robot.intake.cmdFoward();
+        runtime.reset();
+    }
+
+    private void endlaunch_process() {
+        robot.launcher.launching = false;
+        robot.launcherBlocker.cmdBlock();
+        robot.autoRPM.Measure = false;
+        robot.launcher.cmdStop();
+    }
     //Code to run ONCE after the driver hits STOP
 
     @Override

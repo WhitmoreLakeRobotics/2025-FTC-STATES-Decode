@@ -48,8 +48,8 @@ public class ppRedFar5Cycle extends OpMode {
     private ElapsedTime pTimer;// this is for pausing at the end of a path
     //configurables for pedro
     public static double powerCreeper = 0.15;
-    public  static  double powerSlow = 0.3;
-    public static double powerMedium = 0.4;
+    public static double powerSlow = 0.3;
+    public static double powerMedium = 0.45;
     public static double powerNormal = 0.65;
     public static double powerFast = 0.8;
     // poses for pedropath
@@ -57,23 +57,23 @@ public class ppRedFar5Cycle extends OpMode {
     public static Pose startPose = new Pose(57, 10.5, Math.toRadians(90)).mirror(); // Start Pose of our robot.
     public static Pose scorePose = new Pose(57, 15, Math.toRadians(112)).mirror(); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    public static Pose scorePoseAP =new Pose(53.5,15,Math.toRadians(12.5)).mirror();
+    public static Pose scorePoseAP = new Pose(53.5, 15, Math.toRadians(12.5)).mirror();
     public static Pose pickup1aPose = new Pose(20, 8, Math.toRadians(210)).mirror(); // Highest (First Set) of Artifacts from the Spike Mark.
     public static Pose pickup1bPose = new Pose(12, 0, Math.toRadians(199)).mirror(); // (First Set) of Artifacts picked up.
     public static Pose pickup1bPoseC = new Pose(23, 27, Math.toRadians(200)).mirror();
     public static Pose pickup1cPose = new Pose(8, 3, Math.toRadians(215)).mirror();
 
     public static Pose pickup2aPose = new Pose(10, 36, Math.toRadians(190)).mirror(); // 10 was 8 Middle (Second Set) of Artifacts from the Spike Mark.
-    public static Pose pickup2aPoseC = new Pose(71, 38, Math.toRadians(190)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    public static Pose pickup2aPoseC = new Pose(69, 35, Math.toRadians(190)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
     //public static Pose pickReturn2 =new Pose(20,75,(180));
     //public static Pose pickup3aPose = new Pose(47, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
     //public static Pose pickup3bPose = new Pose(15, 35, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    public static Pose endPose = new Pose(11,15,Math.toRadians(180)).mirror();
-    public static Pose endPose2 = new Pose(11,15,Math.toRadians(180)).mirror();
+    public static Pose endPose = new Pose(11, 15, Math.toRadians(180)).mirror();
+    public static Pose endPose2 = new Pose(11, 15, Math.toRadians(180)).mirror();
     private Pose currentTargetPose = startPose;
     private Pose lastPose = startPose;
     private PathChain scorePreload;
-    private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c,grabPickup3a, scorePickup1, grabPickup2a,grabPickup2b, scorePickup2 ,goEndPose, goEndPose2, endPath;
+    private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, grabPickup3a, scorePickup1, grabPickup2a, grabPickup2b, scorePickup2, goEndPose, goEndPose2, endPath;
 
     // private Path grabPickup1a;
     public void buildPaths() {
@@ -84,7 +84,7 @@ public class ppRedFar5Cycle extends OpMode {
         scorePreload.setVelocityConstraint(2.0);*/
 
         scorePreload = follower.pathBuilder()
-                .addPath (new BezierLine(startPose, scorePose))
+                .addPath(new BezierLine(startPose, scorePose))
                 .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
                 .build();
     /* Here is an example for Constant Interpolation
@@ -106,12 +106,12 @@ public class ppRedFar5Cycle extends OpMode {
                 .setConstantHeadingInterpolation(Math.toRadians((-10)))//pickup1aPose.getHeading())
                 .build();
         grabPickup1b = follower.pathBuilder()
-                .addPath(new BezierCurve(pickup1aPose,pickup1bPoseC,pickup1bPose))
+                .addPath(new BezierCurve(pickup1aPose, pickup1bPoseC, pickup1bPose))
                 .setLinearHeadingInterpolation(pickup1aPose.getHeading(), pickup1bPose.getHeading())
                 .build();
 
         grabPickup1c = follower.pathBuilder()
-                .addPath(new BezierLine(pickup1bPose,pickup1cPose))
+                .addPath(new BezierLine(pickup1bPose, pickup1cPose))
                 .setLinearHeadingInterpolation(pickup1bPose.getHeading(), pickup1cPose.getHeading())
                 .build();
 
@@ -124,7 +124,7 @@ public class ppRedFar5Cycle extends OpMode {
 
         /* This is our grabPickup2 PathChain. We are using a single path with a BezierLine, which is a straight line. */
         grabPickup2a = follower.pathBuilder()
-                .addPath(new BezierCurve(scorePose,pickup2aPoseC,pickup2aPose))
+                .addPath(new BezierCurve(scorePose, pickup2aPoseC, pickup2aPose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2aPose.getHeading())
                 .build();
 
@@ -142,21 +142,21 @@ public class ppRedFar5Cycle extends OpMode {
                 .build();*/
         //tring a curve
         scorePickup2 = follower.pathBuilder()
-                .addPath(new BezierLine(pickup2aPose,scorePoseAP))
+                .addPath(new BezierLine(pickup2aPose, scorePoseAP))
                 .setLinearHeadingInterpolation(pickup2aPose.getHeading(), scorePose.getHeading())
                 // .addPath(new BezierLine(pickup2bPose, scorePoseAP))
                 //.setLinearHeadingInterpolation(pickup1Pose.getHeading(), scorePoseAP.getHeading())
                 .build();
 
         // This is our grabPickup3 PathChain. We are using a single path with a BezierLine, which is a straight line. *//*
-        goEndPose= follower.pathBuilder()
-                .addPath(new BezierLine(scorePose,endPose))
+        goEndPose = follower.pathBuilder()
+                .addPath(new BezierLine(scorePose, endPose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), endPose.getHeading())
                 .build();
 
         // This is our scorePickup3 PathChain. We are using a single path with a BezierLine, which is a straight line. *//*
-        goEndPose2= follower.pathBuilder()
-                .addPath(new BezierLine(endPose,endPose2))
+        goEndPose2 = follower.pathBuilder()
+                .addPath(new BezierLine(endPose, endPose2))
                 .setLinearHeadingInterpolation(endPose.getHeading(), endPose2.getHeading())
                 .build();
         //endPath = follower.pathBuilder()
@@ -166,8 +166,6 @@ public class ppRedFar5Cycle extends OpMode {
         //       .setLinearHeadingInterpolation(scorePose.getHeading(),endPose.getHeading())
         //      .build();
     }
-
-
 
 
     // Declare OpMode members.
@@ -202,7 +200,7 @@ public class ppRedFar5Cycle extends OpMode {
         opmodeTimer.resetTimer();
         pTimer = new ElapsedTime();
 
-        follower =  CompBotConstants.createFollower(hardwareMap);
+        follower = CompBotConstants.createFollower(hardwareMap);
         buildPaths();
         PanelsConfigurables.INSTANCE.refreshClass(this);
         follower.setStartingPose(startPose);
@@ -275,20 +273,21 @@ public class ppRedFar5Cycle extends OpMode {
 
             case _30_Shoot1:
                 if (!follower.isBusy()) {
-                    if (runtime.milliseconds() >= 750) {
+                    if (runtime.milliseconds() >= 1250) {
                         telemetryMU.addLine("waiting to shoot 1");
                         // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                         //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                       dolaunch_process();
+                        dolaunch_process();
                         runtime.reset();
                         currentStage = stage._40_LauncherStop;
-                    }}
+                    }
+                }
                 break;
 
             case _40_LauncherStop:
-                if (runtime.milliseconds() >= 900) {
+                if (runtime.milliseconds() >= 750) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
-                  endlaunch_process();
+                    endlaunch_process();
                     // currentStage = stage._50_Pickup1;
                     currentStage = stage._50_Pickup1;
                 }
@@ -299,7 +298,7 @@ public class ppRedFar5Cycle extends OpMode {
                     // follower.followPath(grabPickup1a, powerNormal, true);
                     //  follower.followPath(grabPickup1,powerNormal,true);
                     follower.turnToDegrees(-15); // was 190
-                    follower.followPath(grabPickup1,powerMedium,true);
+                    follower.followPath(grabPickup1, powerNormal, true);
                     robot.intake.cmdFoward();
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup1cPose;
@@ -309,10 +308,10 @@ public class ppRedFar5Cycle extends OpMode {
                 break;
 
             case _60_Pickup1a:
-                if (!follower.isBusy() || runtime.milliseconds() > 1500) {
+                if (!follower.isBusy() || runtime.milliseconds() >= 1200) {
                     // follower.followPath(grabPickup1c,powerSlow, true);
                     //if we have 3 artifacts stop the path and go to next stage
-                    if (robot.intake.autoStopped){
+                    if (robot.intake.autoStopped) {
                         follower.breakFollowing();
                         currentStage = stage._70_ToScorePoseAP;
                         runtime.reset();
@@ -346,8 +345,8 @@ public class ppRedFar5Cycle extends OpMode {
                 break;
 
             case _70_ToScorePoseAP:
-                if(!follower.isBusy() || runtime.milliseconds() > 1500){
-                    follower.followPath(scorePickup1,powerMedium,true);
+                if (!follower.isBusy() || runtime.milliseconds() > 1200) {
+                    follower.followPath(scorePickup1, powerMedium, true);
                     lastPose = currentTargetPose;
                     currentTargetPose = scorePose;
                     //robot.autoRPM.Measure = true;
@@ -362,16 +361,17 @@ public class ppRedFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 750) {
+                    if (runtime.milliseconds() >= 1250) {
                         telemetryMU.addLine("waiting to shoot 2");
                         dolaunch_process();
                         runtime.reset();
                         currentStage = stage._90_LauncherStop;
 
-                    }}
-break;
+                    }
+                }
+                break;
             case _90_LauncherStop:
-                if (runtime.milliseconds() >= 900) {
+                if (runtime.milliseconds() >= 750) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     currentStage = stage._100_Pickup2;
@@ -380,9 +380,10 @@ break;
 
             case _100_Pickup2:
                 if (!follower.isBusy()) {
-                    follower.followPath(grabPickup2a, powerMedium, true);
+                    follower.followPath(grabPickup2a, powerNormal, true);
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup2aPose;
+                    robot.intake.cmdFoward();
                     currentStage = stage._110_Pickup2_Startintake;
                 }
                 break;
@@ -397,8 +398,8 @@ break;
 
                 break;
             case _130_ToScorePoseAP:
-                if(!follower.isBusy()){
-                    follower.followPath(scorePickup2,powerNormal,true);
+                if (!follower.isBusy()) {
+                    follower.followPath(scorePickup2, powerNormal, true);
                     currentTargetPose = scorePose;
                     //robot.autoRPM.Measure = true;
                     robot.launcher.cmdOutfar();
@@ -412,9 +413,9 @@ break;
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 750) {
+                    if (runtime.milliseconds() >= 1250) {
                         telemetryMU.addLine("waiting to shoot 1");
-                       dolaunch_process();
+                        dolaunch_process();
                         currentStage = stage._160_LauncherStop;
                         runtime.reset();
                     }
@@ -434,20 +435,21 @@ break;
                     // follower.followPath(grabPickup1a, powerNormal, true);
                     //  follower.followPath(grabPickup1,powerNormal,true);
                     follower.turnToDegrees(-15); // was 190
-                    follower.followPath(grabPickup3a,powerMedium,true);
+                    follower.followPath(grabPickup3a, powerNormal, true);
                     robot.intake.cmdFoward();
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup1cPose;
                     // currentStage = stage._55_Pickup1_Startintake;
                     currentStage = stage._190_Pickup1a;
+                    runtime.reset();
                 }
                 break;
 
             case _190_Pickup1a:
-                if (!follower.isBusy() || runtime.milliseconds() > 1500) {
+                if (!follower.isBusy() || runtime.milliseconds() > 1200) {
                     // follower.followPath(grabPickup1c,powerSlow, true);
                     //if we have 3 artifacts stop the path and go to next stage
-                    if (robot.intake.autoStopped){
+                    if (robot.intake.autoStopped) {
                         follower.breakFollowing();
                         currentStage = stage._200_PickupWiggle;
                         runtime.reset();
@@ -473,9 +475,9 @@ break;
                 break;
 
             case _210_ToScorePoseAP:
-                if(!follower.isBusy() || runtime.milliseconds() > 1500){
-                    follower.followPath(scorePickup1,powerNormal,true);
-                   // robot.intake.cmdBackward();
+                if (!follower.isBusy() || runtime.milliseconds() > 1200) {
+                    follower.followPath(scorePickup1, powerNormal, true);
+                    // robot.intake.cmdBackward();
                     lastPose = currentTargetPose;
                     currentTargetPose = scorePose;
                     //robot.autoRPM.Measure = true;
@@ -490,15 +492,16 @@ break;
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 750) {
+                    if (runtime.milliseconds() >= 1250) {
                         telemetryMU.addLine("wqiting to shoot 2");
                         dolaunch_process();
                         currentStage = stage._240_LauncherStop;
                         runtime.reset();
-                    }}
-break;
+                    }
+                }
+                break;
             case _240_LauncherStop:
-                if (runtime.milliseconds() >= 900) {
+                if (runtime.milliseconds() >= 750) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     currentStage = stage._250_Pickup1;
@@ -510,20 +513,21 @@ break;
                     // follower.followPath(grabPickup1a, powerNormal, true);
                     //  follower.followPath(grabPickup1,powerNormal,true);
                     follower.turnToDegrees(-15); // was 190
-                    follower.followPath(grabPickup1,powerMedium,true);
+                    follower.followPath(grabPickup1, powerMedium, true);
                     robot.intake.cmdFoward();
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup1cPose;
                     // currentStage = stage._55_Pickup1_Startintake;
                     currentStage = stage._260_Pickup1a;
+                    runtime.reset();
                 }
                 break;
 
             case _260_Pickup1a:
-                if (!follower.isBusy() || runtime.milliseconds() > 1500) {
+                if (!follower.isBusy() || runtime.milliseconds() >= 1500) {
                     // follower.followPath(grabPickup1c,powerSlow, true);
                     //if we have 3 artifacts stop the path and go to next stage
-                    if (robot.intake.autoStopped){
+                    if (robot.intake.autoStopped) {
                         follower.breakFollowing();
                         currentStage = stage._270_ToScorePoseAP;
                         runtime.reset();
@@ -557,8 +561,8 @@ break;
                 break;
 
             case _270_ToScorePoseAP:
-                if(!follower.isBusy() || runtime.milliseconds() > 1500){
-                    follower.followPath(scorePickup1,powerMedium,true);
+                if (!follower.isBusy() || runtime.milliseconds() >= 1500) {
+                    follower.followPath(scorePickup1, powerMedium, true);
                     lastPose = currentTargetPose;
                     currentTargetPose = scorePose;
                     //robot.autoRPM.Measure = true;
@@ -573,18 +577,21 @@ break;
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 750) {
+                    if (runtime.milliseconds() >= 1250) {
                         telemetryMU.addLine("waiting to shoot 2");
                         dolaunch_process();
                         runtime.reset();
                         currentStage = stage._290_LauncherStop;
 
-                    }}
+                    }
+                }
                 break;
+
             case _290_LauncherStop:
                 if (runtime.milliseconds() >= 900) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
+                    runtime.reset();
                     currentStage = stage._450_Park;
                 }
                 break;
@@ -594,10 +601,11 @@ break;
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     robot.launcherBlocker.cmdBlock();
                     robot.autoRPM.Measure = false;
-                    follower.followPath(goEndPose, powerNormal,true);
+                    follower.followPath(goEndPose, powerNormal, true);
                     //follower.turnToDegrees(-15); // was 190
                     lastPose = currentTargetPose;
                     currentTargetPose = endPose;
+                    runtime.reset();
                     currentStage = stage._500_End; //   75_ParkToBeContinued;
                 }
 
@@ -608,16 +616,15 @@ break;
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     robot.launcherBlocker.cmdBlock();
                     robot.autoRPM.Measure = false;
-                    follower.followPath(goEndPose2, powerNormal,true);
+                    follower.followPath(goEndPose2, powerNormal, true);
                     lastPose = currentTargetPose;
                     currentTargetPose = endPose2;
                     currentStage = stage._500_End;
                 }
 
                 break;
-            case _500_End:
-            { //do nothing let the time run out
-                if (runtime.milliseconds() > 3000){ //was 2500
+            case _500_End: { //do nothing let the time run out
+                if (runtime.milliseconds() > 3000) { //was 2500
                     follower.breakFollowing();
                 }
             }
@@ -639,9 +646,9 @@ break;
         telemetryMU.addData("Current Target Pose", currentTargetPose);
         telemetryMU.addData("breakingStrength", pathConstraints.getBrakingStrength());
         telemetryMU.addData("breakstart ", pathConstraints.getBrakingStart());
-        telemetryMU.addData("drivepid P", follower.constants.coefficientsDrivePIDF.P );
-        telemetryMU.addData("drivepid D", follower.constants.coefficientsDrivePIDF.D );
-        telemetryMU.addData("drivepid F", follower.constants.coefficientsDrivePIDF.F );
+        telemetryMU.addData("drivepid P", follower.constants.coefficientsDrivePIDF.P);
+        telemetryMU.addData("drivepid D", follower.constants.coefficientsDrivePIDF.D);
+        telemetryMU.addData("drivepid F", follower.constants.coefficientsDrivePIDF.F);
         telemetryMU.addData("CONSTRAINTS", "");
         telemetryMU.addData("Tvalue (% complete)", follower.pathConstraints.getTValueConstraint());
         telemetryMU.addData("Current tValue", follower.getCurrentTValue());
@@ -655,7 +662,7 @@ break;
         Drawing.drawDebug(follower);
     }
 
-    private void dolaunch_process(){
+    private void dolaunch_process() {
         robot.launcher.launching = true;
         robot.launcherBlocker.cmdUnBlock();
         robot.transitionRoller.cmdSpin();
@@ -663,7 +670,7 @@ break;
         runtime.reset();
     }
 
-    private void endlaunch_process(){
+    private void endlaunch_process() {
         robot.launcher.launching = false;
         robot.launcherBlocker.cmdBlock();
         robot.autoRPM.Measure = false;
