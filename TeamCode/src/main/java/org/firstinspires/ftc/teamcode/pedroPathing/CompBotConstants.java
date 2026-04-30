@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.pedroPathing;
 
 import com.pedropathing.control.FilteredPIDFCoefficients;
 import com.pedropathing.control.PIDFCoefficients;
-import com.pedropathing.control.PredictiveBrakingCoefficients;
+//import com.pedropathing.control.PredictiveBrakingCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
@@ -22,7 +22,7 @@ public class CompBotConstants {
             //.predictiveBrakingCoefficients(new PredictiveBrakingCoefficients(0.01,0.017157,.898306))
             .forwardZeroPowerAcceleration(-24.7796)//was 31.9247
             .lateralZeroPowerAcceleration(-46.20165) //was 70.968
-            .translationalPIDFCoefficients(new PIDFCoefficients(0.03,0.0, 0.01, 0.03))
+            .translationalPIDFCoefficients(new PIDFCoefficients(0.06,0.0, 0.01, 0.045))
             .headingPIDFCoefficients(new PIDFCoefficients(1,0,0,0.011))
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.015, 0.0, 0.0015, 0.06, 0.00001))
             .mass(15.0)
@@ -38,8 +38,8 @@ public class CompBotConstants {
             .leftRearMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.REVERSE)
-            .xVelocity(64.855)
-            .yVelocity(39.0775)
+            .xVelocity(71.3676)//64.855
+            .yVelocity(51.68343)//39.0775
             ;
 
     public static OTOSConstants localizerConstants =  new OTOSConstants()
@@ -47,7 +47,7 @@ public class CompBotConstants {
             .linearUnit(DistanceUnit.INCH)
             .angleUnit(AngleUnit.RADIANS)
             .offset(new SparkFunOTOS.Pose2D(-5.5, -2.0, 0))
-            .linearScalar(0.45275)
+            .linearScalar(0.441171)//0.45275
             //.angularScalar(0.3938925)
             ;
 

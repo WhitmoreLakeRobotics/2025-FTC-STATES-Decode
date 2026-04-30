@@ -115,9 +115,10 @@ public class BlueNearThreeCycle extends OpMode {
                 break;
             case _30_Shoot1:
                 if (runtime.milliseconds() >=1500)  {
+                    robot.launcher.launching = true;
+                    robot.launcherBlocker.cmdUnBlock();
                     robot.intake.cmdFoward();
                     robot.transitionRoller.cmdSpin();
-                    robot.launcherBlocker.cmdUnBlock();
                     runtime.reset();
                     currentStage = stage._40_LauncherStop;
                 }
@@ -174,6 +175,7 @@ public class BlueNearThreeCycle extends OpMode {
                 break;
             case _90_Shoot2:
                 if (runtime.milliseconds() >=1500)  {
+                    robot.launcher.launching = true;
                     robot.launcherBlocker.cmdUnBlock();
                     robot.transitionRoller.cmdSpin();
                     robot.intake.cmdFoward();
@@ -247,6 +249,7 @@ public class BlueNearThreeCycle extends OpMode {
                 break;
             case _160_Shoot3:
                 if (runtime.milliseconds() >=1000)    {
+                    robot.launcher.launching = true;
                     robot.launcherBlocker.cmdUnBlock();
                     robot.transitionRoller.cmdSpin();
                     robot.intake.cmdFoward();

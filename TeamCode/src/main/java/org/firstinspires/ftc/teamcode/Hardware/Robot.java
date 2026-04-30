@@ -179,7 +179,11 @@ public class Robot extends BaseHardware {
         sensors.loop();
         intake.loop();
         limey.loop();
+        autoRPM.setDistance(limey.getTagDistance());
         autoRPM.loop();
+        if(autoRPM.Measure) {
+            launcher.setTargetRPMs(autoRPM.getRPMs());   // <-- this one fix this
+        }
         launcher.loop();
         launcherBlocker.loop();
         transitionRoller.loop();
@@ -361,6 +365,9 @@ public class Robot extends BaseHardware {
 
 
     public void basicSystem(){
+
+        //launcher.launching = launcherBlocker.AtUnBlocked;
+
         if(autoRPM.Measure){
             launcher.CurrentPosition = Launcher.Position.LaunchCalc;
             if(limey.getTagDistance() < 1.1){ //3.1
@@ -384,7 +391,7 @@ public class Robot extends BaseHardware {
 
         if  (sensors.CurrentDistance1 == Sensors.Distance1.FILLED1
                 && sensors.CurrentDistance2 == Sensors.Distance2.FILLED2
-                && !launcher.launching){
+                && !launcher.launching){  //|| launcher blocked
             transitionRoller.cmdStop();
             sensors.cmdBLUE();
         }
@@ -401,7 +408,7 @@ public class Robot extends BaseHardware {
                     && sensors.CurrentDistance3 == Sensors.Distance3.FILLED3)
                     || intake.InPain)
                     && intake.MentallyStable && !launcherBlocker.AtUnBlocked) {
-                transitionRoller.cmdStop(); // possibly remove
+                //transitionRoller.cmdStop(); // possibly remove
                 intake.cmdStop();
                 intake.autoStopped = true;
             }

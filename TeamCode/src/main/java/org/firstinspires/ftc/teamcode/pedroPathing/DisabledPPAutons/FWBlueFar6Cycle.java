@@ -1,8 +1,6 @@
-package org.firstinspires.ftc.teamcode.pedroPathing;
-
+package org.firstinspires.ftc.teamcode.pedroPathing.DisabledPPAutons;
 
 import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.pathConstraints;
-
 
 import com.bylazar.configurables.PanelsConfigurables;
 import com.bylazar.telemetry.PanelsTelemetry;
@@ -17,42 +15,33 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
-
-
+import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
 @Disabled
-@Autonomous(name = "SystemA", group = "PP")
-public class SystemA extends OpMode {
-    // It's the final auton! ne ne neee nee , ne ne nee ne neee!
-    //missing start poses (get at robotics)
-
-
+@Autonomous(name = "FWBlueFar6cycle", group = "PP")
+public class FWBlueFar6Cycle extends OpMode {
+//FastWriteTest1
     Robot robot = new Robot();
-
-
-
 
     private String thisUpdate = "0";
     private TelemetryManager telemetryMU;
-    public String Alliance = "RED"; // Red or Blue
-    public String Grounds ="NEAR"; // Near or Far
-    public int Cycles = 4; // amount of cycles
+    public String Alliance = "BLUE"; // Red or Blue
+    public String Grounds ="FAR"; // Near or Far
+    public int Cycles = 4; // amount of cycles,(goes up to 6)
     public boolean Park = true; // if true, will park off line if it meets criteria
     public int Gates = 0; // X = times 10 unless over 100,000 >and< B = set to zero
     // 0 = do no gate, 1 = do gate, first pos = first pickup, second pos = second pickup... etc
 
-
     public int Wraps = 0; // X = times 10 unless over 100,000 >and< B = set to zero
-    public int C1 = 1; // 0 = no position, 1 = first spike from near position,
+    public int C1 = 4; // 0 = no position, 1 = first spike from near position,
     // 2 = 2nd, 3 = 3rd, 4 = HumanPlayerZone, 5 = DeepHumanPlayerZone
-    public int C2 = 2;
-    public int C3 = 3;
-    public int C4 = 4;
+    public int C2 = 3;
+    public int C3 = 4;
+    public int C4 = 5;
     public int C5 = 0;
     public int C6 = 0;
-
 
     //Unknown Variables
     private int CyclesRemaining = 0;
@@ -66,10 +55,8 @@ public class SystemA extends OpMode {
     private boolean doWrap = false;
     private boolean isBottom = false;
 
-
     //public int Cursor = 1;
     // private int CurrentTrigger = 1;
-
 
     private stage currentStage = stage._00_unknown;
     private trigger currentTrigger = trigger.Alliance;
@@ -77,10 +64,8 @@ public class SystemA extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private ElapsedTime gametime = new ElapsedTime();
 
-
     public static Follower follower;
     public Pose currentPose = new Pose(0,0,0);
-
     public static Pose startPose = new Pose(10, 10, Math.toRadians(90)); // Start Pose of our robot.
     public static Pose scorePose = new Pose(15, 15, Math.toRadians(114)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
@@ -135,21 +120,11 @@ public class SystemA extends OpMode {
     public static Pose TunnelB = new Pose(13,24,Math.toRadians(180));
     public static Pose TunnelR = new Pose(129,24,Math.toRadians(0));
 
-
     //start poses
     public static Pose StartRN = new Pose(33.5,134,Math.toRadians(0)).mirror(); // make better
     public static Pose StartRF = new Pose(55,8,Math.toRadians(90)).mirror(); // make better
     public static Pose StartBN = new Pose(33.5,134,Math.toRadians(180));
     public static Pose StartBF = new Pose(55,8,Math.toRadians(90));
-
-
-
-
-
-
-
-
-
 
     private PathChain scorePreload;
     private PathChain grabPickup1, grabPickup1a, grabPickup1b, grabPickup1c, scorePickup1,
@@ -160,80 +135,61 @@ public class SystemA extends OpMode {
             PreScoreRN,PreScoreBN,PreScoreBF,GateBT,GateRT,GateBB,GateRB,WrapR,WrapB,HPZR,HPZB,TunPicR,
             TunPicB;
 
-
-
-
     public void buildPaths() {
         cyclePickup1 = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, pickup1aPose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1aPose.getHeading())
 
-
                 .addPath(new BezierLine(pickup1aPose, pickup1bPose))
                 .setLinearHeadingInterpolation(pickup1aPose.getHeading(), pickup1bPose.getHeading())
 
-
                 .addPath(new BezierLine(pickup1bPose, scorePoseAP))
                 .setLinearHeadingInterpolation(pickup1bPose.getHeading(), scorePose.getHeading())
-
-
                 .build();
-
 
         spikeB1 = follower.pathBuilder()
                 .addPath(new BezierLine(currentPose, spikeB1start))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), spikeB1start.getHeading())
 
-
                 .addPath (new BezierLine(spikeB1start,spikeB1end))
                 .setLinearHeadingInterpolation(spikeB1start.getHeading(), spikeB1end.getHeading())
                 .build();
-
 
         spikeB2 = follower.pathBuilder()
                 .addPath(new BezierLine(currentPose, spikeB2start))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), spikeB2start.getHeading())
 
-
                 .addPath (new BezierLine(spikeB2start,spikeB2end))
                 .setLinearHeadingInterpolation(spikeB2start.getHeading(), spikeB2end.getHeading())
                 .build();
-
 
         spikeB3 = follower.pathBuilder()
                 .addPath(new BezierLine(currentPose, spikeB3start))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), spikeB3start.getHeading())
 
-
                 .addPath (new BezierLine(spikeB3start,spikeB3end))
                 .setLinearHeadingInterpolation(spikeB3start.getHeading(), spikeB3end.getHeading())
                 .build();
-
 
         spikeR1 = follower.pathBuilder()
                 .addPath(new BezierLine(currentPose, spikeR1start))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), spikeR1start.getHeading())
 
-
                 .addPath (new BezierLine(spikeR1start,spikeR1end))
                 .setLinearHeadingInterpolation(spikeR1start.getHeading(), spikeR1end.getHeading())
                 .build();
-
 
         spikeR2 = follower.pathBuilder()
                 .addPath(new BezierLine(currentPose, spikeR2start))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), spikeR2start.getHeading())
 
-
                 .addPath (new BezierLine(spikeR2start,spikeR2end))
                 .setLinearHeadingInterpolation(spikeR2start.getHeading(), spikeR2end.getHeading())
                 .build();
 
-
         spikeR3 = follower.pathBuilder()
                 .addPath(new BezierLine(currentPose, spikeR3start))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), spikeR3start.getHeading())
-
 
                 .addPath (new BezierLine(spikeR3start,spikeR3end))
                 .setLinearHeadingInterpolation(spikeR3start.getHeading(), spikeR3end.getHeading())
@@ -244,39 +200,30 @@ public class SystemA extends OpMode {
                .setLinearHeadingInterpolation(currentPose.getHeading(), LaunchRN.getHeading())
                .build();
 
-
        doLaunchBN = follower.pathBuilder()
                .addPath (new BezierLine(currentPose,LaunchBN))
                .setLinearHeadingInterpolation(currentPose.getHeading(), LaunchBN.getHeading())
                .build();
-
-
+\
        doLaunchRF = follower.pathBuilder()
                .addPath (new BezierLine(currentPose,launchFarRed))
                .setLinearHeadingInterpolation(currentPose.getHeading(), launchFarRed.getHeading())
                .build();
 
-
        doLaunchBF = follower.pathBuilder()
                .addPath (new BezierLine(currentPose,launchFarBlue))
                .setLinearHeadingInterpolation(currentPose.getHeading(), launchFarBlue.getHeading())
                .build();
-
-
 */
-
-
         doPickupBT = follower.pathBuilder()
                 .addPath (new BezierLine(currentPose,pickTunnelBlue))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), pickTunnelBlue.getHeading())
                 .build();
 
-
         doPickupRT = follower.pathBuilder()
                 .addPath (new BezierLine(currentPose,pickTunnelRed))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), pickTunnelRed.getHeading())
                 .build();
-
 
         ParkREDNEAR = follower.pathBuilder()
                 .addPath (new BezierLine(currentPose,ParkRN))
@@ -295,7 +242,6 @@ public class SystemA extends OpMode {
                 .setLinearHeadingInterpolation(currentPose.getHeading(), ParkBF.getHeading())
                 .build();
 
-
         ScoreRN = follower.pathBuilder()
                 .addPath (new BezierCurve(currentPose,ControlCenter,scoreRN))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), scoreRN.getHeading())
@@ -312,7 +258,6 @@ public class SystemA extends OpMode {
                 .addPath (new BezierCurve(currentPose,ControlOutpostB,scoreBF))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), scoreBF.getHeading())
                 .build();
-
 
         PreScoreRN = follower.pathBuilder()
                 .addPath (new BezierLine(currentPose,scoreRN)) // could be start pos
@@ -331,7 +276,6 @@ public class SystemA extends OpMode {
                 .setLinearHeadingInterpolation(currentPose.getHeading(), scoreBF.getHeading())
                 .build();
 
-
         GateBT = follower.pathBuilder()
                 .addPath (new BezierCurve(currentPose,GateBconT,GateB))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), GateB.getHeading())
@@ -349,7 +293,6 @@ public class SystemA extends OpMode {
                 .setLinearHeadingInterpolation(currentPose.getHeading(), GateR.getHeading())
                 .build();
 
-
         WrapR = follower.pathBuilder()
                 .addPath (new BezierLine(currentPose,wrapAroundR))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), wrapAroundR.getHeading())
@@ -359,7 +302,6 @@ public class SystemA extends OpMode {
                 .setLinearHeadingInterpolation(currentPose.getHeading(), wrapAroundB.getHeading())
                 .build();
 
-
         HPZR = follower.pathBuilder()
                 .addPath (new BezierLine(currentPose,HPPickupR))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), HPPickupR.getHeading())
@@ -368,7 +310,6 @@ public class SystemA extends OpMode {
                 .addPath (new BezierLine(currentPose,HPPickupB))
                 .setLinearHeadingInterpolation(currentPose.getHeading(), HPPickupB.getHeading())
                 .build();
-
 
         TunPicR = follower.pathBuilder()
                 .addPath (new BezierLine(currentPose,TunnelR))
@@ -380,11 +321,8 @@ public class SystemA extends OpMode {
                 .build();
     }
 
-
     @Override
     public void init() {
-
-
 // NAJ CompBotConstants is a file/class that contains the definition of the gryo and drive motors among other things
         //super.init();
         follower = CompBotConstants.createFollower(hardwareMap);
@@ -395,14 +333,10 @@ public class SystemA extends OpMode {
 //  pedroPanelsTelemetry.init();
         Drawing.init();
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
-
-
 // disp[lay starting postition
         telemetryMU.addData("initialized postition - Update ", thisUpdate);
 // Feedback to Driver Hub for debugging
         updateTelemetry();
-
-
         robot.hardwareMap = hardwareMap;
         robot.telemetry = telemetry;
         robot.init();
@@ -411,7 +345,7 @@ public class SystemA extends OpMode {
 
     @Override
     public void init_loop() {
-/* no longer nessacary
+/* maybe use
        telemetry.addData("Alliance",Alliance);
        telemetry.addData("Grounds",Grounds);
        telemetry.addData("Cycles",Cycles);
@@ -425,396 +359,9 @@ public class SystemA extends OpMode {
        telemetry.addData("C5",C5);
        telemetry.addData("C6",C6);
 */
-
-
-        switch (currentTrigger){
-            case Alliance:
-                telemetry.addData(">>Alliance",Alliance);
-                telemetry.addData("Grounds",Grounds);
-                telemetry.addData("Cycles",Cycles);
-                telemetry.addData("Park",Park);
-                telemetry.addData("Gates",Gates);
-                telemetry.addData("Wraps",Wraps);
-                telemetry.addData("C1",C1);
-                telemetry.addData("C2",C2);
-                telemetry.addData("C3",C3);
-                telemetry.addData("C4",C4);
-                telemetry.addData("C5",C5);
-                telemetry.addData("C6",C6);
-                if(gamepad1.dpad_right || gamepad1.dpad_left) {
-                    if (Alliance == "RED") {
-                        Alliance = "BLUE";
-                    } else {
-                        Alliance = "RED";
-                    }
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.Grounds;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.C6;
-                }
-                break;
-            case Grounds:
-                telemetry.addData("Alliance",Alliance);
-                telemetry.addData(">>Grounds",Grounds);
-                telemetry.addData("Cycles",Cycles);
-                telemetry.addData("Park",Park);
-                telemetry.addData("Gates",Gates);
-                telemetry.addData("Wraps",Wraps);
-                telemetry.addData("C1",C1);
-                telemetry.addData("C2",C2);
-                telemetry.addData("C3",C3);
-                telemetry.addData("C4",C4);
-                telemetry.addData("C5",C5);
-                telemetry.addData("C6",C6);
-                if(gamepad1.dpad_right || gamepad1.dpad_left) {
-                    if (Grounds == "NEAR") {
-                        Grounds = "FAR";
-                    } else {
-                        Grounds = "NEAR";
-                    }
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.Cycles;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.Alliance;
-                }
-                break;
-            case Cycles:
-                telemetry.addData("Alliance",Alliance);
-                telemetry.addData("Grounds",Grounds);
-                telemetry.addData(">>Cycles",Cycles);
-                telemetry.addData("Park",Park);
-                telemetry.addData("Gates",Gates);
-                telemetry.addData("Wraps",Wraps);
-                telemetry.addData("C1",C1);
-                telemetry.addData("C2",C2);
-                telemetry.addData("C3",C3);
-                telemetry.addData("C4",C4);
-                telemetry.addData("C5",C5);
-                telemetry.addData("C6",C6);
-                if(Cycles <= 0){
-                    Cycles = 6;
-                }else if(Cycles >= 7){
-                    Cycles = 1;
-                }
-                if(gamepad1.dpad_right) {
-                    Cycles = Cycles + 1;
-                }
-                if(gamepad1.dpad_left) {
-                    Cycles = Cycles - 1;
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.Park;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.Grounds;
-                }
-                break;
-            case Park:
-                telemetry.addData("Alliance",Alliance);
-                telemetry.addData("Grounds",Grounds);
-                telemetry.addData("Cycles",Cycles);
-                telemetry.addData(">>Park",Park);
-                telemetry.addData("Gates",Gates);
-                telemetry.addData("Wraps",Wraps);
-                telemetry.addData("C1",C1);
-                telemetry.addData("C2",C2);
-                telemetry.addData("C3",C3);
-                telemetry.addData("C4",C4);
-                telemetry.addData("C5",C5);
-                telemetry.addData("C6",C6);
-                if(gamepad1.dpad_right || gamepad1.dpad_left) {
-                    if (Park) {
-                        Park = false;
-                    } else {
-                        Park = true;
-                    }
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.Gates;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.Cycles;
-                }
-                break;
-            case Gates:
-                telemetry.addData("Alliance",Alliance);
-                telemetry.addData("Grounds",Grounds);
-                telemetry.addData("Cycles",Cycles);
-                telemetry.addData("Park",Park);
-                telemetry.addData(">>Gates",Gates);
-                telemetry.addData("Wraps",Wraps);
-                telemetry.addData("C1",C1);
-                telemetry.addData("C2",C2);
-                telemetry.addData("C3",C3);
-                telemetry.addData("C4",C4);
-                telemetry.addData("C5",C5);
-                telemetry.addData("C6",C6);
-                if(gamepad1.x){
-                    if(Gates < 100000) {
-                        Gates = Gates * 10;
-                    }
-                }
-                if(gamepad1.b){
-                    Gates = 0;
-                }
-                if(gamepad1.dpad_right) {
-                    Gates = Gates + 1;
-                }
-                if(gamepad1.dpad_left) {
-                    Gates = Gates - 1;
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.Wraps;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.Park;
-                }
-                break;
-            case Wraps:
-                telemetry.addData("Alliance",Alliance);
-                telemetry.addData("Grounds",Grounds);
-                telemetry.addData("Cycles",Cycles);
-                telemetry.addData("Park",Park);
-                telemetry.addData("Gates",Gates);
-                telemetry.addData(">>Wraps",Wraps);
-                telemetry.addData("C1",C1);
-                telemetry.addData("C2",C2);
-                telemetry.addData("C3",C3);
-                telemetry.addData("C4",C4);
-                telemetry.addData("C5",C5);
-                telemetry.addData("C6",C6);
-                if(gamepad1.x){
-                    if(Wraps < 100000) {
-                        Wraps = Wraps * 10;
-                    }
-                }
-                if(gamepad1.b){
-                    Wraps = 0;
-                }
-                if(gamepad1.dpad_right) {
-                    Wraps = Wraps + 1;
-                }
-                if(gamepad1.dpad_left) {
-                    Wraps = Wraps - 1;
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.C1;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.Gates;
-                }
-                break;
-            case C1:
-                telemetry.addData("Alliance",Alliance);
-                telemetry.addData("Grounds",Grounds);
-                telemetry.addData("Cycles",Cycles);
-                telemetry.addData("Park",Park);
-                telemetry.addData("Gates",Gates);
-                telemetry.addData("Wraps",Wraps);
-                telemetry.addData(">>C1",C1);
-                telemetry.addData("C2",C2);
-                telemetry.addData("C3",C3);
-                telemetry.addData("C4",C4);
-                telemetry.addData("C5",C5);
-                telemetry.addData("C6",C6);
-                if(C1 <= -1){
-                    C1 = 5;
-                }else if(C1 >= 6){
-                    C1 = 0;
-                }
-                if(Cycles > 0) { // probably unnessacary, possibly harmful
-                    if (gamepad1.dpad_right) {
-                        C1 = C1 + 1;
-                    }
-                    if (gamepad1.dpad_left) {
-                        C1 = C1 - 1;
-                    }
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.C2;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.Wraps;
-                }
-                break;
-            case C2:
-                telemetry.addData("Alliance",Alliance);
-                telemetry.addData("Grounds",Grounds);
-                telemetry.addData("Cycles",Cycles);
-                telemetry.addData("Park",Park);
-                telemetry.addData("Gates",Gates);
-                telemetry.addData("Wraps",Wraps);
-                telemetry.addData("C1",C1);
-                telemetry.addData(">>C2",C2);
-                telemetry.addData("C3",C3);
-                telemetry.addData("C4",C4);
-                telemetry.addData("C5",C5);
-                telemetry.addData("C6",C6);
-                if(C2 <= -1){
-                    C2 = 5;
-                }else if(C2 >= 6){
-                    C2 = 0;
-                }
-                if(Cycles > 1) { // probably unnessacary, possibly harmful
-                    if (gamepad1.dpad_right) {
-                        C2 = C2 + 1;
-                    }
-                    if (gamepad1.dpad_left) {
-                        C2 = C2 - 1;
-                    }
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.C3;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.C1;
-                }
-                break;
-            case C3:
-                telemetry.addData("Alliance",Alliance);
-                telemetry.addData("Grounds",Grounds);
-                telemetry.addData("Cycles",Cycles);
-                telemetry.addData("Park",Park);
-                telemetry.addData("Gates",Gates);
-                telemetry.addData("Wraps",Wraps);
-                telemetry.addData("C1",C1);
-                telemetry.addData("C2",C2);
-                telemetry.addData(">>C3",C3);
-                telemetry.addData("C4",C4);
-                telemetry.addData("C5",C5);
-                telemetry.addData("C6",C6);
-                if(C3 <= -1){
-                    C3 = 5;
-                }else if(C3 >= 6){
-                    C3 = 0;
-                }
-                if(Cycles > 2) { // probably unnessacary, possibly harmful
-                    if (gamepad1.dpad_right) {
-                        C3 = C3 + 1;
-                    }
-                    if (gamepad1.dpad_left) {
-                        C3 = C3 - 1;
-                    }
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.C4;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.C2;
-                }
-                break;
-            case C4:
-                telemetry.addData("Alliance",Alliance);
-                telemetry.addData("Grounds",Grounds);
-                telemetry.addData("Cycles",Cycles);
-                telemetry.addData("Park",Park);
-                telemetry.addData("Gates",Gates);
-                telemetry.addData("Wraps",Wraps);
-                telemetry.addData("C1",C1);
-                telemetry.addData("C2",C2);
-                telemetry.addData("C3",C3);
-                telemetry.addData(">>C4",C4);
-                telemetry.addData("C5",C5);
-                telemetry.addData("C6",C6);
-                if(C4 <= -1){
-                    C4 = 5;
-                }else if(C4 >= 6){
-                    C4 = 0;
-                }
-                if(Cycles > 3) { // probably unnessacary, possibly harmful
-                    if (gamepad1.dpad_right) {
-                        C4= C4 + 1;
-                    }
-                    if (gamepad1.dpad_left) {
-                        C4 = C4 - 1;
-                    }
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.C5;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.C3;
-                }
-                break;
-            case C5:
-                telemetry.addData("Alliance",Alliance);
-                telemetry.addData("Grounds",Grounds);
-                telemetry.addData("Cycles",Cycles);
-                telemetry.addData("Park",Park);
-                telemetry.addData("Gates",Gates);
-                telemetry.addData("Wraps",Wraps);
-                telemetry.addData("C1",C1);
-                telemetry.addData("C2",C2);
-                telemetry.addData("C3",C3);
-                telemetry.addData("C4",C4);
-                telemetry.addData(">>C5",C5);
-                telemetry.addData("C6",C6);
-                if(C5 <= -1){
-                    C5 = 5;
-                }else if(C5 >= 6){
-                    C5 = 0;
-                }
-                if(Cycles > 4) { // probably unnessacary, possibly harmful
-                    if (gamepad1.dpad_right) {
-                        C5 = C5 + 1;
-                    }
-                    if (gamepad1.dpad_left) {
-                        C5 = C5 - 1;
-                    }
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.C6;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.C4;
-                }
-                break;
-            case C6:
-                telemetry.addData("Alliance",Alliance);
-                telemetry.addData("Grounds",Grounds);
-                telemetry.addData("Cycles",Cycles);
-                telemetry.addData("Park",Park);
-                telemetry.addData("Gates",Gates);
-                telemetry.addData("Wraps",Wraps);
-                telemetry.addData("C1",C1);
-                telemetry.addData("C2",C2);
-                telemetry.addData("C3",C3);
-                telemetry.addData("C4",C4);
-                telemetry.addData("C5",C5);
-                telemetry.addData(">>C6",C6);
-                if(C6 <= -1){
-                    C6 = 5;
-                }else if(C6 >= 6){
-                    C6 = 0;
-                }
-                if(Cycles > 5) { // probably unnessacary, possibly harmful
-                    if (gamepad1.dpad_right) {
-                        C6 = C6 + 1;
-                    }
-                    if (gamepad1.dpad_left) {
-                        C6 = C6 - 1;
-                    }
-                }
-                if(gamepad1.dpad_down){
-                    currentTrigger = trigger.Alliance;
-                }
-                if(gamepad1.dpad_up){
-                    currentTrigger = trigger.C5;
-                }
-                break;
-        }
-
-
         //super.init_loop();
         robot.init_loop();
-
-
     }
-
 
     @Override
     public void start () {
@@ -838,7 +385,6 @@ public class SystemA extends OpMode {
         scanDigitCode(Wraps,false);
     }
 
-
     @Override
     public void loop() {
         setCurrentPose();
@@ -851,12 +397,10 @@ public class SystemA extends OpMode {
                 currentStage = stage._10_preStart;
                 break;
 
-
             case _10_preStart:
                 CyclesRemaining = Cycles;
                 currentStage = stage._20_PreloadPrelaunch;
                 break;
-
 
             case _20_PreloadPrelaunch:
                 if(Alliance == "RED"){
@@ -873,12 +417,9 @@ public class SystemA extends OpMode {
                     }
                 }
                 //follower.followPath(scorePreload); // change or check // depend on booleans
-                robot.autoRPM.Measure = true;
+                StartLauncher();
                 currentStage = stage._30_PreloadLaunch;
-
-
                 break;
-
 
             case _30_PreloadLaunch:
                 if (!follower.isBusy()) {
@@ -978,10 +519,9 @@ public class SystemA extends OpMode {
                 }
                 break;
 
-
             case _50_PreLaunch:
                 if (!follower.isBusy() || robot.intake.autoStopped) { // add or if full
-                    robot.autoRPM.Measure = true;
+                    StartLauncher();
                     if(Alliance == "RED"){
                         if(Grounds == "NEAR"){
                             follower.followPath(ScoreRN);
@@ -1005,7 +545,6 @@ public class SystemA extends OpMode {
                 }
                 break;
 
-
             case _60_Launch:
                 if (!follower.isBusy()) {
                     dolaunch_process();
@@ -1016,7 +555,6 @@ public class SystemA extends OpMode {
                     // telemetryMU.addData("Drive Complete?", follower.isBusy());
                 }
                 break;
-
 
             case _70_Park:
                 if(Alliance == "RED"){
@@ -1035,13 +573,11 @@ public class SystemA extends OpMode {
                 currentStage = stage._80_End;
                 break;
 
-
             case _80_End:
                 if(!follower.isBusy()){
                     stop();
                 }
                 break;
-
 
             case _90_Gate:
                 if(!follower.isBusy()) {
@@ -1068,7 +604,6 @@ public class SystemA extends OpMode {
                 }
                 break;
 
-
             case _100_WrapAround:
                 if(!follower.isBusy()) {
                     runtime.reset();
@@ -1082,33 +617,17 @@ public class SystemA extends OpMode {
                     }
                 }
                 // go to red or blue wrap around position
-
-
                 break;
-
-
-
-
-
-
         }
-
-
     }
-
-
-
-
-
 
     @Override
     public void stop () {
         //super.stop();
         robot.stop();
     }
+
     private enum stage {
-
-
         _00_unknown,
         _10_preStart,
         _20_PreloadPrelaunch,
@@ -1120,12 +639,7 @@ public class SystemA extends OpMode {
         _80_End,
         _90_Gate,
         _100_WrapAround
-
-
-
-
     }
-
 
     private enum trigger{
         Alliance,
@@ -1142,7 +656,6 @@ public class SystemA extends OpMode {
         C6
     }
 
-
     public enum codePos {
         C1,
         C2,
@@ -1151,9 +664,6 @@ public class SystemA extends OpMode {
         C5,
         C6
     }
-
-
-
 
     private void updateTelemetry () {
         telemetryMU.addData("Follower Busy?", follower.isBusy());
@@ -1176,12 +686,21 @@ public class SystemA extends OpMode {
         telemetryMU.addData("Trans constraint", follower.pathConstraints.getTranslationalConstraint());
         // telemetryMU.addData("current Trans", follower.getTranslationalError());
         telemetryMU.addData("Heading Constraint", follower.pathConstraints.getHeadingConstraint());
-
-
         telemetryMU.update();
         Drawing.drawDebug(follower);
     }
 
+    public void StartLauncher(){
+        if(robot.limey.getTagID() > 0){
+            robot.autoRPM.Measure = true;
+        }else{
+            if(Grounds == "NEAR"){
+                robot.launcher.cmdOutnear();
+            }else if(Grounds == "FAR"){
+                robot.launcher.cmdOutfar();
+            }
+        }
+    }
 
     private void dolaunch_process(){
         robot.launcher.launching = true; // temp
@@ -1197,7 +716,6 @@ public class SystemA extends OpMode {
         robot.autoRPM.Measure = false;
         robot.launcher.cmdStop();
     }
-
 
     private void scanPickup(int PicPos){
         if(Alliance == "RED"){
@@ -1217,8 +735,6 @@ public class SystemA extends OpMode {
                 isBottom = true;
                 follower.followPath(TunPicR);
             }else{
-
-
             }
         }else{
             if(PicPos == 1){
@@ -1242,7 +758,6 @@ public class SystemA extends OpMode {
             }
         }
     }
-
 
     public void scanDigitCode(int code, boolean isGate){
         switch (currentCodePos){
@@ -1312,10 +827,7 @@ public class SystemA extends OpMode {
                 }
                 break;
         }
-
-
     }
-
 
     public int scanDoubleCode(double dubCode, boolean isWrap){
         if(dubCode - 1.1 == 0){
@@ -1352,6 +864,7 @@ public class SystemA extends OpMode {
             }
         }
     }
+
     public void setCurrentPose(){
         currentPose = follower.getPose();
     }

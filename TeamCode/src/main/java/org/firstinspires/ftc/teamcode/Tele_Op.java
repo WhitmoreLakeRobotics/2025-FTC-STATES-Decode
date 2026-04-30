@@ -483,6 +483,7 @@ public class Tele_Op extends OpMode {
         }
 
         if (CommonLogic.oneShot(gamepad2.y, gp2_prev_y)) {
+            robot.autoRPM.Measure = false;
             NoLaunch();
         }
 
@@ -538,7 +539,7 @@ public class Tele_Op extends OpMode {
                 robot.autoRPM.Measure = true;
             }else{
                 robot.autoRPM.Measure = false;
-                robot.launcher.cmdStop();
+                NoLaunch();
             }
         }
         if (CommonLogic.oneShot(gamepad2.dpad_right, gp2_prev_dpad_right)) {

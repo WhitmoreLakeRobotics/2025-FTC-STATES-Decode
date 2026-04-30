@@ -12,6 +12,7 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -22,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Robot;
  *****  and crashes during init with no errors
  * */
 
-
+@Disabled
 @Autonomous(name = "ppSharpCorner6BlueFar", group = "PP")
 public class ppSharpCorner6BlueFar extends OpMode {
 
@@ -384,20 +385,18 @@ public class ppSharpCorner6BlueFar extends OpMode {
     }
 
     private void dolaunch_process(){
-
+        robot.launcher.launching = true;
         robot.launcherBlocker.cmdUnBlock();
         robot.transitionRoller.cmdSpin();
         robot.intake.cmdFoward();
         runtime.reset();
-
     }
 
     private void endlaunch_process(){
-
+        robot.launcher.launching = false;
         robot.launcherBlocker.cmdBlock();
         robot.autoRPM.Measure = false;
         robot.launcher.cmdStop();
-
     }
 
     private void AreYouSure(stage NextStage){

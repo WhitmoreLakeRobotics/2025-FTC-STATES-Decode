@@ -11,6 +11,7 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -21,7 +22,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Robot;
  *****  and crashes during init with no errors
  * */
 
-
+@Disabled
 @Autonomous(name = "pp6CycleBlueFar", group = "PP")
 public class pp6CycleBlueFar extends OpMode {
 

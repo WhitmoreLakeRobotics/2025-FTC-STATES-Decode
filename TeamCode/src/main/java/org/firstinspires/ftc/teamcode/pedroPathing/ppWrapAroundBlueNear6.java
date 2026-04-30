@@ -11,12 +11,13 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 
-
+@Disabled
 @Autonomous(name = "ppWrapAroundBlueNear6", group = "PP")
 public class ppWrapAroundBlueNear6 extends OpMode {
 
@@ -343,21 +344,19 @@ public class ppWrapAroundBlueNear6 extends OpMode {
         Drawing.drawDebug(follower);
     }
 
-    private void dolaunch_process() {
-
+    private void dolaunch_process(){
+        robot.launcher.launching = true;
         robot.launcherBlocker.cmdUnBlock();
         robot.transitionRoller.cmdSpin();
         robot.intake.cmdFoward();
         runtime.reset();
-
     }
 
-    private void endlaunch_process() {
-
+    private void endlaunch_process(){
+        robot.launcher.launching = false;
         robot.launcherBlocker.cmdBlock();
         robot.autoRPM.Measure = false;
         robot.launcher.cmdStop();
-
     }
 
     private void AreYouSure(stage NextStage) {

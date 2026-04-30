@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 
-
 @Disabled
 @Autonomous(name = "RedNearThreeCycle", group = "Auton")
 // @Autonomous(...) is the other common choice
@@ -115,6 +114,7 @@ public class RedNearThreeCycle extends OpMode {
                 break;
             case _30_Shoot1:
                 if (runtime.milliseconds() >=1500)  {
+                    robot.launcher.launching = true;
                     robot.intake.cmdFoward();
                     robot.transitionRoller.cmdSpin();
                     robot.launcherBlocker.cmdUnBlock();
@@ -176,6 +176,7 @@ public class RedNearThreeCycle extends OpMode {
                 break;
             case _90_Shoot2:
                 if (runtime.milliseconds() >=1500)  {
+                    robot.launcher.launching = true;
                     robot.launcherBlocker.cmdUnBlock();
                     robot.transitionRoller.cmdSpin();
                     robot.intake.cmdFoward();
@@ -249,6 +250,7 @@ public class RedNearThreeCycle extends OpMode {
                 break;
             case _160_Shoot3:
                 if (runtime.milliseconds() >=1000)    {
+                    robot.launcher.launching = true;
                     robot.launcherBlocker.cmdUnBlock();
                     robot.transitionRoller.cmdSpin();
                     robot.intake.cmdFoward();

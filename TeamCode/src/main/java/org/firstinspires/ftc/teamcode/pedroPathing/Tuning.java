@@ -21,7 +21,7 @@ import com.pedropathing.math.*;
 import com.pedropathing.paths.*;
 import com.pedropathing.telemetry.SelectableOpMode;
 import com.pedropathing.util.*;
-import static com.pedropathing.math.MathFunctions.quadraticFit;
+//import static com.pedropathing.math.MathFunctions.quadraticFit;
 
 import android.annotation.SuppressLint;
 
@@ -68,7 +68,7 @@ public class Tuning extends SelectableOpMode {
                 a.add("Lateral Velocity Tuner", LateralVelocityTuner::new);
                 a.add("Forward Zero Power Acceleration Tuner", ForwardZeroPowerAccelerationTuner::new);
                 a.add("Lateral Zero Power Acceleration Tuner", LateralZeroPowerAccelerationTuner::new);
-                a.add("Predictive Braking Tuner", PredictiveBrakingTuner::new);
+            //    a.add("Predictive Braking Tuner", PredictiveBrakingTuner::new);
             });
             s.folder("Manual", p -> {
                 p.add("Translational Tuner", TranslationalTuner::new);
@@ -773,6 +773,7 @@ class LateralZeroPowerAccelerationTuner extends OpMode {
  * @author Jacob Ophoven - 18535 Frozen Code
  * @version 1.0, 12/26/2025
  */
+/*
 class PredictiveBrakingTuner extends OpMode {
     private static final double[] TEST_POWERS =
             {1, 1, 1, 0.9, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2};
@@ -938,7 +939,7 @@ class PredictiveBrakingTuner extends OpMode {
             }
         }
     }
-}
+}*/
 
 /**
  * This is the Translational PIDF Tuner OpMode. It will keep the robot in place.

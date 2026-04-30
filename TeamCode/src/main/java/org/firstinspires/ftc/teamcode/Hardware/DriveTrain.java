@@ -60,8 +60,8 @@ public class DriveTrain extends BaseHardware {
 
     private double Drive_Start;  //in inches
     private double Drive_Target;  //in inches
-    private static final double Distance_Per_Rev = 4.09*3.14159;
-    private static final double Gear_Ratio = 13.7;
+    private static final double Distance_Per_Rev = 4.09*3.14159; //check
+    private static final double Gear_Ratio = 13.7; //check
     private  static final int Gyro_Tol  = 1; //was 3
     private static final double Ticks_Per_Inch = (Settings.GOBILDA_MOTOR_TICKS_PER_REV *  Gear_Ratio) / Distance_Per_Rev;
     private double bearing_AA = 0;

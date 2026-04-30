@@ -22,12 +22,12 @@ import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
-@Disabled
+
 @Configurable
 @Autonomous(name = "ppBlueGATENear4Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
 
-public class ppBlueGATENear4Cycle extends OpMode {
+public class ppBlueDoubleGATENear4Cycle extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();

@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
-
+@Disabled
 @Autonomous(name = "FastWrite", group = "PP")
 public class FastWrite extends OpMode {
 
@@ -28,8 +28,8 @@ public class FastWrite extends OpMode {
     private String thisUpdate = "0";
     private TelemetryManager telemetryMU;
     public String Alliance = "RED"; // Red or Blue
-    public String Grounds ="NEAR"; // Near or Far
-    public int Cycles = 4; // amount of cycles
+    public String Grounds ="FAR"; // Near or Far
+    public int Cycles = 4; // amount of cycles,(goes up to 6)
     public boolean Park = true; // if true, will park off line if it meets criteria
     public int Gates = 0; // X = times 10 unless over 100,000 >and< B = set to zero
     // 0 = do no gate, 1 = do gate, first pos = first pickup, second pos = second pickup... etc
@@ -417,7 +417,7 @@ public class FastWrite extends OpMode {
                     }
                 }
                 //follower.followPath(scorePreload); // change or check // depend on booleans
-                robot.autoRPM.Measure = true;
+                StartLauncher();
                 currentStage = stage._30_PreloadLaunch;
                 break;
 
@@ -521,7 +521,7 @@ public class FastWrite extends OpMode {
 
             case _50_PreLaunch:
                 if (!follower.isBusy() || robot.intake.autoStopped) { // add or if full
-                    robot.autoRPM.Measure = true;
+                    StartLauncher();
                     if(Alliance == "RED"){
                         if(Grounds == "NEAR"){
                             follower.followPath(ScoreRN);
@@ -690,14 +690,28 @@ public class FastWrite extends OpMode {
         Drawing.drawDebug(follower);
     }
 
-    private void dolaunch_process() {
+    public void StartLauncher(){
+        if(robot.limey.getTagID() > 0){
+            robot.autoRPM.Measure = true;
+        }else{
+            if(Grounds == "NEAR"){
+                robot.launcher.cmdOutnear();
+            }else if(Grounds == "FAR"){
+                robot.launcher.cmdOutfar();
+            }
+        }
+    }
+
+    private void dolaunch_process(){
+        robot.launcher.launching = true; // temp
         robot.launcherBlocker.cmdUnBlock();
         robot.transitionRoller.cmdSpin();
         robot.intake.cmdFoward();
         runtime.reset();
     }
 
-    private void endlaunch_process() {
+    private void endlaunch_process(){
+        robot.launcher.launching = false; // temp
         robot.launcherBlocker.cmdBlock();
         robot.autoRPM.Measure = false;
         robot.launcher.cmdStop();
