@@ -303,9 +303,22 @@ public class Launcher extends BaseHardware{
         double currentRPM2 = getMotorRPM(LaunchM02);
         double power2 = pidMotor2(currentRPM2);
 
+        // Prevent braking when stopping (test) MJD
+        if (targetRPM1 == 0) {
+            power1 = 0;
+            integral1 = 0;   // reset PID so it doesn't spike later
+            lastError1 = 0;
+        }
+
+        if (targetRPM2 == 0) {
+            power2 = 0;
+            integral2 = 0;
+            lastError2 = 0;
+        }
+
+
         LaunchM01.setPower(power1);
         LaunchM02.setPower(power2);
-
 
         telemetryMU.addData("Target targetRPM1",targetRPM1);
         telemetryMU.addData("Current currentRPM1",currentRPM1);
