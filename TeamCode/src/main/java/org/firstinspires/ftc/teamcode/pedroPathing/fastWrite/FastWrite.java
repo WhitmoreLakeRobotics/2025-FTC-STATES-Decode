@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing.DisabledPPAutons;
+package org.firstinspires.ftc.teamcode.pedroPathing.fastWrite;
 
 import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.pathConstraints;
 
@@ -15,19 +15,20 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Common.CommonLogic;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
 @Disabled
-@Autonomous(name = "FWBlueFar6cycle", group = "PP")
-public class FWBlueFar6Cycle extends OpMode {
-//FastWriteTest1
+@Autonomous(name = "FastWrite", group = "FW")
+public class FastWrite extends OpMode {
+
     Robot robot = new Robot();
 
     private String thisUpdate = "0";
     private TelemetryManager telemetryMU;
-    public String Alliance = "BLUE"; // Red or Blue
+    public String Alliance = "RED"; // Red or Blue
     public String Grounds ="FAR"; // Near or Far
     public int Cycles = 4; // amount of cycles,(goes up to 6)
     public boolean Park = true; // if true, will park off line if it meets criteria
@@ -35,11 +36,11 @@ public class FWBlueFar6Cycle extends OpMode {
     // 0 = do no gate, 1 = do gate, first pos = first pickup, second pos = second pickup... etc
 
     public int Wraps = 0; // X = times 10 unless over 100,000 >and< B = set to zero
-    public int C1 = 4; // 0 = no position, 1 = first spike from near position,
+    public int C1 = 1; // 0 = no position, 1 = first spike from near position,
     // 2 = 2nd, 3 = 3rd, 4 = HumanPlayerZone, 5 = DeepHumanPlayerZone
-    public int C2 = 3;
-    public int C3 = 4;
-    public int C4 = 5;
+    public int C2 = 2;
+    public int C3 = 3;
+    public int C4 = 4;
     public int C5 = 0;
     public int C6 = 0;
 
@@ -54,6 +55,7 @@ public class FWBlueFar6Cycle extends OpMode {
     private boolean doGate = false;
     private boolean doWrap = false;
     private boolean isBottom = false;
+
 
     //public int Cursor = 1;
     // private int CurrentTrigger = 1;
@@ -406,31 +408,39 @@ public class FWBlueFar6Cycle extends OpMode {
                 if(Alliance == "RED"){
                     if(Grounds == "NEAR"){
                         follower.followPath(PreScoreRN);
+                        StartLauncher();
+                        currentStage = stage._30_PreloadLaunch;
                     }else{
                         follower.followPath(PreScoreRF);
+                        StartLauncher();
+                        currentStage = stage._30_PreloadLaunch;
                     }
                 }else{
                     if(Grounds == "NEAR"){
                         follower.followPath(PreScoreBN);
+                        StartLauncher();
+                        currentStage = stage._30_PreloadLaunch;
                     }else{
                         follower.followPath(PreScoreBF);
+                        StartLauncher();
+                        currentStage = stage._30_PreloadLaunch;
                     }
                 }
                 //follower.followPath(scorePreload); // change or check // depend on booleans
-                StartLauncher();
-                currentStage = stage._30_PreloadLaunch;
+
                 break;
 
             case _30_PreloadLaunch:
                 if (!follower.isBusy()) {
                     dolaunch_process();
-                    telemetryMU.addData("Cornor pickup", follower.getPose());
+                    runtime.reset();
+                    telemetryMU.addData("Corner pickup", follower.getPose());
                     currentStage = stage._40_Pickup;
                 }
                 break;
             case _40_Pickup:
-                if (runtime.milliseconds() >= 1500 || robot.sensors.Empty) { // change time // if empty
-                    endlaunch_process();
+                if (runtime.milliseconds() >= 1000 || robot.sensors.Empty) { // change time // if empty
+                    endlaunch_process();  // run once
                     if(CyclesRemaining > 0) {
                         if (Cycles == CyclesRemaining) {
                             scanDoubleCode(currentCode1,true);

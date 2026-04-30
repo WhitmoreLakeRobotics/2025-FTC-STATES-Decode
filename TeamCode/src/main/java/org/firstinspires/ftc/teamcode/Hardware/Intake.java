@@ -87,6 +87,12 @@ public class Intake extends BaseHardware{
         autoStopped = false;
     }
 
+    public void cmdFowardwthreset(){
+        CurrentMode = Mode.NTKforward;
+        NTKM01.setPower (inSpeed);
+        autoStopped = false;
+    }
+
     public void cmdStop(){
         CurrentMode = Mode.NTKstop;
         NTKM01.setPower (stopSpeed);

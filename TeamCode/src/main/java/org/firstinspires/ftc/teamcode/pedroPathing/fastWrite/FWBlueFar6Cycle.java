@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pedroPathing.DisabledPPAutons;
+package org.firstinspires.ftc.teamcode.pedroPathing.fastWrite;
 
 import static org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants.pathConstraints;
 
@@ -20,14 +20,14 @@ import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
 @Disabled
-@Autonomous(name = "FastWrite", group = "PP")
-public class FastWrite extends OpMode {
-
+@Autonomous(name = "FWBlueFar6cycle", group = "FW")
+public class FWBlueFar6Cycle extends OpMode {
+//FastWriteTest1
     Robot robot = new Robot();
 
     private String thisUpdate = "0";
     private TelemetryManager telemetryMU;
-    public String Alliance = "RED"; // Red or Blue
+    public String Alliance = "BLUE"; // Red or Blue
     public String Grounds ="FAR"; // Near or Far
     public int Cycles = 4; // amount of cycles,(goes up to 6)
     public boolean Park = true; // if true, will park off line if it meets criteria
@@ -35,11 +35,11 @@ public class FastWrite extends OpMode {
     // 0 = do no gate, 1 = do gate, first pos = first pickup, second pos = second pickup... etc
 
     public int Wraps = 0; // X = times 10 unless over 100,000 >and< B = set to zero
-    public int C1 = 1; // 0 = no position, 1 = first spike from near position,
+    public int C1 = 4; // 0 = no position, 1 = first spike from near position,
     // 2 = 2nd, 3 = 3rd, 4 = HumanPlayerZone, 5 = DeepHumanPlayerZone
-    public int C2 = 2;
-    public int C3 = 3;
-    public int C4 = 4;
+    public int C2 = 3;
+    public int C3 = 4;
+    public int C4 = 5;
     public int C5 = 0;
     public int C6 = 0;
 
@@ -429,7 +429,7 @@ public class FastWrite extends OpMode {
                 }
                 break;
             case _40_Pickup:
-                if (runtime.milliseconds() >= 1500 || robot.sensors.Empty) { // change time // if empty
+                if (runtime.milliseconds() >= 1000 || robot.sensors.Empty) { // change time // if empty
                     endlaunch_process();
                     if(CyclesRemaining > 0) {
                         if (Cycles == CyclesRemaining) {

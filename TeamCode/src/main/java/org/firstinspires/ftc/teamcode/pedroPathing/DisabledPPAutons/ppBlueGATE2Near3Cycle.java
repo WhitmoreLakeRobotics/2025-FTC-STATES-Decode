@@ -22,10 +22,10 @@ import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
 @Configurable
-@Autonomous(name = "ppRed2GATENear3Cycle", group = "PP")
+@Autonomous(name = "ppBlue2GATENear3Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
-
-public class ppRedGATE2Near3Cycle extends OpMode {
+//goal: beat up kyle
+public class ppBlueGATE2Near3Cycle extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -53,19 +53,19 @@ public class ppRedGATE2Near3Cycle extends OpMode {
     public static double powerFast = 0.8;
     // poses for pedropath
     // poses for pedropath
-    public static Pose startPose = new Pose(33.5, 134, Math.toRadians(180)).mirror(); // Start Pose of our robot.
-    public static Pose scorePose = new Pose(55, 105, Math.toRadians(143)).mirror(); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    public static Pose startPose = new Pose(33.5, 134, Math.toRadians(180));// Start Pose of our robot.
+    public static Pose scorePose = new Pose(55, 105, Math.toRadians(143)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    public static Pose scorePoseAP =new Pose(55,105,Math.toRadians(142)).mirror();
-    public static Pose pickup1aPose = new Pose(50, 89.5, Math.toRadians(180)).mirror(); // Highest (First Set) of Artifacts from the Spike Mark.
+    public static Pose scorePoseAP =new Pose(55,105,Math.toRadians(142));
+    public static Pose pickup1aPose = new Pose(50, 91.5, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     //public static Pose gatePose = new Pose(13 , 70,Math.toRadians(-90)) ;   //This pos will have robot hit gate After First Spike
-    public static Pose pickup1bPose = new Pose(10, 77, Math.toRadians(180)).mirror(); // was 84y (First Set) of Artifacts picked up.
-    public static Pose pickup2aPose = new Pose(49, 63, Math.toRadians(180)).mirror(); // Middle (Second Set) of Artifacts from the Spike Mark.
-    public static Pose pickup2bPose = new Pose(6, 71, Math.toRadians(180)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    public static Pose pickReturn2 =new Pose(20,75,180).mirror();
-    public static Pose pickup3aPose = new Pose(49, 34, Math.toRadians(180)).mirror(); // Middle (Second Set) of Artifacts from the Spike Mark.
-    public static Pose pickup3bPose = new Pose(7, 27, Math.toRadians(180)).mirror(); // 7 was 6 Lowest (Third Set) of Artifacts from the Spike Mark.
-    public static Pose endPose = new Pose(30,72,Math.toRadians(180)).mirror();
+    public static Pose pickup1bPose = new Pose(10, 77, Math.toRadians(180)); // was 84y (First Set) of Artifacts picked up.
+    public static Pose pickup2aPose = new Pose(49, 63, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    public static Pose pickup2bPose = new Pose(6, 71, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    public static Pose pickReturn2 =new Pose(20,75,180);
+    public static Pose pickup3aPose = new Pose(49, 34, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    public static Pose pickup3bPose = new Pose(7, 27, Math.toRadians(180)); // 7 was 6 Lowest (Third Set) of Artifacts from the Spike Mark.
+    public static Pose endPose = new Pose(30,72,Math.toRadians(180));
 
     private Pose currentTargetPose = startPose;
     private Pose lastPose = startPose;
@@ -268,7 +268,7 @@ public class ppRedGATE2Near3Cycle extends OpMode {
 
             case _30_Shoot1:
                 if (!follower.isBusy()) {
-                    if (runtime.milliseconds() >= 1000) {
+                    if (runtime.milliseconds() >= 1500) {
                         telemetryMU.addLine("waiting to shoot 1");
                         // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                         //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
@@ -327,10 +327,9 @@ public class ppRedGATE2Near3Cycle extends OpMode {
 
             case _80_ScorePickup1:
                 if (!follower.isBusy()) {
-                   // runtime.reset();
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 1500) { // increase to fix or add commented runtime.reset
+                    if (runtime.milliseconds() >= 1800) {
                         telemetryMU.addLine("waiting to shoot 2");
                        dolaunch_process();
                         runtime.reset();
@@ -341,7 +340,7 @@ public class ppRedGATE2Near3Cycle extends OpMode {
                 break;
 
             case _90_LauncherStop:
-                if (runtime.milliseconds() >= 1350) {
+                if (runtime.milliseconds() >= 1000) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     runtime.reset();
@@ -351,7 +350,7 @@ public class ppRedGATE2Near3Cycle extends OpMode {
 
             case _100_Pickup2:
                 if (!follower.isBusy()) {
-                    follower.followPath(grabPickup2a, powerNormal, true);
+                    follower.followPath(grabPickup2a, powerStart, true);
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup2aPose;
                     currentStage = stage._110_Pickup2_Startintake;
@@ -409,7 +408,7 @@ public class ppRedGATE2Near3Cycle extends OpMode {
                 break;
             case _160_pickup3:
                 if(!follower.isBusy()) {
-                    follower.followPath(grabPickup3a, powerNormal, true);
+                    follower.followPath(grabPickup3a, powerStart, true);
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup3aPose;
                     currentStage = stage._170_pickup3_startintake;
@@ -447,7 +446,7 @@ public class ppRedGATE2Near3Cycle extends OpMode {
                 if (!follower.isBusy()) {
                    //
                     //
-                    if (runtime.milliseconds() >= 500) {
+                    if (runtime.milliseconds() >= 1500) {
                         telemetryMU.addLine("waiting to shoot 4");
                         dolaunch_process();
                         runtime.reset();
@@ -458,10 +457,10 @@ public class ppRedGATE2Near3Cycle extends OpMode {
                 break;
 
             case _450_Park:
-                if (runtime.milliseconds() >= 1400) {
+                if (runtime.milliseconds() >= 1000) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
-                    follower.followPath(endPath, powerFast,true);
+                    follower.followPath(endPath, powerNormal,true);
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup2bPose;
                     currentStage = stage._500_End;

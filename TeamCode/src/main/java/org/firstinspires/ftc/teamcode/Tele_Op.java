@@ -497,12 +497,16 @@ public class Tele_Op extends OpMode {
         }
         if (robot.intake.AtIntakeStop = true) {
             robot.intake.cmdBackward();
-            robot.intake.AtIntakeStop = false;
+            robot.intake.AtIntakeStop = true;
         }
 
         //robot.transitionRoller.cmdBack();
     }
 
+        if (CommonLogic.oneShotRelease(gamepad2.x, gp2_prev_x)) {
+            robot.intake.cmdFowardwthreset();
+            robot.intake.AtIntakeStop = false;
+        }
 
         if (Math.abs(gamepad2.left_stick_x) > 0.8) {
             //robot.subLifter.stickControl(-gamepad2.left_stick_y);

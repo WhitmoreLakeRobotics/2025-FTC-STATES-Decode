@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.Hardware.Intake;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
-//@Disabled
+@Disabled
 @Configurable
 @Autonomous(name = "ppBlueFar4Cycle", group = "PP")
 // @Autonomous(...) is the other common choice

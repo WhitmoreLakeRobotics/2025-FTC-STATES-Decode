@@ -202,7 +202,7 @@ public class Sensors extends BaseHardware {
             stable.reset();
         }
 
-        if (NTKAP3distance <= 8) {
+        if (NTKAP3distance <= 9) {
             CurrentDistance3 = Distance3.FILLED3;
             Empty = false;
         } else {

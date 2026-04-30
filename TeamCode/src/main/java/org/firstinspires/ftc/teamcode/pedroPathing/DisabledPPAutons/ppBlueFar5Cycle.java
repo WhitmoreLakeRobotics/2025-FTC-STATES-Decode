@@ -23,10 +23,10 @@ import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
 //@Disabled
 @Configurable
-@Autonomous(name = "ppRedFar5Cycle", group = "PP")
+@Autonomous(name = "ppBlueFar5Cycle", group = "PP")
 // @Autonomous(...) is the other common choice
 
-public class ppRedFar5Cycle extends OpMode {
+public class ppBlueFar5Cycle extends OpMode {
 
     //RobotComp robot = new RobotComp();
     Robot robot = new Robot();
@@ -54,22 +54,22 @@ public class ppRedFar5Cycle extends OpMode {
     public static double powerFast = 0.8;
     // poses for pedropath
     // poses for pedropathlopk
-    public static Pose startPose = new Pose(57, 10.5, Math.toRadians(90)).mirror(); // Start Pose of our robot.
-    public static Pose scorePose = new Pose(57, 15, Math.toRadians(112)).mirror(); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
+    public static Pose startPose = new Pose(57, 10.5, Math.toRadians(90)); // Start Pose of our robot.
+    public static Pose scorePose = new Pose(57, 15, Math.toRadians(112)); // Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
     //private final Pose scorePose = new Pose(wallScoreX, wallScoreY, wallScoreH); // seeing if configurables work for this. Scoring Pose of our robot. It is facing the goal at a 135 degree angle.
-    public static Pose scorePoseAP = new Pose(52.5, 15, Math.toRadians(12.5)).mirror();
-    public static Pose pickup1aPose = new Pose(20, 8, Math.toRadians(210)).mirror(); // Highest (First Set) of Artifacts from the Spike Mark.
-    public static Pose pickup1bPose = new Pose(12, 0, Math.toRadians(199)).mirror(); // (First Set) of Artifacts picked up.
-    public static Pose pickup1bPoseC = new Pose(23, 27, Math.toRadians(200)).mirror();
-    public static Pose pickup1cPose = new Pose(8, 3, Math.toRadians(215)).mirror();
+    public static Pose scorePoseAP = new Pose(53.5, 15, Math.toRadians(112.5)); //was 12.5, broke?
+    public static Pose pickup1aPose = new Pose(20, 12, Math.toRadians(210)); // Highest (First Set) of Artifacts from the Spike Mark.
+    public static Pose pickup1bPose = new Pose(12, 10, Math.toRadians(199)); // (First Set) of Artifacts picked up.
+    public static Pose pickup1bPoseC = new Pose(23, 27, Math.toRadians(200));
+    public static Pose pickup1cPose = new Pose(8, 13, Math.toRadians(215));
 
-    public static Pose pickup2aPose = new Pose(10, 36, Math.toRadians(190)).mirror(); // 10 was 8 Middle (Second Set) of Artifacts from the Spike Mark.
-    public static Pose pickup2aPoseC = new Pose(69, 35, Math.toRadians(190)).mirror(); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    public static Pose pickup2aPose = new Pose(10, 36, Math.toRadians(190)); // 10 was 8 Middle (Second Set) of Artifacts from the Spike Mark.
+    public static Pose pickup2aPoseC = new Pose(69, 35, Math.toRadians(190)); // Lowest (Third Set) of Artifacts from the Spike Mark.
     //public static Pose pickReturn2 =new Pose(20,75,(180));
     //public static Pose pickup3aPose = new Pose(47, 60, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
     //public static Pose pickup3bPose = new Pose(15, 35, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    public static Pose endPose = new Pose(11, 15, Math.toRadians(180)).mirror();
-    public static Pose endPose2 = new Pose(11, 15, Math.toRadians(180)).mirror();
+    public static Pose endPose = new Pose(11, 15, Math.toRadians(180));
+    public static Pose endPose2 = new Pose(11, 15, Math.toRadians(180));
     private Pose currentTargetPose = startPose;
     private Pose lastPose = startPose;
     private PathChain scorePreload;
@@ -103,7 +103,7 @@ public class ppRedFar5Cycle extends OpMode {
                 .build();
         grabPickup3a = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, pickup1cPose))
-                .setConstantHeadingInterpolation(Math.toRadians((-10)))//pickup1aPose.getHeading())
+                .setConstantHeadingInterpolation(Math.toRadians((1)))//pickup1aPose.getHeading())
                 .build();
         grabPickup1b = follower.pathBuilder()
                 .addPath(new BezierCurve(pickup1aPose, pickup1bPoseC, pickup1bPose))
@@ -119,7 +119,7 @@ public class ppRedFar5Cycle extends OpMode {
         /* This is our scorePickup1 PathChain. We are using a single path with a BezierLine, which is a straight line. */
         scorePickup1 = follower.pathBuilder()
                 .addPath(new BezierLine(pickup1cPose, scorePoseAP))
-                .setLinearHeadingInterpolation(pickup1cPose.getHeading(), scorePose.getHeading()).setHeadingConstraint(0.1)
+                .setLinearHeadingInterpolation(pickup1cPose.getHeading(), scorePoseAP.getHeading()).setHeadingConstraint(0.1)
                 .build();
 
         /* This is our grabPickup2 PathChain. We are using a single path with a BezierLine, which is a straight line. */
@@ -273,7 +273,7 @@ public class ppRedFar5Cycle extends OpMode {
 
             case _30_Shoot1:
                 if (!follower.isBusy()) {
-                    if (runtime.milliseconds() >= 1500) {
+                    if (runtime.milliseconds() >= 2000) {
                         telemetryMU.addLine("waiting to shoot 1");
                         // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                         //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
@@ -285,7 +285,7 @@ public class ppRedFar5Cycle extends OpMode {
                 break;
 
             case _40_LauncherStop:
-                if (runtime.milliseconds() >= 1000) {
+                if (runtime.milliseconds() >= 750) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     // currentStage = stage._50_Pickup1;
@@ -297,7 +297,7 @@ public class ppRedFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     // follower.followPath(grabPickup1a, powerNormal, true);
                     //  follower.followPath(grabPickup1,powerNormal,true);
-                    follower.turnToDegrees(-15); // was 190
+                    follower.turnToDegrees(195); // was 190
                     follower.followPath(grabPickup1, powerNormal, true);
                     robot.intake.cmdFoward();
                     lastPose = currentTargetPose;
@@ -334,9 +334,9 @@ public class ppRedFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     // follower.followPath(grabPickup1c, powerSlow, true);
                     if (runtime.milliseconds() < 100) {
-                        follower.turnToDegrees(-10); // was 185
+                        follower.turnToDegrees(185); // was 185
                     } else {
-                        follower.turnToDegrees(10); //wiggle to pick up more     was 175   // NEEDS SERIOUS FIX
+                        follower.turnToDegrees(175); //wiggle to pick up more     was 175   // NEEDS SERIOUS FIX
                     }
 
                     currentStage = stage._70_ToScorePoseAP;
@@ -361,7 +361,7 @@ public class ppRedFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 1500) {
+                    if (runtime.milliseconds() >= 2000) {
                         telemetryMU.addLine("waiting to shoot 2");
                         dolaunch_process();
                         runtime.reset();
@@ -371,7 +371,7 @@ public class ppRedFar5Cycle extends OpMode {
                 }
                 break;
             case _90_LauncherStop:
-                if (runtime.milliseconds() >= 1000) {
+                if (runtime.milliseconds() >= 750) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     currentStage = stage._100_Pickup2;
@@ -420,10 +420,11 @@ public class ppRedFar5Cycle extends OpMode {
                         runtime.reset();
                     }
                 }
+
                 break;
 
             case _160_LauncherStop:
-                if (runtime.milliseconds() >= 1000) {
+                if (runtime.milliseconds() >= 900) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     // currentStage = stage._50_Pickup1;
@@ -435,8 +436,8 @@ public class ppRedFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     // follower.followPath(grabPickup1a, powerNormal, true);
                     //  follower.followPath(grabPickup1,powerNormal,true);
-                    follower.turnToDegrees(-15); // was 190
-                    follower.followPath(grabPickup3a, powerFast, true);
+                    follower.turnToDegrees(195); // was 190
+                    follower.followPath(grabPickup1, powerFast, true);
                     robot.intake.cmdFoward();
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup1cPose;
@@ -465,9 +466,9 @@ public class ppRedFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     // follower.followPath(grabPickup1c, powerSlow, true);
                     if (runtime.milliseconds() < 100) {
-                        follower.turnToDegrees(-5); //was 185
+                        follower.turnToDegrees(185); //was 185
                     } else {
-                        follower.turnToDegrees(5); //wiggle to pick up more     was 175 /NEEDS SERIOUS FIXING
+                        follower.turnToDegrees(175); //wiggle to pick up more     was 175 /NEEDS SERIOUS FIXING
                     }
 
                     currentStage = stage._210_ToScorePoseAP;
@@ -493,7 +494,7 @@ public class ppRedFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 1500) {
+                    if (runtime.milliseconds() >= 2000) {
                         telemetryMU.addLine("waiting to shoot 2");
                         dolaunch_process();
                         currentStage = stage._240_LauncherStop;
@@ -502,7 +503,7 @@ public class ppRedFar5Cycle extends OpMode {
                 }
                 break;
             case _240_LauncherStop:
-                if (runtime.milliseconds() >= 1000) {
+                if (runtime.milliseconds() >= 750) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     currentStage = stage._250_Pickup1;
@@ -513,7 +514,7 @@ public class ppRedFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     // follower.followPath(grabPickup1a, powerNormal, true);
                     //  follower.followPath(grabPickup1,powerNormal,true);
-                    follower.turnToDegrees(-15); // was 190
+                    follower.turnToDegrees(195); // was 190
                     follower.followPath(grabPickup1, powerFast, true);
                     robot.intake.cmdFoward();
                     lastPose = currentTargetPose;
@@ -551,9 +552,9 @@ public class ppRedFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     // follower.followPath(grabPickup1c, powerSlow, true);
                     if (runtime.milliseconds() < 100) {
-                        follower.turnToDegrees(-10); // was 185
+                        follower.turnToDegrees(185); // was 185
                     } else {
-                        follower.turnToDegrees(10); //wiggle to pick up more     was 175   // NEEDS SERIOUS FIX
+                        follower.turnToDegrees(175); //wiggle to pick up more     was 175   // NEEDS SERIOUS FIX
                     }
 
                     currentStage = stage._270_ToScorePoseAP;
@@ -569,7 +570,7 @@ public class ppRedFar5Cycle extends OpMode {
                     //robot.autoRPM.Measure = true;
                     robot.launcher.cmdOutfar();
                     runtime.reset();
-                    currentStage = stage._280_ScorePickup1;
+                    currentStage = stage._450_Park;
                 }
                 break;
 
@@ -578,7 +579,7 @@ public class ppRedFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 1500) {
+                    if (runtime.milliseconds() >= 1250) {
                         telemetryMU.addLine("waiting to shoot 2");
                         dolaunch_process();
                         runtime.reset();
@@ -589,7 +590,7 @@ public class ppRedFar5Cycle extends OpMode {
                 break;
 
             case _290_LauncherStop:
-                if (runtime.milliseconds() >= 1000) {
+                if (runtime.milliseconds() >= 900) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     runtime.reset();
