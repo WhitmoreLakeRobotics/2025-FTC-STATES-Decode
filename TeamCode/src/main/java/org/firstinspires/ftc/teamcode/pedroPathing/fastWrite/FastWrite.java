@@ -55,6 +55,7 @@ public class FastWrite extends OpMode {
     private boolean doGate = false;
     private boolean doWrap = false;
     private boolean isBottom = false;
+    private boolean launched = false;
 
 
     //public int Cursor = 1;
@@ -440,36 +441,76 @@ public class FastWrite extends OpMode {
                 break;
             case _40_Pickup:
                 if (runtime.milliseconds() >= 1000 || robot.sensors.Empty) { // change time // if empty
-                    endlaunch_process();  // run once
+                    if(!launched){
+                        endlaunch_process();  // run once
+                        launched = true;
+                    }
+
                     if(CyclesRemaining > 0) {
                         if (Cycles == CyclesRemaining) {
-                            scanDoubleCode(currentCode1,true);
-                            scanDoubleCode(currentCode1,false);
+                            if(scanDoubleCode(currentCode1,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode1,false) == 1){
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             CyclesRemaining = CyclesRemaining - 1;
                             scanPickup(C1);
                         } else if (Cycles == CyclesRemaining + 1) {
-                            scanDoubleCode(currentCode2,true);
-                            scanDoubleCode(currentCode2,false);
+                            if(scanDoubleCode(currentCode2,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode2,false) == 1){
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             CyclesRemaining = CyclesRemaining - 1;
                             scanPickup(C2);
                         } else if (Cycles == CyclesRemaining + 2) {
-                            scanDoubleCode(currentCode3,true);
-                            scanDoubleCode(currentCode3,false);
+                            if(scanDoubleCode(currentCode3,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode3,false) == 1){
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             CyclesRemaining = CyclesRemaining - 1;
                             scanPickup(C3);
                         }else if(Cycles == CyclesRemaining + 3){
-                            scanDoubleCode(currentCode4,true);
-                            scanDoubleCode(currentCode4,false);
+                            if(scanDoubleCode(currentCode4,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode4,false) == 1){
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             CyclesRemaining = CyclesRemaining - 1;
                             scanPickup(C4);
                         }else if(Cycles == CyclesRemaining + 4){
-                            scanDoubleCode(currentCode5,true);
-                            scanDoubleCode(currentCode5,false);
+                            if(scanDoubleCode(currentCode5,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode5,false) == 1){
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             CyclesRemaining = CyclesRemaining - 1;
                             scanPickup(C5);
                         }else if(Cycles == CyclesRemaining + 5){
-                            scanDoubleCode(currentCode6,true);
-                            scanDoubleCode(currentCode6,false);
+                            if(scanDoubleCode(currentCode6,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode6,false) == 1){  //was fix all here don't know if still need fixing
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             if(Park) {
                                 CyclesRemaining = CyclesRemaining - 1;
                             }
@@ -504,33 +545,14 @@ public class FastWrite extends OpMode {
                             }
                         }
                     }
-                    if(!doGate && !doWrap) {
-                        doGate = false;
-                        doWrap = false;
-                        if (gametime.milliseconds() <= 26000 || !Park) {
-                            currentStage = stage._50_PreLaunch; // only if enough time remains
-                        } else {
-                            currentStage = stage._70_Park;
-                        }
-                    }else if(doGate && !doWrap){
-                        doGate = false;
-                        doWrap = false;
-                        currentStage = stage._90_Gate;
-                    }else if(doWrap && !doGate){
-                        doGate = false;
-                        doWrap = false;
-                        currentStage = stage._90_Gate;
-                    }else{
-                        doGate = false;
-                        doWrap = true;
-                        currentStage = stage._90_Gate;
-                    }
+
                     // telemetryMU.addData("Drive Complete?", follower.isBusy());
                 }
                 break;
 
             case _50_PreLaunch:
                 if (!follower.isBusy() || robot.intake.autoStopped) { // add or if full
+                    launched = false;
                     StartLauncher();
                     if(Alliance == "RED"){
                         if(Grounds == "NEAR"){
@@ -558,6 +580,7 @@ public class FastWrite extends OpMode {
             case _60_Launch:
                 if (!follower.isBusy()) {
                     dolaunch_process();
+                    runtime.reset();
                     if(gametime.milliseconds() <= 25000 || !Park){
                         currentStage = stage._40_Pickup; // only if enough time remains
                     }
@@ -877,5 +900,17 @@ public class FastWrite extends OpMode {
 
     public void setCurrentPose(){
         currentPose = follower.getPose();
+    }
+
+    public void nextStagePick(){
+        if(!doGate) {
+            if (gametime.milliseconds() <= 26000 || !Park) {
+                currentStage = stage._50_PreLaunch; // only if enough time remains
+            } else {
+                currentStage = stage._70_Park;
+            }
+        }else{
+            currentStage = stage._90_Gate;
+        }
     }
 }

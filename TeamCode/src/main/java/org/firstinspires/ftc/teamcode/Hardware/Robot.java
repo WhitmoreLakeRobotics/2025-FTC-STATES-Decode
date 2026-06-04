@@ -253,24 +253,24 @@ public class Robot extends BaseHardware {
 
 
                 if (currentTagId == 24) {
-                    if ( Math.abs(limey.getTagAngle()) > 6){
+                    if ( Math.abs(limey.getTagAngle()) > 6){ //comment
                         //if off to the side of tag
-                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 5.5;//+2
+                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 2;//+2 was 5.5(5/ comment
 
-                    }else {
+                    }else { //comment
                         //if in front of tag
-                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 1.81;//+2
-                    }
+                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 2.18;//+2 was -1.81(5/1)
+                    } //comment
                 } else if (currentTagId == 20) {
-                    if ( Math.abs(limey.getTagAngle()) > -6){
+                    if ( Math.abs(limey.getTagAngle()) > -6){ //comment
                         //if off to the side of tag
-                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 2.4;//-5
+                        return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 2.4;//-5 comment
 
-                    }else {
+                    }else { //comment
                         // if in front of tag
                         return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 2.58;//-5
 
-                    }
+                    } //comment
                 } else {
                     return driveTrain.getCurrentHeading();
                 }
@@ -303,7 +303,7 @@ public class Robot extends BaseHardware {
 
 
                 if (currentTagId == 24) {
-                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 0.14;
+                    return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal + 2.14;//0.14
                 } else if (currentTagId == 20) {
                     return driveTrain.getCurrentHeading() + targetOffsetAngle_Horizontal - 2.6; // was 5.4
                 } else {
@@ -370,11 +370,11 @@ public class Robot extends BaseHardware {
 
         if(autoRPM.Measure){
             launcher.CurrentPosition = Launcher.Position.LaunchCalc;
-            if(limey.getTagDistance() < 1.1){ //3.1
+            if(limey.getTagDistance() < 1.6){ //1.1
                 launcher.CurrentCalcPos = Launcher.CalcPos.Near;
-            }else if(limey.getTagDistance() >= 1.1 && limey.getTagDistance() < 1.965){
+            }else if(limey.getTagDistance() >= 1.6 && limey.getTagDistance() < 2.1){ //1.965
                 launcher.CurrentCalcPos = Launcher.CalcPos.Far;
-            }else if(limey.getTagDistance() >= 1.965){ //3.4
+            }else if(limey.getTagDistance() >= 2.1){ //1.965
                 launcher.CurrentCalcPos = Launcher.CalcPos.Farther;
             }else{
                 launcher.CurrentCalcPos = Launcher.CalcPos.Unknown;

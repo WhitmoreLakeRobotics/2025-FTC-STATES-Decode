@@ -273,7 +273,7 @@ public class ppBlueFar5Cycle extends OpMode {
 
             case _30_Shoot1:
                 if (!follower.isBusy()) {
-                    if (runtime.milliseconds() >= 2000) {
+                    if (runtime.milliseconds() >= 2750) {
                         telemetryMU.addLine("waiting to shoot 1");
                         // if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                         //         CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
@@ -285,7 +285,7 @@ public class ppBlueFar5Cycle extends OpMode {
                 break;
 
             case _40_LauncherStop:
-                if (runtime.milliseconds() >= 750) {
+                if (runtime.milliseconds() >= 1000) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     // currentStage = stage._50_Pickup1;
@@ -308,7 +308,7 @@ public class ppBlueFar5Cycle extends OpMode {
                 break;
 
             case _60_Pickup1a:
-                if (!follower.isBusy() || runtime.milliseconds() >= 2000) {
+                if (!follower.isBusy() || runtime.milliseconds() >= 1000) {
                     // follower.followPath(grabPickup1c,powerSlow, true);
                     //if we have 3 artifacts stop the path and go to next stage
                     if (robot.intake.autoStopped) {
@@ -345,7 +345,7 @@ public class ppBlueFar5Cycle extends OpMode {
                 break;
 
             case _70_ToScorePoseAP:
-                if (!follower.isBusy() || runtime.milliseconds() > 2000) {
+                if (!follower.isBusy() || runtime.milliseconds() > 1000) {
                     follower.followPath(scorePickup1, powerMedium, true);
                     lastPose = currentTargetPose;
                     currentTargetPose = scorePose;
@@ -361,7 +361,7 @@ public class ppBlueFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 2000) {
+                    if (runtime.milliseconds() >= 2750) {
                         telemetryMU.addLine("waiting to shoot 2");
                         dolaunch_process();
                         runtime.reset();
@@ -371,7 +371,7 @@ public class ppBlueFar5Cycle extends OpMode {
                 }
                 break;
             case _90_LauncherStop:
-                if (runtime.milliseconds() >= 750) {
+                if (runtime.milliseconds() >= 1000) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     currentStage = stage._100_Pickup2;
@@ -393,12 +393,13 @@ public class ppBlueFar5Cycle extends OpMode {
                     // follower.followPath(grabPickup1a, true);
                     currentTargetPose = pickup2aPose;
                     robot.intake.cmdFoward();
+                    runtime.reset();
                     currentStage = stage._130_ToScorePoseAP;
                 }
 
                 break;
             case _130_ToScorePoseAP:
-                if (!follower.isBusy()) {
+                if (!follower.isBusy() || runtime.milliseconds() >= 500) {
                     follower.followPath(scorePickup2, powerNormal, true);
                     currentTargetPose = scorePose;
                     //robot.autoRPM.Measure = true;
@@ -413,7 +414,7 @@ public class ppBlueFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 1500) {
+                    if (runtime.milliseconds() >= 2750) {
                         telemetryMU.addLine("waiting to shoot 1");
                         dolaunch_process();
                         currentStage = stage._160_LauncherStop;
@@ -424,7 +425,7 @@ public class ppBlueFar5Cycle extends OpMode {
                 break;
 
             case _160_LauncherStop:
-                if (runtime.milliseconds() >= 900) {
+                if (runtime.milliseconds() >= 1000) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     // currentStage = stage._50_Pickup1;
@@ -448,12 +449,12 @@ public class ppBlueFar5Cycle extends OpMode {
                 break;
 
             case _190_Pickup1a:
-                if (!follower.isBusy() || runtime.milliseconds() > 1200) {
+                if (!follower.isBusy() || runtime.milliseconds() > 500) {
                     // follower.followPath(grabPickup1c,powerSlow, true);
                     //if we have 3 artifacts stop the path and go to next stage
                     if (robot.intake.autoStopped) {
                         follower.breakFollowing();
-                        currentStage = stage._200_PickupWiggle;
+                        currentStage = stage._210_ToScorePoseAP;
                         runtime.reset();
 
                     }
@@ -470,14 +471,14 @@ public class ppBlueFar5Cycle extends OpMode {
                     } else {
                         follower.turnToDegrees(175); //wiggle to pick up more     was 175 /NEEDS SERIOUS FIXING
                     }
-
-                    currentStage = stage._210_ToScorePoseAP;
                     runtime.reset();
+                    currentStage = stage._210_ToScorePoseAP;
+
                 }
                 break;
 
             case _210_ToScorePoseAP:
-                if (!follower.isBusy() || runtime.milliseconds() > 1200) {
+                if (!follower.isBusy() || runtime.milliseconds() > 500) {
                     follower.followPath(scorePickup1, powerNormal, true);
                     // robot.intake.cmdBackward();
                     lastPose = currentTargetPose;
@@ -494,7 +495,7 @@ public class ppBlueFar5Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 2000) {
+                    if (runtime.milliseconds() >= 2750) {
                         telemetryMU.addLine("waiting to shoot 2");
                         dolaunch_process();
                         currentStage = stage._240_LauncherStop;
@@ -503,7 +504,7 @@ public class ppBlueFar5Cycle extends OpMode {
                 }
                 break;
             case _240_LauncherStop:
-                if (runtime.milliseconds() >= 750) {
+                if (runtime.milliseconds() >= 1000) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
                     currentStage = stage._250_Pickup1;
@@ -526,12 +527,12 @@ public class ppBlueFar5Cycle extends OpMode {
                 break;
 
             case _260_Pickup1a:
-                if (!follower.isBusy() || runtime.milliseconds() >= 1500) {
+                if (!follower.isBusy() || runtime.milliseconds() >= 1000) {
                     // follower.followPath(grabPickup1c,powerSlow, true);
                     //if we have 3 artifacts stop the path and go to next stage
                     if (robot.intake.autoStopped) {
                         follower.breakFollowing();
-                        currentStage = stage._270_ToScorePoseAP;
+                        currentStage = stage._450_Park;
                         runtime.reset();
 
                     }
@@ -547,6 +548,8 @@ public class ppBlueFar5Cycle extends OpMode {
                     runtime.reset();
                 }
 
+
+
                 break;
             case _265_PickupWiggle:
                 if (!follower.isBusy()) {
@@ -557,10 +560,11 @@ public class ppBlueFar5Cycle extends OpMode {
                         follower.turnToDegrees(175); //wiggle to pick up more     was 175   // NEEDS SERIOUS FIX
                     }
 
-                    currentStage = stage._270_ToScorePoseAP;
+                    currentStage = stage._290_LauncherStop;
                     runtime.reset();
                 }
                 break;
+                /*
 
             case _270_ToScorePoseAP:
                 if (!follower.isBusy() || runtime.milliseconds() >= 1500) {
@@ -588,6 +592,8 @@ public class ppBlueFar5Cycle extends OpMode {
                     }
                 }
                 break;
+                 */
+
 
             case _290_LauncherStop:
                 if (runtime.milliseconds() >= 900) {

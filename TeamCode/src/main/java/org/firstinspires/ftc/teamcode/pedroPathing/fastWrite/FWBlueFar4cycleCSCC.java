@@ -20,27 +20,27 @@ import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
 
 @Disabled
-@Autonomous(name = "FWBlueNear6Cycle", group = "FW")
-public class FWBlueNear6Cycle extends OpMode {
+@Autonomous(name = "FWBlueFar4cycleCSCC", group = "FW")
+public class FWBlueFar4cycleCSCC extends OpMode {
 
     Robot robot = new Robot();
 
     private String thisUpdate = "0";
     private TelemetryManager telemetryMU;
     public String Alliance = "BLUE"; // Red or Blue
-    public String Grounds ="NEAR"; // Near or Far
-    public int Cycles = 5; // amount of cycles,(goes up to 6)
+    public String Grounds ="FAR"; // Near or Far
+    public int Cycles = 4; // amount of cycles,(goes up to 6)
     public boolean Park = true; // if true, will park off line if it meets criteria
-    public int Gates = 111100; // X = times 10 unless over 100,000 >and< B = set to zero
+    public int Gates = 0; // X = times 10 unless over 100,000 >and< B = set to zero
     // 0 = do no gate, 1 = do gate, first pos = first pickup, second pos = second pickup... etc
 
-    public int Wraps = 11100; // X = times 10 unless over 100,000 >and< B = set to zero
-    public int C1 = 2; // 0 = no position, 1 = first spike from near position,
+    public int Wraps = 0; // X = times 10 unless over 100,000 >and< B = set to zero
+    public int C1 = 4; // 0 = no position, 1 = first spike from near position,
     // 2 = 2nd, 3 = 3rd, 4 = HumanPlayerZone, 5 = DeepHumanPlayerZone
-    public int C2 = 2;
-    public int C3 = 2;
-    public int C4 = 2;
-    public int C5 = 1;
+    public int C2 = 3;
+    public int C3 = 4;
+    public int C4 = 4;
+    public int C5 = 0;
     public int C6 = 0;
 
     //Unknown Variables
@@ -54,6 +54,8 @@ public class FWBlueNear6Cycle extends OpMode {
     private boolean doGate = false;
     private boolean doWrap = false;
     private boolean isBottom = false;
+    private boolean launched = false;
+
 
     //public int Cursor = 1;
     // private int CurrentTrigger = 1;
@@ -406,60 +408,108 @@ public class FWBlueNear6Cycle extends OpMode {
                 if(Alliance == "RED"){
                     if(Grounds == "NEAR"){
                         follower.followPath(PreScoreRN);
+                        StartLauncher();
+                        currentStage = stage._30_PreloadLaunch;
                     }else{
                         follower.followPath(PreScoreRF);
+                        StartLauncher();
+                        currentStage = stage._30_PreloadLaunch;
                     }
                 }else{
                     if(Grounds == "NEAR"){
                         follower.followPath(PreScoreBN);
+                        StartLauncher();
+                        currentStage = stage._30_PreloadLaunch;
                     }else{
                         follower.followPath(PreScoreBF);
+                        StartLauncher();
+                        currentStage = stage._30_PreloadLaunch;
                     }
                 }
                 //follower.followPath(scorePreload); // change or check // depend on booleans
-                StartLauncher();
-                currentStage = stage._30_PreloadLaunch;
+
                 break;
 
             case _30_PreloadLaunch:
                 if (!follower.isBusy()) {
                     dolaunch_process();
-                    telemetryMU.addData("Cornor pickup", follower.getPose());
+                    runtime.reset();
+                    telemetryMU.addData("Corner pickup", follower.getPose());
                     currentStage = stage._40_Pickup;
                 }
                 break;
             case _40_Pickup:
                 if (runtime.milliseconds() >= 1000 || robot.sensors.Empty) { // change time // if empty
-                    endlaunch_process();
+                    if(!launched){
+                        endlaunch_process();  // run once
+                        launched = true;
+                    }
+
                     if(CyclesRemaining > 0) {
                         if (Cycles == CyclesRemaining) {
-                            scanDoubleCode(currentCode1,true);
-                            scanDoubleCode(currentCode1,false);
+                            if(scanDoubleCode(currentCode1,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode1,false) == 1){
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             CyclesRemaining = CyclesRemaining - 1;
                             scanPickup(C1);
                         } else if (Cycles == CyclesRemaining + 1) {
-                            scanDoubleCode(currentCode2,true);
-                            scanDoubleCode(currentCode2,false);
+                            if(scanDoubleCode(currentCode2,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode2,false) == 1){
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             CyclesRemaining = CyclesRemaining - 1;
                             scanPickup(C2);
                         } else if (Cycles == CyclesRemaining + 2) {
-                            scanDoubleCode(currentCode3,true);
-                            scanDoubleCode(currentCode3,false);
+                            if(scanDoubleCode(currentCode3,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode3,false) == 1){
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             CyclesRemaining = CyclesRemaining - 1;
                             scanPickup(C3);
                         }else if(Cycles == CyclesRemaining + 3){
-                            scanDoubleCode(currentCode4,true);
-                            scanDoubleCode(currentCode4,false);
+                            if(scanDoubleCode(currentCode4,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode4,false) == 1){
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             CyclesRemaining = CyclesRemaining - 1;
                             scanPickup(C4);
                         }else if(Cycles == CyclesRemaining + 4){
-                            scanDoubleCode(currentCode5,true);
-                            scanDoubleCode(currentCode5,false);
+                            if(scanDoubleCode(currentCode5,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode5,false) == 1){
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             CyclesRemaining = CyclesRemaining - 1;
                             scanPickup(C5);
                         }else if(Cycles == CyclesRemaining + 5){
-                            scanDoubleCode(currentCode6,true);
-                            scanDoubleCode(currentCode6,false);
+                            if(scanDoubleCode(currentCode6,true) == 1){
+                                currentStage = stage._90_Gate;
+                            }
+                            if (scanDoubleCode(currentCode6,false) == 1){  //was fix all here don't know if still need fixing
+                                currentStage = stage._90_Gate;
+                            }else{
+                                currentStage = stage._50_PreLaunch;
+                            }
                             if(Park) {
                                 CyclesRemaining = CyclesRemaining - 1;
                             }
@@ -494,33 +544,14 @@ public class FWBlueNear6Cycle extends OpMode {
                             }
                         }
                     }
-                    if(!doGate && !doWrap) {
-                        doGate = false;
-                        doWrap = false;
-                        if (gametime.milliseconds() <= 26000 || !Park) {
-                            currentStage = stage._50_PreLaunch; // only if enough time remains
-                        } else {
-                            currentStage = stage._70_Park;
-                        }
-                    }else if(doGate && !doWrap){
-                        doGate = false;
-                        doWrap = false;
-                        currentStage = stage._90_Gate;
-                    }else if(doWrap && !doGate){
-                        doGate = false;
-                        doWrap = false;
-                        currentStage = stage._90_Gate;
-                    }else{
-                        doGate = false;
-                        doWrap = true;
-                        currentStage = stage._90_Gate;
-                    }
+
                     // telemetryMU.addData("Drive Complete?", follower.isBusy());
                 }
                 break;
 
             case _50_PreLaunch:
                 if (!follower.isBusy() || robot.intake.autoStopped) { // add or if full
+                    launched = false;
                     StartLauncher();
                     if(Alliance == "RED"){
                         if(Grounds == "NEAR"){
@@ -548,6 +579,7 @@ public class FWBlueNear6Cycle extends OpMode {
             case _60_Launch:
                 if (!follower.isBusy()) {
                     dolaunch_process();
+                    runtime.reset();
                     if(gametime.milliseconds() <= 25000 || !Park){
                         currentStage = stage._40_Pickup; // only if enough time remains
                     }
@@ -867,5 +899,17 @@ public class FWBlueNear6Cycle extends OpMode {
 
     public void setCurrentPose(){
         currentPose = follower.getPose();
+    }
+
+    public void nextStagePick(){
+        if(!doGate) {
+            if (gametime.milliseconds() <= 26000 || !Park) {
+                currentStage = stage._50_PreLaunch; // only if enough time remains
+            } else {
+                currentStage = stage._70_Park;
+            }
+        }else{
+            currentStage = stage._90_Gate;
+        }
     }
 }

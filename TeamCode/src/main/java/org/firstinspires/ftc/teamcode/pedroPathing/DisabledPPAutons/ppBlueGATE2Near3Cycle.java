@@ -389,7 +389,7 @@ public class ppBlueGATE2Near3Cycle extends OpMode {
                 if (!follower.isBusy()) {
                     //                   if (CommonLogic.inRange(follower.getPose().getX(), wallScoreX, xTol) &&
                     //                           CommonLogic.inRange(follower.getPose().getY(), wallScoreY, yTol)) {
-                    if (runtime.milliseconds() >= 1500) {
+                    if (runtime.milliseconds() >= 3000) {
                         telemetryMU.addLine("waiting to shoot 3");
                         dolaunch_process();
                         runtime.reset();
@@ -438,6 +438,7 @@ public class ppBlueGATE2Near3Cycle extends OpMode {
                     follower.followPath(scorePickup3,powerNormal,true);
                     currentTargetPose = scorePoseAP;
                     robot.launcher.cmdOuttouch();
+                    runtime.reset();
                     currentStage = stage._210_ScorePickup3;
                 }
              break;
@@ -457,10 +458,10 @@ public class ppBlueGATE2Near3Cycle extends OpMode {
                 break;
 
             case _450_Park:
-                if (runtime.milliseconds() >= 1000) {
+                if (runtime.milliseconds() >= 1500) {
                     // robot.driveTrain.CmdDrive(0, 0, 0.0, 0);
                     endlaunch_process();
-                    follower.followPath(endPath, powerNormal,true);
+                    follower.followPath(endPath, powerSlow,true);
                     lastPose = currentTargetPose;
                     currentTargetPose = pickup2bPose;
                     currentStage = stage._500_End;
