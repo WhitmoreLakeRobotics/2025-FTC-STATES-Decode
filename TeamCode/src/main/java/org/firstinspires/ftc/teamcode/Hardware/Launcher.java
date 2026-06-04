@@ -87,8 +87,8 @@ public class Launcher extends BaseHardware{
     public static double bottomMotortouch = 3025; //was 3730
     public static double topMotorRPMTelletouch = 2235;
     public static double bottomMotorRPMTelletouch = 2975;
-   // public static double topMotorRPMlaser = 6000;
-   // public static double bottomMotorRPMlaser = 6000;
+   public static double topMotorRPMlaser = 3000;
+   public static double bottomMotorRPMlaser = 5000;
 
     private double targetRPM1 = 0;
     private double targetRPM2 = 0;
@@ -203,6 +203,13 @@ public class Launcher extends BaseHardware{
         CurrentPosition = Position.LaunchNear;
         targetRPM1 = topMotorRPMTelletouch + (RPMoffset * RPMtopStep);
         targetRPM2 = bottomMotorRPMTelletouch + (RPMoffset * RPMbottomStep);
+    }
+
+    public void cmdOutLaser(){
+        CurrentMode = Mode.LaunchMout;
+        CurrentPosition = Position.LaunchLaser;
+        targetRPM1 = topMotorRPMlaser + (RPMoffset * RPMtopStep);
+        targetRPM2 = bottomMotorRPMlaser + (RPMoffset * RPMbottomStep);
     }
 
     //public void cmdoutlaser(){
@@ -342,6 +349,7 @@ public class Launcher extends BaseHardware{
         LaunchFar,
         LaunchNear,
         LaunchCalc,
+        LaunchLaser,
         Off
     }
 
