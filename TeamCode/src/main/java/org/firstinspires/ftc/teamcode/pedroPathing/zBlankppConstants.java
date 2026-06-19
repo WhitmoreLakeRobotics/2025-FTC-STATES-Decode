@@ -7,6 +7,8 @@ import com.pedropathing.ftc.drivetrains.MecanumConstants;
 import com.pedropathing.ftc.localization.constants.OTOSConstants;
 import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.pedropathing.ftc.localization.constants.PinpointConstants;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -32,12 +34,26 @@ public class zBlankppConstants {
 
             ;
 
-    public static OTOSConstants localizerConstants =  new OTOSConstants()
+  /*  public static OTOSConstants localizerConstants =  new OTOSConstants()
             .hardwareMapName("otto")
             .linearUnit(DistanceUnit.INCH)
             .angleUnit(AngleUnit.RADIANS)
             .offset(new SparkFunOTOS.Pose2D(-5.5, -2.0, 0))
-            ;
+
+   */
+
+    public static PinpointConstants localizerConstants = new PinpointConstants()
+            .forwardPodY(-5)
+            .strafePodX(0.5)
+            .distanceUnit(DistanceUnit.INCH)
+            .hardwareMapName("pinpoint")
+            .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)
+            .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+            .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
+
+
+
+
 
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
@@ -48,7 +64,8 @@ public class zBlankppConstants {
         return new FollowerBuilder(followerConstants, hardwareMap)
                 .pathConstraints(pathConstraints)
                 .mecanumDrivetrain(driveConstants)
-                .OTOSLocalizer(localizerConstants)
+                //.OTOSLocalizer(localizerConstants)
+                .pinpointLocalizer(localizerConstants)
                 .build();
     }
 }

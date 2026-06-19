@@ -21,7 +21,7 @@ import com.pedropathing.math.*;
 import com.pedropathing.paths.*;
 import com.pedropathing.telemetry.SelectableOpMode;
 import com.pedropathing.util.*;
-//import static com.pedropathing.math.MathFunctions.quadraticFit;
+import static com.pedropathing.math.MathFunctions.quadraticFit;
 
 import android.annotation.SuppressLint;
 
@@ -68,7 +68,7 @@ public class Tuning extends SelectableOpMode {
                 a.add("Lateral Velocity Tuner", LateralVelocityTuner::new);
                 a.add("Forward Zero Power Acceleration Tuner", ForwardZeroPowerAccelerationTuner::new);
                 a.add("Lateral Zero Power Acceleration Tuner", LateralZeroPowerAccelerationTuner::new);
-            //    a.add("Predictive Braking Tuner", PredictiveBrakingTuner::new);
+                a.add("Predictive Braking Tuner", PredictiveBrakingTuner::new);
             });
             s.folder("Manual", p -> {
                 p.add("Translational Tuner", TranslationalTuner::new);
@@ -92,10 +92,10 @@ public class Tuning extends SelectableOpMode {
     @Override
     public void onSelect() {
         if (follower == null) {
-            follower = CompBotConstants.createFollower(hardwareMap);
+            follower = zBlankppConstants.createFollower(hardwareMap);
             PanelsConfigurables.INSTANCE.refreshClass(this);
         } else {
-            follower = CompBotConstants.createFollower(hardwareMap);
+            follower = zBlankppConstants.createFollower(hardwareMap);
         }
 
         follower.setStartingPose(new Pose());
@@ -773,7 +773,6 @@ class LateralZeroPowerAccelerationTuner extends OpMode {
  * @author Jacob Ophoven - 18535 Frozen Code
  * @version 1.0, 12/26/2025
  */
-/*
 class PredictiveBrakingTuner extends OpMode {
     private static final double[] TEST_POWERS =
             {1, 1, 1, 0.9, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2};
@@ -939,7 +938,7 @@ class PredictiveBrakingTuner extends OpMode {
             }
         }
     }
-}*/
+}
 
 /**
  * This is the Translational PIDF Tuner OpMode. It will keep the robot in place.
@@ -1653,8 +1652,7 @@ class OffsetsTuner extends OpMode {
  * @author Lazar - 19234
  * @version 1.1, 5/19/2025
  */
-/*
-class Drawing {
+ class Drawing {
     public static final double ROBOT_RADIUS = 9; // woah
     private static final FieldManager panelsField = PanelsField.INSTANCE.getField();
 
@@ -1665,23 +1663,19 @@ class Drawing {
             "", "#4CAF50", 0.75
     );
 
-    */
-/**
+    /**
      * This prepares Panels Field for using Pedro Offsets
-     *//*
-
+     */
     public static void init() {
         panelsField.setOffsets(PanelsField.INSTANCE.getPresets().getPEDRO_PATHING());
     }
 
-    */
-/**
+    /**
      * This draws everything that will be used in the Follower's telemetryDebug() method. This takes
      * a Follower as an input, so an instance of the DashbaordDrawingHandler class is not needed.
      *
      * @param follower Pedro Follower instance.
-     *//*
-
+     */
     public static void drawDebug(Follower follower) {
         if (follower.getCurrentPath() != null) {
             drawPath(follower.getCurrentPath(), robotLook);
@@ -1694,15 +1688,13 @@ class Drawing {
         sendPacket();
     }
 
-    */
-/**
+    /**
      * This draws a robot at a specified Pose with a specified
      * look. The heading is represented as a line.
      *
      * @param pose  the Pose to draw the robot at
      * @param style the parameters used to draw the robot with
-     *//*
-
+     */
     public static void drawRobot(Pose pose, Style style) {
         if (pose == null || Double.isNaN(pose.getX()) || Double.isNaN(pose.getY()) || Double.isNaN(pose.getHeading())) {
             return;
@@ -1722,25 +1714,21 @@ class Drawing {
         panelsField.line(x2, y2);
     }
 
-    */
-/**
+    /**
      * This draws a robot at a specified Pose. The heading is represented as a line.
      *
      * @param pose the Pose to draw the robot at
-     *//*
-
+     */
     public static void drawRobot(Pose pose) {
         drawRobot(pose, robotLook);
     }
 
-    */
-/**
+    /**
      * This draws a Path with a specified look.
      *
      * @param path  the Path to draw
      * @param style the parameters used to draw the Path with
-     *//*
-
+     */
     public static void drawPath(Path path, Style style) {
         double[][] points = path.getPanelsDrawingPoints();
 
@@ -1757,29 +1745,25 @@ class Drawing {
         panelsField.line(points[1][0], points[1][1]);
     }
 
-    */
-/**
+    /**
      * This draws all the Paths in a PathChain with a
      * specified look.
      *
      * @param pathChain the PathChain to draw
      * @param style     the parameters used to draw the PathChain with
-     *//*
-
+     */
     public static void drawPath(PathChain pathChain, Style style) {
         for (int i = 0; i < pathChain.size(); i++) {
             drawPath(pathChain.getPath(i), style);
         }
     }
 
-    */
-/**
+    /**
      * This draws the pose history of the robot.
      *
      * @param poseTracker the PoseHistory to get the pose history from
      * @param style       the parameters used to draw the pose history with
-     *//*
-
+     */
     public static void drawPoseHistory(PoseHistory poseTracker, Style style) {
         panelsField.setStyle(style);
 
@@ -1791,23 +1775,19 @@ class Drawing {
         }
     }
 
-    */
-/**
+    /**
      * This draws the pose history of the robot.
      *
      * @param poseTracker the PoseHistory to get the pose history from
-     *//*
-
+     */
     public static void drawPoseHistory(PoseHistory poseTracker) {
         drawPoseHistory(poseTracker, historyLook);
     }
 
-    */
-/**
+    /**
      * This tries to send the current packet to FTControl Panels.
-     *//*
-
+     */
     public static void sendPacket() {
         panelsField.update();
     }
-}*/
+}
