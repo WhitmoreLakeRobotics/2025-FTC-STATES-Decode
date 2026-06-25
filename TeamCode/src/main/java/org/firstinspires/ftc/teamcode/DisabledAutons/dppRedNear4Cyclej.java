@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
-//import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;                  aaaaaaaa
+//                  aaaaaaaa
 
 @Disabled
 @Configurable// import aaaaaaaaaa
@@ -191,7 +191,7 @@ public class dppRedNear4Cyclej extends OpMode {
         follower.setStartingPose(startPose);
         follower.update();
         //  pedroPanelsTelemetry.init();
-        //Drawing.init();                                                      aaaaaaaaaaaaa
+        //                                                       aaaaaaaaaaaaa
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
 
         // disp[lay starting postition
@@ -503,7 +503,7 @@ public class dppRedNear4Cyclej extends OpMode {
         telemetryMU.addData("Heading Constraint", follower.pathConstraints.getHeadingConstraint());
 
         telemetryMU.update();
-        //Drawing.drawDebug(follower);                       aaaaaaaaaaaaaaaaaaaaaa
+        //  Tuning.drawCurrent();                       aaaaaaaaaaaaaaaaaaaaaa
     }
 
     //Code to run ONCE after the driver hits STOP

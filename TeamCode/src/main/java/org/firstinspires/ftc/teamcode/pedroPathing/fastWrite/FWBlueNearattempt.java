@@ -17,7 +17,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
-import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
+import org.firstinspires.ftc.teamcode.pedroPathing.Tuning;
+
 
 @Disabled
 @Autonomous(name = "FWBlueNearattempt", group = "FW")
@@ -333,7 +334,7 @@ public class FWBlueNearattempt extends OpMode {
         follower.setStartingPose(startPose);
         follower.update();
 //  pedroPanelsTelemetry.init();
-        Drawing.init();
+
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
 // disp[lay starting postition
         telemetryMU.addData("initialized postition - Update ", thisUpdate);
@@ -719,7 +720,7 @@ public class FWBlueNearattempt extends OpMode {
         // telemetryMU.addData("current Trans", follower.getTranslationalError());
         telemetryMU.addData("Heading Constraint", follower.pathConstraints.getHeadingConstraint());
         telemetryMU.update();
-        Drawing.drawDebug(follower);
+          Tuning.drawCurrent();
     }
 
     public void StartLauncher(){

@@ -19,7 +19,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
-import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
+import org.firstinspires.ftc.teamcode.pedroPathing.Tuning;
+
 
 @Disabled
 @Configurable
@@ -159,7 +160,7 @@ public class dppCSBlueNearTwoCycle extends OpMode {
         follower.setStartingPose(startPose);
         follower.update();
         //  pedroPanelsTelemetry.init();
-        Drawing.init();
+
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
 
         // disp[lay starting postition
@@ -178,7 +179,7 @@ public class dppCSBlueNearTwoCycle extends OpMode {
 
 
         telemetryMU.update();
-        Drawing.drawDebug(follower);
+          Tuning.drawCurrent();
 
     }
 
@@ -275,7 +276,7 @@ public class dppCSBlueNearTwoCycle extends OpMode {
 
 
         telemetryMU.update();
-        Drawing.drawDebug(follower);
+          Tuning.drawCurrent();
     }  //  loop
 
 
@@ -309,7 +310,7 @@ public class dppCSBlueNearTwoCycle extends OpMode {
 
 
         telemetryMU.update();
-        Drawing.drawDebug(follower);
+          Tuning.drawCurrent();
     }
     private enum stage {
         _unknown,

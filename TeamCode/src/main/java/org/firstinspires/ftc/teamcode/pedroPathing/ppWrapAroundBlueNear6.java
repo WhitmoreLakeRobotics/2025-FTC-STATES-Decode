@@ -107,7 +107,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
         follower.update();
         currentTargetPose = startPose;
 //  pedroPanelsTelemetry.init();
-        Drawing.init();
+
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
 
 // disp[lay starting postition
@@ -341,7 +341,7 @@ public class ppWrapAroundBlueNear6 extends OpMode {
         telemetryMU.addData("Heading Constraint", follower.pathConstraints.getHeadingConstraint());
 
         telemetryMU.update();
-        Drawing.drawDebug(follower);
+          Tuning.drawCurrent();
     }
 
     private void dolaunch_process(){

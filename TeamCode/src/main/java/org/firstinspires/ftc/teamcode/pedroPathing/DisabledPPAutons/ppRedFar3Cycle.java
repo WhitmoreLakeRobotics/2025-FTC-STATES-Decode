@@ -20,7 +20,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Common.Settings;
 import org.firstinspires.ftc.teamcode.Hardware.Robot;
 import org.firstinspires.ftc.teamcode.pedroPathing.CompBotConstants;
-import org.firstinspires.ftc.teamcode.pedroPathing.Drawing;
+import org.firstinspires.ftc.teamcode.pedroPathing.Tuning;
+
 
 @Disabled
 @Configurable
@@ -199,7 +200,7 @@ public class ppRedFar3Cycle extends OpMode {
         follower.setStartingPose(startPose);
         follower.update();
         //  pedroPanelsTelemetry.init();
-        Drawing.init();
+
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
 
         // disp[lay starting postition
@@ -515,7 +516,7 @@ public class ppRedFar3Cycle extends OpMode {
         telemetryMU.addData("Heading Constraint", follower.pathConstraints.getHeadingConstraint());
 
         telemetryMU.update();
-        Drawing.drawDebug(follower);
+          Tuning.drawCurrent();
     }
 
     //Code to run ONCE after the driver hits STOP

@@ -173,7 +173,7 @@ public class ppRedNear extends OpMode {
         follower.setStartingPose(startPose);
         follower.update();
 //  pedroPanelsTelemetry.init();
-        Drawing.init();
+
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
 
 // disp[lay starting postition
@@ -544,7 +544,7 @@ public class ppRedNear extends OpMode {
         telemetryMU.addData("Heading Constraint", follower.pathConstraints.getHeadingConstraint());
 
         telemetryMU.update();
-        Drawing.drawDebug(follower);
+          Tuning.drawCurrent();
     }
 
     private  void newPath(){

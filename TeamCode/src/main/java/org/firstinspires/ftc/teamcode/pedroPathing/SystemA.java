@@ -393,7 +393,7 @@ public class SystemA extends OpMode {
         follower.setStartingPose(startPose);
         follower.update();
 //  pedroPanelsTelemetry.init();
-        Drawing.init();
+
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
 
 
@@ -1179,7 +1179,7 @@ public class SystemA extends OpMode {
 
 
         telemetryMU.update();
-        Drawing.drawDebug(follower);
+          Tuning.drawCurrent();
     }
 
 

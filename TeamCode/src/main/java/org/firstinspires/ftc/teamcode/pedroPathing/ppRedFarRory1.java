@@ -337,7 +337,7 @@ public class ppRedFarRory1 extends OpMode {
         follower.setStartingPose(startPose);
         follower.update();
         //  pedroPanelsTelemetry.init();
-        Drawing.init();
+
         telemetryMU = PanelsTelemetry.INSTANCE.getTelemetry();
 
 
@@ -792,7 +792,7 @@ break;
 
 
         telemetryMU.update();
-        Drawing.drawDebug(follower);
+          Tuning.drawCurrent();
     }
     private void dolaunch_process(){
 
