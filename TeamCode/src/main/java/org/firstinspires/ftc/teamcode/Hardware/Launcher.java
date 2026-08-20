@@ -79,8 +79,8 @@ public class Launcher extends BaseHardware{
     public static double bkF = 1.01 / 6000.0; // feedforward per RPM
 
     // ---------------- RPM TARGETS ----------------
-    public static double topMotorRPMnear = 2600;
-    public static double bottomMotornear = 2725;
+    public static double topMotorRPMnear = 2200; // 2600
+    public static double bottomMotornear = 4600; // 2725, 3300, 3800, 4400
     public static double topMotorRPMfar = 2900;
     public static double bottomMotorfar = 3700; //was4600
     public static double topMotorRPMtouch = 2250; //was 2200
